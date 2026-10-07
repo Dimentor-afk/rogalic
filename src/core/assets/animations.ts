@@ -51,7 +51,7 @@ export function registerAnimations(scene: Phaser.Scene): string[] {
       problems.push(`fx ${name}: немає кадрів "${fx.prefix}*"`);
       continue;
     }
-    scene.anims.create({ key, frames: frames.map((frame) => ({ key: fx.atlas, frame })), frameRate: fx.fps, repeat: 0 });
+    scene.anims.create({ key, frames: frames.map((frame) => ({ key: fx.atlas, frame })), frameRate: fx.fps, repeat: fx.loop ? -1 : 0 });
   }
 
   for (const p of problems) console.warn('[assets]', p);

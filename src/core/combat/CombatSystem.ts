@@ -41,6 +41,8 @@ export class CombatSystem implements EnemyWorld {
   private chips = 0;
   /** Дебаг: малювати зони ударів. */
   debug = false;
+  /** Множник швидкості ворогів (прокляття «на кофеїні»). */
+  enemySpeedMultiplier = 1;
   private debugG: Phaser.GameObjects.Graphics;
   private lastBreakableSwing = new WeakMap<Breakable, number>();
 
@@ -123,7 +125,7 @@ export class CombatSystem implements EnemyWorld {
       console.warn(`[combat] невідомий ворог "${id}"`);
       return undefined;
     }
-    const e = new Enemy(this.scene, x, y, def, depth, this);
+    const e = new Enemy(this.scene, x, y, { ...def, speed: def.speed * this.enemySpeedMultiplier }, depth, this);
     e.setDepth(8);
     this.enemies.add(e);
     return e;

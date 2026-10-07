@@ -122,7 +122,7 @@ export const SPRITES: SpriteManifest = buildManifest();
  * Одноразові ефекти (іскри удару, дим, монети…): ключ → кадри атласу.
  * Анімація реєструється як "fx:<ключ>".
  */
-export const FX: Record<string, { atlas: string; prefix: string; fps: number; facesLeft?: boolean }> = {
+export const FX: Record<string, { atlas: string; prefix: string; fps: number; facesLeft?: boolean; loop?: boolean }> = {
   impact: { atlas: 'fx', prefix: 'fx/impact/', fps: 24 },
   impactCrit: { atlas: 'fx', prefix: 'fx/impact_crit/', fps: 20 },
   parry: { atlas: 'fx', prefix: 'fx/parry/', fps: 18 },
@@ -137,4 +137,8 @@ export const FX: Record<string, { atlas: string; prefix: string; fps: number; fa
   scepterBolt: { atlas: 'player', prefix: 'fx/scepter_projectile/', fps: 14 },
   scepterBlast: { atlas: 'player', prefix: 'fx/scepter_blast/', fps: 16 },
   fireball: { atlas: 'enemies', prefix: 'flydemon/projectile/', fps: 1, facesLeft: true },
+  // зациклені анімації пропів
+  doorClosed: { atlas: 'props', prefix: 'door/door/closed/', fps: 6, loop: true },
+  deepDoor: { atlas: 'props', prefix: 'door/dungeon_master_door/closed/', fps: 6, loop: true },
+  blacksmith: { atlas: 'props', prefix: 'blacksmith/idle/', fps: 8, loop: true },
 };

@@ -18,6 +18,8 @@ export class InputMap {
   private prev = new Set<Action>();
   /** Дії, клавішу яких натиснули після попереднього update(). */
   private tapped = new Set<Action>();
+  /** До цього часу (performance.now) натискання не рахуються як «нові» (після закриття меню). */
+  private ignoreUntil = 0;
 
   constructor(private scene: Phaser.Scene) {
     const kb = scene.input.keyboard;
@@ -42,6 +44,14 @@ export class InputMap {
     for (const action of ACTIONS) {
       if (this.rawDown(action, pad) || this.tapped.has(action)) this.now.add(action);
     }
+    this.tapped.clear();
+    // клавіша, якою закрили меню, ще може бути натиснута — не вважаємо її новим натисканням
+    if (performance.now() < this.ignoreUntil) for (const a of this.now) this.prev.add(a);
+  }
+
+  /** Ігнорувати нові натискання ms мілісекунд (викликати при поверненні з меню/паузи). */
+  suppress(ms = 150): void {
+    this.ignoreUntil = performance.now() + ms;
     this.tapped.clear();
   }
 

@@ -168,6 +168,14 @@ export class Player extends ManifestSprite {
     this.setSpriteKey(Player.spriteFor(weapon, armor));
   }
 
+  /** Нові характеристики (після прокачки в хабі) + повне відновлення. */
+  applyLoadout(l: PlayerLoadout): void {
+    Object.assign(this.loadout, l);
+    this.stamina.max = l.maxStamina;
+    this.setLoadout(l.weapon, l.armor);
+    this.restore();
+  }
+
   isDroppingThrough(): boolean {
     return this.scene.time.now < this.dropUntil;
   }

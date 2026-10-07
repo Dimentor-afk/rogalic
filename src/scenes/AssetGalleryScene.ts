@@ -63,7 +63,7 @@ export class AssetGalleryScene extends Phaser.Scene {
     this.input.on('wheel', (_p: unknown, _o: unknown, _dx: number, dy: number) => (cam.scrollY += dy * 0.5));
 
     const kb = this.input.keyboard!;
-    const back = () => this.scene.start(SCENES.testCave);
+    const back = () => this.scene.start(SCENES.menu);
     kb.on('keydown-ESC', back);
     kb.on('keydown-G', back);
     this.cursors = kb.createCursorKeys();
