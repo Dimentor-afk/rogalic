@@ -61,8 +61,19 @@ export class TestCaveScene extends Phaser.Scene {
     }
     if (!this.player) throw new Error('У рівні немає точки появи гравця (P)');
 
-    this.physics.add.collider(this.player, this.level.collision);
-    this.physics.add.collider(props, this.level.collision);
+    this.physics.add.collider(this.player, this.level.solid);
+    this.physics.add.collider(props, [this.level.solid, this.level.oneWay]);
+    // Дошки: тримають, лише якщо на попередньому кроці ноги були над дошкою і гравець не зістрибує.
+    this.physics.add.collider(
+      this.player,
+      this.level.oneWay,
+      () => (this.player.oneWayContactAt = this.time.now),
+      (_p, t) => {
+        const tile = t as Phaser.Tilemaps.Tile;
+        const b = this.player.body;
+        return !this.player.isDroppingThrough() && b.prev.y + b.height <= tile.pixelY + 4;
+      },
+    );
 
     const cam = this.cameras.main;
     cam.setBounds(0, 0, this.level.widthPx, this.level.heightPx);
@@ -91,7 +102,7 @@ export class TestCaveScene extends Phaser.Scene {
   }
 
   private createHud(): void {
-    const hint = 'A/D ←/→ — рух   Space/Z — стрибок   H — дебаг   G — галерея асетів';
+    const hint = 'A/D ←/→ рух   Space/Z стрибок   S+Space зістрибнути   H дебаг   G галерея';
     this.add
       .text(4, 4, hint, { fontFamily: 'monospace', fontSize: '8px', color: '#d8c3a5' })
       .setScrollFactor(0)

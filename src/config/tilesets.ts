@@ -1,22 +1,57 @@
 /**
- * Тайлсети: які кадри атласу використовувати для кожної «ролі» автотайлінгу.
- * Кадри нарізає tools/pack.config.json з PixelFantasy Caves (mainlev_build.png).
+ * Тайлсети: які кадри атласу використовувати для кожного випадку автотайлінгу.
+ * Кадри нарізає tools/pack.config.json з PixelFantasy Caves (mainlev_build.png):
+ *  - сіра скеля з холодним обідком — основна земля, стіни, стеля;
+ *  - коричневі шматки — лише декор (сталактити під стелею);
+ *  - дошки і риштування — односторонні платформи.
  */
-import type { TilesetDef } from '../core/level/autotile';
+import type { Piece, TilesetDef } from '../core/level/autotile';
 
-const range = (prefix: string, n: number): string[] => Array.from({ length: n }, (_, i) => `${prefix}${i}`);
+const frames = (prefix: string, n: number, extra: Omit<Piece, 'frame'> = {}): Piece[] =>
+  Array.from({ length: n }, (_, i) => ({ frame: `${prefix}${i}`, ...extra }));
+
+/** Дзеркальні копії: з правої стіни — ліва, з правого кута — лівий. */
+const mirror = (pieces: Piece[]): Piece[] => pieces.map((p) => ({ ...p, flipX: !p.flipX }));
+
+/** Шматок і його дзеркальна копія як два варіанти (більше різноманіття для симетричних випадків). */
+const both = (pieces: Piece[]): Piece[] => [...pieces, ...mirror(pieces)];
+
+const right = frames('cave/r/', 7);
+const topRight = frames('cave/tr/', 3);
+const rightBottom = frames('cave/rb/', 2);
 
 export const CAVE_TILESET: TilesetDef = {
   atlas: 'cave',
   tileSize: 16,
-  fill: { frames: range('cave/fill/', 16) },
-  // Шматки 16×32: верхня половина — наріст, що стирчить у порожню клітинку над підлогою.
-  top: { frames: range('cave/top/', 12), offsetY: -16 },
-  // 16×32: нижня половина — сталактити, що звисають у порожню клітинку під стелею.
-  bottom: { frames: range('cave/bottom/', 12), offsetY: 0 },
-  // 32×16: ті самі верхні шматки, повернуті на 90° (див. rotate у конфігу пакування).
-  left: { frames: range('cave/wall_l/', 12), offsetX: -16 },
-  right: { frames: range('cave/wall_r/', 12), offsetX: 0 },
-  // глибше в скелю — темніше: рівень краще читається, а печера виглядає об'ємною
-  depthShade: [1, 0.75, 0.5, 0.32, 0.2],
+  solid: {
+    // заповнення: гладкі тайли частіше, тайли з прожилками — рідше
+    '': both([...frames('cave/fill/', 9, { weight: 3 }), ...frames('cave/fill_d/', 22)]),
+    T: both([...frames('cave/t/', 2), { frame: 'cave/t_tall/0', dy: -16 }]),
+    R: right,
+    L: mirror(right),
+    B: both(frames('cave/b/', 4)),
+    TR: topRight,
+    TL: mirror(topRight),
+    RB: rightBottom,
+    BL: mirror(rightBottom),
+    // тонкі уступи (висотою в одну клітинку)
+    TRB: [{ frame: 'cave/trb/0' }, { frame: 'cave/tbl/0', flipX: true }],
+    TBL: [{ frame: 'cave/tbl/0' }, { frame: 'cave/trb/0', flipX: true }],
+    TRBL: both(frames('cave/trbl/', 1)),
+    // "TB", "RL", "TRL"… не задані — автотайлер візьме найближчий (див. buildMaskTable)
+  },
+  // глибше в скелю — темніше: рівень краще читається, печера виглядає об'ємною
+  depthShade: [1, 0.7, 0.45, 0.28],
+  decor: [{ side: 'bottom', chance: 0.08, minClear: 4, pieces: frames('cave/stalactite/', 4) }],
+  plank: {
+    left: frames('cave/plank_l/', 1),
+    mid: frames('cave/plank_m/', 9),
+    right: frames('cave/plank_r/', 1),
+  },
+  scaffold: {
+    frames: Array.from({ length: 9 }, (_, i) => `cave/scaffold/${i}`),
+    minRun: 3,
+    doubleRun: 8,
+    maxDepth: 14,
+  },
 };

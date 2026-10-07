@@ -23,4 +23,8 @@ export const PLAYER_MOVE = {
   /** Падіння швидше за підйом — менш «ватний» стрибок. */
   fallGravityMultiplier: 1.35,
   maxFallSpeed: 420,
+
+  /** Вниз + стрибок на дерев'яній платформі: скільки мс ігнорувати дошки і з якою швидкістю штовхнути вниз. */
+  dropThroughMs: 220,
+  dropThroughPush: 60,
 };

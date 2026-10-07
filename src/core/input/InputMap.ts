@@ -4,6 +4,8 @@
  *
  * update() треба викликати раз на кадр (на початку update сцени):
  * він запам'ятовує стан дій, щоб рахувати justPressed / justReleased однаково для клавіатури й геймпада.
+ * Крім опитування стану слухаємо події натискання: тап коротший за кадр (down і up між двома кадрами)
+ * інакше загубився б — а так він засчитується як натискання рівно на один кадр.
  */
 import Phaser from 'phaser';
 import { INPUT_BINDINGS, STICK_DEADZONE, type Action } from '../../config/input';
@@ -14,6 +16,8 @@ export class InputMap {
   private keys = new Map<Action, Phaser.Input.Keyboard.Key[]>();
   private now = new Set<Action>();
   private prev = new Set<Action>();
+  /** Дії, клавішу яких натиснули після попереднього update(). */
+  private tapped = new Set<Action>();
 
   constructor(private scene: Phaser.Scene) {
     const kb = scene.input.keyboard;
@@ -23,7 +27,9 @@ export class InputMap {
         const code = Phaser.Input.Keyboard.KeyCodes[name as keyof typeof Phaser.Input.Keyboard.KeyCodes];
         if (code === undefined) throw new Error(`Невідома клавіша "${name}" для дії ${action}`);
         // enableCapture=true: стрілки/пробіл не скролять сторінку
-        return kb.addKey(code, true);
+        const key = kb.addKey(code, true);
+        key.on('down', () => this.tapped.add(action));
+        return key;
       });
       this.keys.set(action, list);
     }
@@ -34,8 +40,9 @@ export class InputMap {
     this.now.clear();
     const pad = this.pad();
     for (const action of ACTIONS) {
-      if (this.rawDown(action, pad)) this.now.add(action);
+      if (this.rawDown(action, pad) || this.tapped.has(action)) this.now.add(action);
     }
+    this.tapped.clear();
   }
 
   isDown(action: Action): boolean {

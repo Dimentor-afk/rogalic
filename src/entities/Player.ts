@@ -1,5 +1,6 @@
 /**
- * Гравець: біг, стрибок зі змінною висотою, «час койота», буфер стрибка.
+ * Гравець: біг, стрибок зі змінною висотою, «час койота», буфер стрибка,
+ * зістрибування з дерев'яних платформ (вниз + стрибок).
  * Бій (атака, перекат, блок, фляги) — у Milestone 2.
  */
 import Phaser from 'phaser';
@@ -24,6 +25,10 @@ export class Player extends ManifestSprite {
   private jumpBufferMs = 0;
   /** true від моменту стрибка до приземлення — тільки тоді працює «зріз» стрибка. */
   private jumping = false;
+  /** Час (scene.time.now) останнього дотику до дошки — його ставить сцена в колбеку колізії. */
+  oneWayContactAt = -Infinity;
+  /** До цього часу колізія з дошками вимкнена (гравець провалюється крізь них). */
+  private dropUntil = -Infinity;
 
   constructor(
     scene: Phaser.Scene,
@@ -42,6 +47,11 @@ export class Player extends ManifestSprite {
     this.weapon = weapon;
     this.armor = armor;
     this.setSpriteKey(weapon === 'special' ? 'player.special' : playerSpriteKey(weapon, armor));
+  }
+
+  /** Чи зараз гравець зістрибує з дошки (сцена тоді ігнорує колізію з дошками). */
+  isDroppingThrough(): boolean {
+    return this.scene.time.now < this.dropUntil;
   }
 
   update(dtMs: number): void {
@@ -63,6 +73,16 @@ export class Player extends ManifestSprite {
     const accel = dir !== 0 ? (onGround ? M.accelGround : M.accelAir) : onGround ? M.decelGround : M.decelAir;
     body.setVelocityX(approach(body.velocity.x, dir * M.runSpeed, accel * dt));
     if (dir !== 0) this.setFlipX(dir < 0);
+
+    // --- зістрибування: стоїш на дошці, тримаєш «вниз» і тиснеш стрибок ---
+    const now = this.scene.time.now;
+    const onPlank = onGround && now - this.oneWayContactAt < 80;
+    if (onPlank && this.controls.isDown('down') && this.jumpBufferMs > 0) {
+      this.dropUntil = now + M.dropThroughMs;
+      this.jumpBufferMs = 0;
+      this.coyoteMs = 0;
+      body.setVelocityY(M.dropThroughPush);
+    }
 
     // --- стрибок ---
     if (this.jumpBufferMs > 0 && this.coyoteMs > 0) {

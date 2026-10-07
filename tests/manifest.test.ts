@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { bodyOffset, selectFrames, trailingNumber } from '../src/core/assets/manifest';
 import { SPRITES, PLAYER_ARMOR_LEVELS, PLAYER_WEAPON_SPRITES, playerSpriteKey } from '../src/config/assets';
 import { readFileSync } from 'node:fs';
+import { CAVE_TILESET } from '../src/config/tilesets';
 
 describe('manifest helpers', () => {
   it('selectFrames: тільки кадри з префіксом + число, у числовому порядку', () => {
@@ -42,5 +43,20 @@ describe('asset manifest vs запаковані атласи', () => {
   it('є спрайти гравця для кожної зброї і кожного рівня броні', () => {
     for (const w of PLAYER_WEAPON_SPRITES)
       for (let d = 0; d < PLAYER_ARMOR_LEVELS; d++) expect(SPRITES[playerSpriteKey(w, d)]).toBeDefined();
+  });
+});
+
+describe('тайлсет vs запакований атлас', () => {
+  it('усі кадри CAVE_TILESET є в атласі', () => {
+    const json = JSON.parse(readFileSync(`public/assets/atlases/${CAVE_TILESET.atlas}.json`, 'utf8')) as { frames: Record<string, unknown> };
+    const t = CAVE_TILESET;
+    const used = [
+      ...Object.values(t.solid).flat(),
+      ...(t.decor ?? []).flatMap((d) => d.pieces),
+      ...(t.plank ? [...t.plank.left, ...t.plank.mid, ...t.plank.right] : []),
+    ].map((p) => p.frame);
+    used.push(...(t.scaffold?.frames ?? []));
+    const missing = used.filter((f) => !(f in json.frames));
+    expect(missing).toEqual([]);
   });
 });

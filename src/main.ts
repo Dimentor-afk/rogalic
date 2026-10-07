@@ -5,7 +5,7 @@ import { BootScene } from './scenes/BootScene';
 import { PreloadScene } from './scenes/PreloadScene';
 import { TestCaveScene } from './scenes/TestCaveScene';
 
-new Phaser.Game({
+const game = new Phaser.Game({
   type: Phaser.AUTO,
   parent: 'game',
   width: GAME.width,
@@ -22,3 +22,6 @@ new Phaser.Game({
   input: { gamepad: true },
   scene: [BootScene, PreloadScene, TestCaveScene, AssetGalleryScene],
 });
+
+// Лише в dev-режимі: доступ до гри з консолі браузера / автотестів (window.__game.scene.getScene('TestCave')).
+if (import.meta.env.DEV) (window as unknown as { __game: Phaser.Game }).__game = game;
