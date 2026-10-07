@@ -2,7 +2,7 @@
  * Реєстрація анімацій Phaser з маніфесту. Викликається один раз після завантаження атласів.
  */
 import Phaser from 'phaser';
-import { SPRITES } from '../../config/assets';
+import { FX, SPRITES } from '../../config/assets';
 import { animKey, selectFrames, type AnimName } from './manifest';
 
 /** Повертає список проблем (відсутні атласи/кадри), щоб показати їх у дебаг-оверлеї. */
@@ -36,6 +36,22 @@ export function registerAnimations(scene: Phaser.Scene): string[] {
         repeat: a.loop ? -1 : 0,
       });
     }
+  }
+
+  for (const [name, fx] of Object.entries(FX)) {
+    const key = `fx:${name}`;
+    if (scene.anims.exists(key) || !scene.textures.exists(fx.atlas)) continue;
+    let names = frameCache.get(fx.atlas);
+    if (!names) {
+      names = scene.textures.get(fx.atlas).getFrameNames();
+      frameCache.set(fx.atlas, names);
+    }
+    const frames = selectFrames(names, fx.prefix);
+    if (frames.length === 0) {
+      problems.push(`fx ${name}: немає кадрів "${fx.prefix}*"`);
+      continue;
+    }
+    scene.anims.create({ key, frames: frames.map((frame) => ({ key: fx.atlas, frame })), frameRate: fx.fps, repeat: 0 });
   }
 
   for (const p of problems) console.warn('[assets]', p);

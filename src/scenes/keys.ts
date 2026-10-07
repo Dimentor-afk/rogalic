@@ -4,4 +4,5 @@ export const SCENES = {
   preload: 'Preload',
   testCave: 'TestCave',
   gallery: 'AssetGallery',
+  hud: 'Hud',
 } as const;

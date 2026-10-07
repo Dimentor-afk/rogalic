@@ -24,12 +24,16 @@ export interface BodyDef {
   w: number;
   h: number;
   bottomPad?: number;
+  /** Зсув центру хітбокса від центру кадру по X (для персонажів, намальованих не по центру). */
+  offsetX?: number;
 }
 
 export interface SpriteDef {
   atlas: string;
   body: BodyDef;
   anims: Partial<Record<AnimName, AnimDef>>;
+  /** Спрайт намальований обличчям вліво (більшість паків — вправо). */
+  facesLeft?: boolean;
 }
 
 export type SpriteManifest = Record<string, SpriteDef>;
@@ -52,10 +56,14 @@ export function selectFrames(frameNames: readonly string[], prefix: string): str
     .sort((a, b) => trailingNumber(a) - trailingNumber(b));
 }
 
-/** Зсув хітбокса відносно лівого верхнього кута кадру frameW×frameH. */
-export function bodyOffset(body: BodyDef, frameW: number, frameH: number): { x: number; y: number } {
+/**
+ * Зсув хітбокса відносно лівого верхнього кута кадру frameW×frameH.
+ * mirrored — спрайт віддзеркалений (flipX): горизонтальний зсув offsetX теж дзеркалиться.
+ */
+export function bodyOffset(body: BodyDef, frameW: number, frameH: number, mirrored = false): { x: number; y: number } {
+  const shift = (body.offsetX ?? 0) * (mirrored ? -1 : 1);
   return {
-    x: Math.round((frameW - body.w) / 2),
+    x: Math.round((frameW - body.w) / 2 + shift),
     y: frameH - (body.bottomPad ?? 0) - body.h,
   };
 }

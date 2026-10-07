@@ -2,7 +2,9 @@
   "atlases": [
     "player",
     "cave",
-    "enemies"
+    "enemies",
+    "fx",
+    "props"
   ],
   "images": [
     "backgrounds/cave_1.png",

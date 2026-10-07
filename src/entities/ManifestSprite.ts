@@ -9,7 +9,7 @@ import { animKey, bodyOffset, type AnimName, type SpriteDef } from '../core/asse
 export class ManifestSprite extends Phaser.Physics.Arcade.Sprite {
   declare body: Phaser.Physics.Arcade.Body;
   protected spriteKey: string;
-  protected def: SpriteDef;
+  protected spriteDef: SpriteDef;
   /** Остання анімація, яку просили програти (навіть якщо її немає і спрацював fallback). */
   protected currentAnim: AnimName | null = null;
 
@@ -17,7 +17,7 @@ export class ManifestSprite extends Phaser.Physics.Arcade.Sprite {
     const def = ManifestSprite.lookup(spriteKey);
     super(scene, x, y, def.atlas);
     this.spriteKey = spriteKey;
-    this.def = def;
+    this.spriteDef = def;
     scene.add.existing(this);
     scene.physics.add.existing(this);
     // Початок координат — низ по центру: x,y спрайта = точка між ногами.
@@ -34,6 +34,19 @@ export class ManifestSprite extends Phaser.Physics.Arcade.Sprite {
 
   get key(): string {
     return this.spriteKey;
+  }
+
+  /** Повернути обличчям у бік dir (враховує спрайти, намальовані обличчям вліво). */
+  setFacing(dir: 1 | -1): this {
+    return this.setFlipX(this.spriteDef.facesLeft ? dir > 0 : dir < 0);
+  }
+
+  /** Дзеркалимо і зсув хітбокса (для персонажів, намальованих не по центру кадру). */
+  override setFlipX(value: boolean): this {
+    if (value === this.flipX) return this;
+    super.setFlipX(value);
+    if (this.body) this.applyBody();
+    return this;
   }
 
   hasAnim(anim: AnimName): boolean {
@@ -68,7 +81,7 @@ export class ManifestSprite extends Phaser.Physics.Arcade.Sprite {
   setSpriteKey(spriteKey: string): void {
     if (spriteKey === this.spriteKey) return;
     const progress = this.anims.isPlaying ? this.anims.getProgress() : 0;
-    this.def = ManifestSprite.lookup(spriteKey);
+    this.spriteDef = ManifestSprite.lookup(spriteKey);
     this.spriteKey = spriteKey;
     this.applyBody();
     if (this.currentAnim && this.playAnim(this.currentAnim, false)) {
@@ -79,18 +92,18 @@ export class ManifestSprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   private showFirstFrame(): void {
-    const firstAnim = Object.keys(this.def.anims)[0];
+    const firstAnim = Object.keys(this.spriteDef.anims)[0];
     const a = firstAnim ? this.scene.anims.get(animKey(this.spriteKey, firstAnim)) : undefined;
     const frame = a?.frames[0]?.frame.name;
     // жодної анімації не знайдено — показуємо вбудовану текстуру-заглушку Phaser, а не весь атлас
-    if (frame) this.setTexture(this.def.atlas, frame);
+    if (frame) this.setTexture(this.spriteDef.atlas, frame);
     else this.setTexture('__MISSING');
   }
 
   private applyBody(): void {
-    const b = this.def.body;
+    const b = this.spriteDef.body;
     this.body.setSize(b.w, b.h, false);
-    const off = bodyOffset(b, this.width, this.height);
+    const off = bodyOffset(b, this.width, this.height, this.flipX);
     this.body.setOffset(off.x, off.y);
   }
 }

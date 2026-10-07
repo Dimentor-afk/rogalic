@@ -7,9 +7,9 @@
  */
 export function frameName(template: string, groups: readonly string[] = [], i?: number): string {
   let s = template.replace(/\$(\d)/g, (_, n: string) => {
-    const g = groups[Number(n)];
-    if (g === undefined) throw new Error(`Шаблон "${template}": немає групи $${n}`);
-    return g;
+    if (Number(n) >= groups.length) throw new Error(`Шаблон "${template}": немає групи $${n}`);
+    // необов'язкова група регулярки, що не збіглася, — порожній рядок
+    return groups[Number(n)] ?? '';
   });
   if (i !== undefined) s = s.replace(/\{i\}/g, String(i));
   return s.toLowerCase().replace(/\s+/g, '_');

@@ -1,12 +1,21 @@
 {
   "srcRoot": "assets-src",
   "outRoot": "public/assets",
-  "maxWidth": 1024,
+  "maxWidth": 2048,
   "padding": 2,
   "packs": {
     "roguelike": "Roguelike Dungeon - Asset Bundle",
     "caves": "PixelFantasy_Caves_1.0",
-    "dummy": "Training Dummy 2D Pixel Art"
+    "dummy": "Training Dummy 2D Pixel Art",
+    "golems": "Golems_Free_Version",
+    "flydemon": "Flying Demon 2D Pixel Art",
+    "cat": "FREE_Cat 2D Pixel Art",
+    "spider": "TheForest_GiantSpider_v2",
+    "tiny": "Tiny RPG Character Asset Pack 02 v1.01-Free Demon_A&Blood Monster_A",
+    "archdemon": "DuskBorne-ArchDemon",
+    "blacksmith": "FREE - Blacksmith 2D Pixel Art",
+    "fx": "Super Pixel Effects Gigapack (Free Version) v2.9.0",
+    "magic": "Foozle_2DE0001_Pixel_Magic_Effects"
   },
   "atlases": {
     "player": {
@@ -298,6 +307,539 @@
           "frameWidth": 80,
           "frameHeight": 48,
           "name": "dummy/death/{i}"
+        },
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Sprites/Monsters",
+          "scale": 0.5,
+          "match": "^(Goblin|Skeleton|Slime)/Variant(\\d)/[A-Za-z]+_(Walk|Death)_(\\d+)\\.png$",
+          "name": "$1$2/$3/$4"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Blue/White_Swoosh_VFX/Golem_1_idle.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_blue/idle/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Blue/White_Swoosh_VFX/Golem_1_walk.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_blue/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Blue/White_Swoosh_VFX/Golem_1_attack.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_blue/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Blue/White_Swoosh_VFX/Golem_1_hurt.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_blue/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Blue/White_Swoosh_VFX/Golem_1_die.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_blue/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Orange/White_Swoosh_VFX/Golem_1_idle.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_orange/idle/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Orange/White_Swoosh_VFX/Golem_1_walk.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_orange/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Orange/White_Swoosh_VFX/Golem_1_attack.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_orange/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Orange/White_Swoosh_VFX/Golem_1_hurt.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_orange/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "golems",
+          "file": "Orange/White_Swoosh_VFX/Golem_1_die.png",
+          "frameWidth": 90,
+          "frameHeight": 64,
+          "name": "golem_orange/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "flydemon",
+          "file": "Sprites/without_outline/IDLE.png",
+          "frameWidth": 79,
+          "frameHeight": 69,
+          "name": "flydemon/idle/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "flydemon",
+          "file": "Sprites/without_outline/FLYING.png",
+          "frameWidth": 79,
+          "frameHeight": 69,
+          "name": "flydemon/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "flydemon",
+          "file": "Sprites/without_outline/ATTACK.png",
+          "frameWidth": 79,
+          "frameHeight": 69,
+          "name": "flydemon/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "flydemon",
+          "file": "Sprites/without_outline/HURT.png",
+          "frameWidth": 79,
+          "frameHeight": 69,
+          "name": "flydemon/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "flydemon",
+          "file": "Sprites/without_outline/DEATH.png",
+          "frameWidth": 79,
+          "frameHeight": 69,
+          "name": "flydemon/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "flydemon",
+          "file": "Sprites/projectile.png",
+          "frameWidth": 48,
+          "frameHeight": 32,
+          "name": "flydemon/projectile/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "cat",
+          "file": "Sprites/IDLE.png",
+          "frameWidth": 80,
+          "frameHeight": 64,
+          "name": "cat/idle/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "cat",
+          "file": "Sprites/WALK.png",
+          "frameWidth": 80,
+          "frameHeight": 64,
+          "name": "cat/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "cat",
+          "file": "Sprites/RUN.png",
+          "frameWidth": 80,
+          "frameHeight": 64,
+          "name": "cat/run/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "cat",
+          "file": "Sprites/JUMP.png",
+          "frameWidth": 80,
+          "frameHeight": 64,
+          "name": "cat/jump/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "cat",
+          "file": "Sprites/ATTACK 1.png",
+          "frameWidth": 80,
+          "frameHeight": 64,
+          "name": "cat/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "cat",
+          "file": "Sprites/HURT.png",
+          "frameWidth": 80,
+          "frameHeight": 64,
+          "name": "cat/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BlackSpider_walk.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_black/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BlackSpider_attack.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_black/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BlackSpider_hurt.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_black/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BlackSpider_death.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_black/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BlackSpider_sleep.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_black/sleep/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "PurpleSpider-walk.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_purple/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "PurpleSpider_attack.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_purple/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "PurpleSpider_hurt.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_purple/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "PurpleSpider_death.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_purple/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "PurpleSpider_sleep.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_purple/sleep/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Demon_A/Demon_A/Demon_A_Idle.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "imp/idle/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Demon_A/Demon_A/Demon_A_Walk.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "imp/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Demon_A/Demon_A/Demon_A_Attack01.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "imp/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Demon_A/Demon_A/Demon_A_Attack02.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "imp/attack2/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Demon_A/Demon_A/Demon_A_Hurt.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "imp/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Demon_A/Demon_A/Demon_A_Death.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "imp/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Blood Monster_A/Blood Monster_A/Blood Monster_A_Idle.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "bloodling/idle/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Blood Monster_A/Blood Monster_A/Blood Monster_A_Walk.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "bloodling/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Blood Monster_A/Blood Monster_A/Blood Monster_A_Attack01.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "bloodling/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Blood Monster_A/Blood Monster_A/Blood Monster_A_Attack02.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "bloodling/attack2/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Blood Monster_A/Blood Monster_A/Blood Monster_A_Hurt.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "bloodling/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "tiny",
+          "file": "Characters(100x100 split)/Blood Monster_A/Blood Monster_A/Blood Monster_A_Death.png",
+          "frameWidth": 100,
+          "frameHeight": 100,
+          "name": "bloodling/death/{i}"
+        }
+      ]
+    },
+    "fx": {
+      "scale": 1,
+      "trim": true,
+      "sources": [
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Impacts/symmetrical_impact_001",
+          "match": "^symmetrical_impact_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/impact/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Impacts/symmetrical_impact_003",
+          "match": "^symmetrical_impact_003_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/impact_crit/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Impacts/directional_impact_003",
+          "match": "^directional_impact_003_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/parry/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Smoke Bursts/symmetrical_smoke_burst_001",
+          "match": "^symmetrical_smoke_burst_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/smoke/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Magic Bursts/directional_coin_burst_001",
+          "match": "^directional_coin_burst_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/coins/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Magic Bursts/round_sparkle_burst_001",
+          "match": "^round_sparkle_burst_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/sparkle/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Magic Bursts/round_firework_burst_001",
+          "match": "^round_firework_burst_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/firework/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Symbols/symbol_alert_001",
+          "match": "^symbol_alert_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/alert/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Splatters/burst_splatter_001",
+          "match": "^burst_splatter_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/splatter/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Explosions/symmetrical_explosion_001",
+          "match": "^symmetrical_explosion_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/explosion/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "fx",
+          "dir": "PNG/Fantasy Spells/spell_heal_001",
+          "match": "^spell_heal_001_small_[a-z]+/frame(\\d+)\\.png$",
+          "name": "fx/heal/$1"
+        }
+      ]
+    },
+    "props": {
+      "scale": 0.5,
+      "trim": true,
+      "sources": [
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "HUD",
+          "match": "^(HP|Defence)/Value/[A-Za-z]+_Value_(\\d)\\.png$",
+          "name": "hud/$1_value/$2"
+        },
+        {
+          "kind": "cells",
+          "pack": "roguelike",
+          "file": "HUD/HP/Value/HP_Value_5.png",
+          "cell": 6,
+          "name": "hud/heart_full/{i}",
+          "rects": [
+            [6, 18, 5, 5]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "roguelike",
+          "file": "HUD/HP/Value/HP_Value_0.png",
+          "cell": 6,
+          "name": "hud/heart_empty/{i}",
+          "rects": [
+            [6, 18, 5, 5]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "roguelike",
+          "file": "HUD/Defence/Value/Defence_Value_5.png",
+          "cell": 6,
+          "name": "hud/shield_full/{i}",
+          "rects": [
+            [6, 17, 5, 6]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "roguelike",
+          "file": "HUD/Defence/Value/Defence_Value_0.png",
+          "cell": 6,
+          "name": "hud/shield_empty/{i}",
+          "rects": [
+            [6, 17, 5, 6]
+          ]
+        },
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Items",
+          "match": "^(Axe|Defence|HP|Scepter|Special)/[A-Za-z]+_(\\d)\\.png$",
+          "name": "item/$1/$2"
+        },
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Props",
+          "match": "^Barrel_(\\d)\\.png$",
+          "name": "barrel/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Props/Doors",
+          "match": "^([A-Za-z ]+)/[A-Za-z]+_Close_(\\d)\\.png$",
+          "name": "door/$1/closed/$2"
+        },
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Props/Doors",
+          "match": "^([A-Za-z ]+)/[A-Za-z]+_Open(?:_(\\d))?\\.png$",
+          "name": "door/$1/open/0$2"
+        },
+        {
+          "kind": "strip",
+          "pack": "blacksmith",
+          "file": "Sprites/BLACKSMITH.png",
+          "frameWidth": 96,
+          "frameHeight": 96,
+          "name": "blacksmith/idle/{i}",
+          "scale": 1
         }
       ]
     }
