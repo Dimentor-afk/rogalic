@@ -1,0 +1,217 @@
+{
+  "srcRoot": "assets-src",
+  "outRoot": "public/assets",
+  "maxWidth": 1024,
+  "padding": 2,
+  "packs": {
+    "roguelike": "Roguelike Dungeon - Asset Bundle",
+    "caves": "PixelFantasy_Caves_1.0",
+    "dummy": "Training Dummy 2D Pixel Art"
+  },
+  "atlases": {
+    "player": {
+      "scale": 0.5,
+      "trim": true,
+      "sources": [
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Sprites/Player",
+          "match": "^(Sword|Axe|Scepter)/Defence(\\d)/Player_(Idle|Walk|Attack)_[A-Za-z]+_Defence\\d_(\\d+)\\.png$",
+          "name": "player/$1/d$2/$3/$4"
+        },
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Sprites/Player",
+          "match": "^(Sword|Axe|Scepter)/Player_Death_[A-Za-z]+_(\\d+)\\.png$",
+          "name": "player/$1/death/$2"
+        },
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Sprites/Player",
+          "match": "^Special/Player_(Idle|Walk|Attack|Death)_Special_(\\d+)\\.png$",
+          "name": "player/special/$1/$2"
+        },
+        {
+          "kind": "frames",
+          "pack": "roguelike",
+          "dir": "Sprites/Player",
+          "match": "^Scepter/Projectile/Player_(Blast|Projectile)_(\\d+)\\.png$",
+          "name": "fx/scepter_$1/$2"
+        }
+      ]
+    },
+    "cave": {
+      "scale": 1,
+      "trim": false,
+      "extrude": 1,
+      "sources": [
+        {
+          "kind": "cells",
+          "pack": "caves",
+          "file": "mainlev_build.png",
+          "cell": 16,
+          "name": "cave/fill/{i}",
+          "rects": [
+            [6, 44, 1, 1],
+            [8, 44, 1, 1],
+            [10, 44, 1, 1],
+            [12, 44, 1, 1],
+            [6, 46, 1, 1],
+            [8, 46, 1, 1],
+            [10, 46, 1, 1],
+            [12, 46, 1, 1],
+            [6, 48, 1, 1],
+            [8, 48, 1, 1],
+            [10, 48, 1, 1],
+            [12, 48, 1, 1],
+            [6, 50, 1, 1],
+            [8, 50, 1, 1],
+            [10, 50, 1, 1],
+            [12, 50, 1, 1]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "caves",
+          "file": "mainlev_build.png",
+          "cell": 16,
+          "name": "cave/top/{i}",
+          "rects": [
+            [6, 39, 1, 2],
+            [7, 39, 1, 2],
+            [9, 39, 1, 2],
+            [11, 39, 1, 2],
+            [13, 39, 1, 2],
+            [14, 39, 1, 2],
+            [16, 39, 1, 2],
+            [17, 39, 1, 2],
+            [19, 39, 1, 2],
+            [21, 39, 1, 2],
+            [23, 39, 1, 2],
+            [24, 39, 1, 2]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "caves",
+          "file": "mainlev_build.png",
+          "cell": 16,
+          "name": "cave/bottom/{i}",
+          "rects": [
+            [6, 58, 1, 2],
+            [7, 58, 1, 2],
+            [9, 58, 1, 2],
+            [11, 58, 1, 2],
+            [13, 58, 1, 2],
+            [14, 58, 1, 2],
+            [16, 58, 1, 2],
+            [17, 58, 1, 2],
+            [19, 58, 1, 2],
+            [21, 58, 1, 2],
+            [23, 58, 1, 2],
+            [24, 58, 1, 2]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "caves",
+          "file": "mainlev_build.png",
+          "cell": 16,
+          "name": "cave/wall_r/{i}",
+          "rects": [
+            [6, 39, 1, 2],
+            [7, 39, 1, 2],
+            [9, 39, 1, 2],
+            [11, 39, 1, 2],
+            [13, 39, 1, 2],
+            [14, 39, 1, 2],
+            [16, 39, 1, 2],
+            [17, 39, 1, 2],
+            [19, 39, 1, 2],
+            [21, 39, 1, 2],
+            [23, 39, 1, 2],
+            [24, 39, 1, 2]
+          ],
+          "rotate": 90
+        },
+        {
+          "kind": "cells",
+          "pack": "caves",
+          "file": "mainlev_build.png",
+          "cell": 16,
+          "name": "cave/wall_l/{i}",
+          "rects": [
+            [6, 39, 1, 2],
+            [7, 39, 1, 2],
+            [9, 39, 1, 2],
+            [11, 39, 1, 2],
+            [13, 39, 1, 2],
+            [14, 39, 1, 2],
+            [16, 39, 1, 2],
+            [17, 39, 1, 2],
+            [19, 39, 1, 2],
+            [21, 39, 1, 2],
+            [23, 39, 1, 2],
+            [24, 39, 1, 2]
+          ],
+          "rotate": 270
+        }
+      ]
+    },
+    "enemies": {
+      "scale": 1,
+      "trim": true,
+      "sources": [
+        {
+          "kind": "strip",
+          "pack": "dummy",
+          "file": "Sprites/IDLE.png",
+          "frameWidth": 80,
+          "frameHeight": 48,
+          "name": "dummy/idle/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "dummy",
+          "file": "Sprites/HIT.png",
+          "frameWidth": 80,
+          "frameHeight": 48,
+          "name": "dummy/hit/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "dummy",
+          "file": "Sprites/BREAKING.png",
+          "frameWidth": 80,
+          "frameHeight": 48,
+          "name": "dummy/death/{i}"
+        }
+      ]
+    }
+  },
+  "copy": [
+    {
+      "pack": "caves",
+      "file": "background1.png",
+      "to": "backgrounds/cave_1.png"
+    },
+    {
+      "pack": "caves",
+      "file": "background2.png",
+      "to": "backgrounds/cave_2.png"
+    },
+    {
+      "pack": "caves",
+      "file": "background3.png",
+      "to": "backgrounds/cave_3.png"
+    },
+    {
+      "pack": "caves",
+      "file": "background4a.png",
+      "to": "backgrounds/cave_4.png"
+    }
+  ]
+}

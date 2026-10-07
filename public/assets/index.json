@@ -1,0 +1,13 @@
+{
+  "atlases": [
+    "player",
+    "cave",
+    "enemies"
+  ],
+  "images": [
+    "backgrounds/cave_1.png",
+    "backgrounds/cave_2.png",
+    "backgrounds/cave_3.png",
+    "backgrounds/cave_4.png"
+  ]
+}
