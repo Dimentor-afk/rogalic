@@ -231,8 +231,8 @@ export const BOSSES: Record<string, BossDef> = {
   },
   skeletonKing: {
     id: 'skeletonKing',
-    scatter: { label: 'БАНКІР', color: '#c8c8d8' },
-    name: 'Кістяний Банкір',
+    scatter: { label: 'СМЕРТЬ', color: '#c8c8d8' },
+    name: 'Смерть-Колектор',
     trophyDoor: 'skeleton_door',
     targetTimeMs: 75000,
     freeSpins: { name: 'Рідкі великі', multipliers: { 2: 6, 5: 6, 10: 4, 25: 1 } },
@@ -242,7 +242,7 @@ export const BOSSES: Record<string, BossDef> = {
     speed: 75,
     preferredDistance: 50,
     arena: 'arena_skeleton',
-    taunt: 'Твій кредитний рейтинг… кістяний.',
+    taunt: 'Від боргу не втечеш. Від мене — тим паче.',
     phases: [
       {
         hpAbove: 0.6,
