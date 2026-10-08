@@ -7,7 +7,8 @@
  *    кожну наступну кімнату ставимо у випадкову вільну сусідню клітинку (вбік частіше, ніж вгору/вниз);
  *    глухий кут → відкат і інший напрямок.
  * 3. Виходи кожної кімнати = напрямки до сусідів по графу. Шаблон обираємо серед тих, у кого
- *    набір виходів ⊇ потрібних (з урахуванням дзеркальної копії шаблону). Зайві виходи замуровуються.
+ *    набір виходів ⊇ потрібних (з урахуванням дзеркальної копії шаблону). Зайві виходи замуровуються,
+ *    а дошки підйому до верхнього виходу (^) зникають — кімната без нього лишається спокійною.
  * 4. Зшивання: шаблони мають стандартний розмір і стандартні позиції виходів, сусідні кімнати ділять
  *    стіну — отвори завжди збігаються.
  * 5. Заселення: слоти ворогів (вибір за вагами з урахуванням глибини), бочки, скриня, ліфт, мішок смерті.
@@ -90,6 +91,22 @@ export interface GenerateOptions {
 
 const DIRS: Record<Dir, [number, number]> = { L: [-1, 0], R: [1, 0], U: [0, -1], D: [0, 1] };
 
+/**
+ * Клітинки шаблону, що залежать від виходу: якому виходу належать і чим стають, коли його використано / ні.
+ * Вертикальні виходи на кордоні відкриваються дошками — і зістрибнути, і застрибнути.
+ */
+const EXIT_CELLS: Record<string, { exit: Dir; open: string; closed: string }> = {
+  L: { exit: 'L', open: '.', closed: '#' },
+  R: { exit: 'R', open: '.', closed: '#' },
+  U: { exit: 'U', open: '=', closed: '#' },
+  D: { exit: 'D', open: '=', closed: '#' },
+  l: { exit: 'L', open: '.', closed: '#' },
+  r: { exit: 'R', open: '.', closed: '#' },
+  u: { exit: 'U', open: '.', closed: '#' },
+  d: { exit: 'D', open: '.', closed: '#' },
+  '^': { exit: 'U', open: '=', closed: '.' },
+};
+
 type Rng = () => number;
 
 // =================== 1. граф ===================
@@ -157,9 +174,9 @@ export function embedGraph(rng: Rng, nodes: LevelNode[], gridW: number, gridH: n
     const node = order[i]!;
     let candidates: Cell[];
     if (node.parent === null) {
-      // старт — у випадковій клітинці лівої половини (щоб шлях мав куди йти)
+      // старт — у випадковій клітинці перших стовпців (шлях іде праворуч і рідше впирається в край)
       candidates = [];
-      for (let my = 0; my < gridH; my++) for (let mx = 0; mx < Math.ceil(gridW / 2); mx++) candidates.push({ mx, my });
+      for (let my = 0; my < gridH; my++) for (let mx = 0; mx < Math.min(LAYOUT.startColumns, gridW); mx++) candidates.push({ mx, my });
       candidates.sort(() => rng() - 0.5);
       candidates = candidates.slice(0, 4);
     } else {
@@ -272,7 +289,7 @@ function tryGenerate(rng: Rng, opts: GenerateOptions, attempt: number): DungeonL
     };
   });
 
-  // копіюємо шаблони; маркери виходів і «умовну скелю» поки що робимо скелею
+  // копіюємо шаблони; клітинки виходів поки що ставимо «закритими»
   const conditional: { x: number; y: number; ch: string; room: number }[] = [];
   rooms.forEach((r, ri) => {
     const rows = picks[ri]!.tpl.rows;
@@ -281,10 +298,11 @@ function tryGenerate(rng: Rng, opts: GenerateOptions, attempt: number): DungeonL
         const ch = rows[y]![x]!;
         const gx = r.x + x;
         const gy = r.y + y;
-        if ('LRUDlrud'.includes(ch)) {
+        const cell = EXIT_CELLS[ch];
+        if (cell) {
           // спільні стіни сусідів збігаються: обидві кімнати пишуть сюди скелю, отвір прорубаємо нижче
           conditional.push({ x: gx, y: gy, ch, room: ri });
-          chars[gy]![gx] = '#';
+          chars[gy]![gx] = cell.closed;
         } else {
           chars[gy]![gx] = ch;
         }
@@ -292,16 +310,11 @@ function tryGenerate(rng: Rng, opts: GenerateOptions, attempt: number): DungeonL
     }
   });
 
-  // відкриваємо використані виходи: бічні — порожнеча, вертикальні — дошки (зістрибнути/застрибнути)
-  rooms.forEach((r, ri) => {
-    for (const d of r.exits) {
-      for (const c of conditional) {
-        if (c.room !== ri || c.ch.toUpperCase() !== d) continue;
-        const isBorderVert = c.ch === 'D' || c.ch === 'U';
-        chars[c.y]![c.x] = isBorderVert ? '=' : '.';
-      }
-    }
-  });
+  // відкриваємо використані виходи
+  for (const c of conditional) {
+    const cell = EXIT_CELLS[c.ch]!;
+    if (rooms[c.room]!.exits.includes(cell.exit)) chars[c.y]![c.x] = cell.open;
+  }
 
   // =========== заселення ===========
   const grid = createGrid(gw, gh);

@@ -3,7 +3,11 @@ import { isOneWay, isSolid, parseRoom } from '../src/core/level/grid';
 import { autotile, buildMaskTable, distanceToEmpty, keyOf, maskOf, scaffoldCells, type TilesetDef } from '../src/core/level/autotile';
 import { hash32, mulberry32, weightedPick } from '../src/core/rng';
 import { ROOM_LEGEND } from '../src/config/legend';
+import { CAVE_TILESET } from '../src/config/tilesets';
+import { canStand, fall, reachableFrom, stateKey } from '../src/core/dungeon/reachability';
 import testCave from '../src/levels/test-cave.json';
+import hub from '../src/levels/hub.json';
+import arenas from '../src/levels/arenas.json';
 
 const TS: TilesetDef = {
   atlas: 't',
@@ -149,6 +153,19 @@ describe('autotile: дошки, риштування, декор', () => {
     expect(scaffoldCells(parseRoom(air, ROOM_LEGEND).grid, { ...WOOD.scaffold!, maxDepth: 2 })).toEqual([]);
   });
 
+  it('риштування: не під дошкою, що лежить над іншою дошкою, і не під короткою', () => {
+    const stacked = ['.......', '.=====.', '.......', '.=====.', '.......', '#######'];
+    const cells = scaffoldCells(parseRoom(stacked, ROOM_LEGEND).grid, WOOD.scaffold!);
+    // верхня дошка впирається в нижню — опори немає; нижня стоїть на скелі — є
+    expect(cells.every((c) => c.y > 3)).toBe(true);
+    expect(cells.length).toBeGreaterThan(0);
+    const short = ['.....', '.==..', '.....', '#####'];
+    expect(scaffoldCells(parseRoom(short, ROOM_LEGEND).grid, WOOD.scaffold!)).toEqual([]);
+    // у грі риштування лише під довгими дошками і невисоке
+    expect(CAVE_TILESET.scaffold!.minRun).toBeGreaterThanOrEqual(5);
+    expect(CAVE_TILESET.scaffold!.maxDepth).toBeLessThanOrEqual(6);
+  });
+
   it('сталактити: лише під клітинками з порожнечею знизу, з заданим шансом', () => {
     const rows = ['#'.repeat(40), '#'.repeat(40), '.'.repeat(40), '#'.repeat(40)];
     const g = parseRoom(rows, ROOM_LEGEND).grid;
@@ -170,6 +187,31 @@ describe('autotile: дошки, риштування, декор', () => {
     expect(ops.findIndex((o) => o.frame.startsWith('s'))).toBeLessThan(firstRock);
     expect(ops.findIndex((o) => o.frame.startsWith('p'))).toBeGreaterThan(firstRock);
   });
+});
+
+describe('ручні рівні під зріст лицаря (3 клітинки)', () => {
+  const levels = [{ id: 'hub', rows: hub.rows }, { id: 'test-cave', rows: testCave.rows }, ...arenas.map((a) => ({ id: a.id, rows: a.rows }))];
+
+  for (const lv of levels) {
+    it(`${lv.id}: з точки P досяжні всі об'єкти і можна стати на кожну дошку`, () => {
+      // для перевірки прохідності маркер об'єкта — просто порожня клітинка
+      const rows = lv.rows.map((r) => r.replace(/[^#=]/g, '.'));
+      const g = parseRoom(rows, ROOM_LEGEND).grid;
+      const marks: [string, number, number][] = [];
+      lv.rows.forEach((r, y) => [...r].forEach((ch, x) => ch !== '#' && ch !== '.' && ch !== '=' && marks.push([ch, x, y])));
+      const [, px, py] = marks.find((m) => m[0] === 'P')!;
+      const reach = reachableFrom(g, px, py);
+      for (const [ch, x, y] of marks) {
+        const land = canStand(g, x, y) ? [x, y] : fall(g, x, y);
+        expect(land && reach.has(stateKey(g, land[0]!, land[1]!)), `${lv.id}: ${ch} (${x}, ${y})`).toBe(true);
+      }
+      for (let y = 1; y < g.height; y++) {
+        for (let x = 0; x < g.width; x++) {
+          if (isOneWay(g, x, y)) expect(reach.has(stateKey(g, x, y - 1)), `${lv.id}: дошка (${x}, ${y})`).toBe(true);
+        }
+      }
+    });
+  }
 });
 
 describe('rng', () => {
