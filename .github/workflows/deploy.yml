@@ -48,6 +48,13 @@ jobs:
       name: github-pages
       url: ${{ steps.pages.outputs.page_url }}
     steps:
+      # Спроба увімкнути Pages автоматично (джерело — GitHub Actions). Стандартному токену це може бути
+      # заборонено — тоді крок не валить збірку, а Pages вмикається вручну в Settings → Pages.
+      - name: Увімкнути GitHub Pages (якщо дозволено токеном)
+        uses: actions/configure-pages@v5
+        continue-on-error: true
+        with:
+          enablement: true
       - name: Чи увімкнено GitHub Pages
         id: check
         env:
