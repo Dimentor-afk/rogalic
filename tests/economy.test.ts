@@ -3,12 +3,14 @@ import {
   buyUpgrade,
   buyWeapon,
   canExit,
+  defaultSettings,
   equipWeapon,
   finishRun,
   interestFor,
   loadGame,
   loadoutOf,
   newGame,
+  normalizeSettings,
   payDebt,
   saveGame,
   startRun,
@@ -145,6 +147,39 @@ describe('збереження', () => {
     expect(s.balance).toBe(10);
     expect(s.stats.spins).toBe(0);
     expect(s.upgrades.armor).toBe(0);
+  });
+});
+
+describe('налаштування (турбо, автоспін)', () => {
+  it('нова гра: турбо вимкнено, автоспін 10, стоп на заносі увімкнено', () => {
+    expect(newGame(1).settings).toEqual({ slotTurbo: false, autoSpins: 10, autoStopBigWin: true });
+    expect(defaultSettings()).toEqual(newGame(1).settings);
+  });
+
+  it('старий сейв без налаштувань завантажується зі значеннями за замовчуванням', () => {
+    const st = memoryStorage();
+    const old = { ...newGame(3), balance: 1234 } as Record<string, unknown>;
+    delete old.settings;
+    st.setItem('dodep.save', JSON.stringify(old));
+    const s = loadGame(st);
+    expect(s.balance).toBe(1234);
+    expect(s.settings).toEqual(defaultSettings());
+  });
+
+  it('вибір гравця зберігається і завантажується', () => {
+    const st = memoryStorage();
+    const s = newGame(4);
+    s.settings = { slotTurbo: true, autoSpins: 0, autoStopBigWin: false };
+    saveGame(st, s);
+    expect(loadGame(st).settings).toEqual({ slotTurbo: true, autoSpins: 0, autoStopBigWin: false });
+  });
+
+  it('зіпсовані поля замінюються за замовчуванням поштучно, правильні лишаються', () => {
+    expect(normalizeSettings({ slotTurbo: 'так', autoSpins: 50, autoStopBigWin: 1 })).toEqual({ slotTurbo: false, autoSpins: 50, autoStopBigWin: true });
+    expect(normalizeSettings({ slotTurbo: true, autoSpins: -5 })).toEqual({ slotTurbo: true, autoSpins: 10, autoStopBigWin: true });
+    expect(normalizeSettings({ autoSpins: 2.5 }).autoSpins).toBe(10);
+    expect(normalizeSettings(null)).toEqual(defaultSettings());
+    expect(normalizeSettings('турбо')).toEqual(defaultSettings());
   });
 });
 

@@ -3,6 +3,7 @@
  * Уся серія рахується логікою наперед (runFreeSpins) і одразу зараховується на баланс —
  * тут лише показ спін за спіном. Символи-множники додаються до загального множника серії,
  * і всі виграші серії множаться на нього (лічильник «ВИГРАШ СЕРІЇ» перераховується наживо).
+ * Темп: турбо з налаштувань слота (U) і «пробіл — ще швидше» складаються (див. freeSpinsTimeScale).
  */
 import Phaser from 'phaser';
 import { CAVE_PARALLAX } from '../config/game';
@@ -16,6 +17,8 @@ import { settleFreeSpins } from '../core/slot/session';
 import { SlotRng, runFreeSpins, unitsToChips, type FreeSpinSeries } from '../core/slot/slot';
 import { gameState, persist } from '../core/state/store';
 import { ReelView } from '../ui/slot/ReelView';
+import { SlotButton } from '../ui/slot/SlotButton';
+import { freeSpinsTimeScale } from '../ui/slot/tempo';
 import { COLORS, txt } from '../ui/text';
 import { allSlotSymbolLooks, type SlotReturn } from './SlotScene';
 import { SCENES } from './keys';
@@ -34,9 +37,12 @@ export class FreeSpinsScene extends Phaser.Scene {
   private fx!: Fx;
   private series!: FreeSpinSeries;
   private start!: FreeSpinsStart;
-  private turbo = false;
+  /** «Пробіл — ще швидше»: діє до кінця серії. */
+  private rush = false;
   private finished = false;
   private left = false;
+  private padPrev = { a: false, y: false };
+  private turboBtn!: SlotButton;
   private spinText!: Phaser.GameObjects.Text;
   private multText!: Phaser.GameObjects.Text;
   private totalText!: Phaser.GameObjects.Text;
@@ -48,9 +54,10 @@ export class FreeSpinsScene extends Phaser.Scene {
 
   create(data: FreeSpinsStart): void {
     this.start = data;
-    this.turbo = false;
+    this.rush = false;
     this.finished = false;
     this.left = false;
+    this.padPrev = { a: false, y: false };
     const s = gameState();
     const boss = BOSSES[data.bossId]!;
     createSlotPlaceholders(this, allSlotSymbolLooks());
@@ -87,12 +94,14 @@ export class FreeSpinsScene extends Phaser.Scene {
     txt(this, rx, 60, 'ВИГРАШ СЕРІЇ', 8, COLORS.dim);
     this.totalText = txt(this, rx, 72, '0', 16, COLORS.gold, { stroke: '#000000', strokeThickness: 2 });
     txt(this, rx, 96, `ставка ${data.bet}`, 8, COLORS.dim);
+    this.turboBtn = new SlotButton(this, rx + 26, 118, 52, 18, 'ТУРБО', () => this.toggleTurbo(), 'slotui/ico_turbo').setLit(s.settings.slotTurbo);
     this.msgText = txt(this, width / 2, 200, data.newBoss ? 'Новий бос у колекції!' : '', 8, COLORS.green, { align: 'center' }).setOrigin(0.5, 0);
-    txt(this, width / 2, height - 12, 'пробіл — швидше', 8, COLORS.dim).setOrigin(0.5, 0);
+    txt(this, width / 2, height - 12, 'Пробіл / клік — ще швидше    U турбо', 8, COLORS.dim).setOrigin(0.5, 0);
 
     const kb = this.input.keyboard!;
-    for (const k of ['SPACE', 'E', 'ENTER', 'J']) kb.on(`keydown-${k}`, () => (this.finished ? this.leave() : (this.turbo = true)));
-    this.input.on('pointerdown', () => (this.finished ? this.leave() : (this.turbo = true)));
+    for (const k of ['SPACE', 'E', 'ENTER', 'J']) kb.on(`keydown-${k}`, () => this.primary());
+    kb.on('keydown-U', () => this.toggleTurbo());
+    this.input.on('pointerdown', () => this.primary());
 
     this.cameras.main.fadeIn(400, 0, 0, 0);
     this.time.delayedCall(700, () => void this.play());
@@ -100,10 +109,35 @@ export class FreeSpinsScene extends Phaser.Scene {
 
   update(_t: number, delta: number): void {
     this.fx.update(delta);
+    // геймпад: A — як пробіл, Y — турбо
+    const pad = this.input.gamepad?.getPad(0);
+    if (!pad) return;
+    if (pad.A && !this.padPrev.a) this.primary();
+    if (pad.Y && !this.padPrev.y) this.toggleTurbo();
+    this.padPrev = { a: pad.A, y: pad.Y };
+  }
+
+  /** Пробіл / клік: під час серії — ще швидше, після — назад до автомата. */
+  private primary(): void {
+    if (this.finished) this.leave();
+    else this.rush = true;
+  }
+
+  private toggleTurbo(): void {
+    const st = gameState().settings;
+    st.slotTurbo = !st.slotTurbo;
+    persist();
+    sfx.play('click');
+    this.turboBtn.setLit(st.slotTurbo);
+  }
+
+  /** Множник тривалостей зараз (турбо можна перемкнути посеред серії). */
+  private timeScale(): number {
+    return freeSpinsTimeScale(gameState().settings.slotTurbo, this.rush);
   }
 
   private wait(ms: number): Promise<void> {
-    return new Promise((r) => this.time.delayedCall(this.turbo ? ms * 0.35 : ms, r));
+    return new Promise((r) => this.time.delayedCall(ms * this.timeScale(), r));
   }
 
   /** Показ серії: кожен спін → лінії → множники «летять» у лічильник → загальна сума перераховується. */
@@ -116,7 +150,7 @@ export class FreeSpinsScene extends Phaser.Scene {
     for (let i = 0; i < this.series.spins.length; i++) {
       const sp = this.series.spins[i]!;
       this.spinText.setText(`${i + 1} / ${this.series.spins.length}`);
-      await this.reels.spinTo(sp.grid, { fillerIds: fillers, nearMiss: false, baseMs: this.turbo ? 260 : 520, staggerMs: this.turbo ? 50 : 110 });
+      await this.reels.spinTo(sp.grid, { fillerIds: fillers, nearMiss: false, baseMs: 520 * this.timeScale(), staggerMs: 110 * this.timeScale() });
       if (sp.lineWins.length) {
         this.reels.highlight(sp.lineWins);
         units += sp.units;
@@ -156,7 +190,7 @@ export class FreeSpinsScene extends Phaser.Scene {
         x: this.multText.x,
         y: this.multText.y,
         scale: { from: 1.3, to: 0.7 },
-        duration: this.turbo ? 220 : 480,
+        duration: 480 * this.timeScale(),
         ease: 'Cubic.easeIn',
         onComplete: () => {
           t.destroy();
@@ -168,7 +202,7 @@ export class FreeSpinsScene extends Phaser.Scene {
 
   private countTo(from: number, to: number): void {
     const o = { v: from };
-    this.tweens.add({ targets: o, v: to, duration: 500, onUpdate: () => this.totalText.setText(`${Math.round(o.v)}`) });
+    this.tweens.add({ targets: o, v: to, duration: 500 * this.timeScale(), onUpdate: () => this.totalText.setText(`${Math.round(o.v)}`) });
   }
 
   private finish(): void {

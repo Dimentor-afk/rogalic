@@ -18,6 +18,8 @@ import { SLOT, SYMBOLS } from '../src/config/slot';
 import { BOSSES, BOSS_ORDER } from '../src/config/bosses';
 import { availableBosses, buyBonusCost, chargeBuyBonus, chargeSpin, recordBossWin, settleSpin } from '../src/core/slot/session';
 import { newGame } from '../src/core/state/GameState';
+import { AUTO_BIG_WIN_BETS, AUTO_COUNTS, autoCountIndex, autoSpinsToRun, autoStopReason, type AutoCheck } from '../src/ui/slot/autospin';
+import { NORMAL_TEMPO, TURBO_TEMPO, countUpMs, freeSpinsTimeScale, spinMs } from '../src/ui/slot/tempo';
 
 const pay = (id: string, n: number) => SYMBOLS.find((s) => s.id === id)!.pays![n - 3]!;
 /** Сітка з рядків (кожен рядок — 5 символів зліва направо). */
@@ -172,5 +174,60 @@ describe('сесія: баланс і статистика', () => {
     expect(recordBossWin(s, 'slimeKing')).toBe(false);
     expect(s.bosses).toEqual(['slimeKing']);
     expect(s.stats.bossWins).toBe(2);
+  });
+});
+
+describe('автоспін і турбо', () => {
+  /** Звичайний спін без подій: крутимо далі. */
+  const ok: AutoCheck = { win: 0, bet: 10, balance: 1000, bonus: false, curse: false, left: 5, stopOnBigWin: true };
+
+  it('варіанти кількості: 10 / 25 / 50 / 100 / ∞; невідома кількість → перший варіант', () => {
+    expect(AUTO_COUNTS).toEqual([10, 25, 50, 100, 0]);
+    expect(autoCountIndex(50)).toBe(2);
+    expect(autoCountIndex(0)).toBe(4);
+    expect(autoCountIndex(37)).toBe(0);
+    expect(autoSpinsToRun(25)).toBe(25);
+    expect(autoSpinsToRun(0)).toBe(Infinity);
+  });
+
+  it('звичайний спін — крутимо далі; ліміт вичерпано — стоп; ∞ не закінчується сам', () => {
+    expect(autoStopReason(ok)).toBeNull();
+    expect(autoStopReason({ ...ok, left: 0 })).toBe('done');
+    expect(autoStopReason({ ...ok, left: Infinity })).toBeNull();
+  });
+
+  it('бонуска і прокляття зупиняють завжди, навіть з вимкненим «стоп на заносі»', () => {
+    expect(autoStopReason({ ...ok, bonus: true, stopOnBigWin: false })).toBe('bonus');
+    expect(autoStopReason({ ...ok, curse: true, stopOnBigWin: false })).toBe('curse');
+    // бонуска важливіша за все інше на тому ж спіні
+    expect(autoStopReason({ ...ok, bonus: true, curse: true, win: 10 * AUTO_BIG_WIN_BETS, left: 0 })).toBe('bonus');
+  });
+
+  it('занос від x50 ставки зупиняє, лише якщо прапорець увімкнено', () => {
+    const big = { ...ok, win: ok.bet * AUTO_BIG_WIN_BETS };
+    expect(autoStopReason(big)).toBe('bigWin');
+    expect(autoStopReason({ ...big, win: big.win - 1 })).toBeNull();
+    expect(autoStopReason({ ...big, stopOnBigWin: false })).toBeNull();
+  });
+
+  it('баланс менший за ставку — стоп', () => {
+    expect(autoStopReason({ ...ok, balance: 9 })).toBe('noFunds');
+    expect(autoStopReason({ ...ok, balance: 10 })).toBeNull();
+  });
+
+  it('турбо: спін приблизно втричі коротший, near-miss і лічильник виграшу теж коротші', () => {
+    expect(spinMs(NORMAL_TEMPO) / spinMs(TURBO_TEMPO)).toBeGreaterThanOrEqual(2.5);
+    expect(TURBO_TEMPO.nearMissMs).toBeGreaterThan(0);
+    expect(TURBO_TEMPO.nearMissMs).toBeLessThan(NORMAL_TEMPO.nearMissMs);
+    expect(TURBO_TEMPO.autoPauseMs).toBeLessThan(NORMAL_TEMPO.autoPauseMs);
+    expect(countUpMs(TURBO_TEMPO, 500)).toBeLessThan(countUpMs(NORMAL_TEMPO, 500));
+    expect(countUpMs(NORMAL_TEMPO, 1e6)).toBe(NORMAL_TEMPO.countUpMaxMs);
+  });
+
+  it('фріспіни: турбо швидше за звичайний темп, а пробіл з турбо — ще швидше', () => {
+    expect(freeSpinsTimeScale(false, false)).toBe(1);
+    expect(freeSpinsTimeScale(true, false)).toBeLessThan(1);
+    expect(freeSpinsTimeScale(true, true)).toBeLessThan(freeSpinsTimeScale(true, false));
+    expect(freeSpinsTimeScale(false, true)).toBeLessThan(1);
   });
 });

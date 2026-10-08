@@ -2,7 +2,7 @@
  * ГЛОБАЛЬНИЙ СТАН ГРИ і всі операції з ним (чисті функції, без Phaser) + збереження в localStorage.
  *
  * Що зберігаємо: фішки на балансі, борг, прокачку, колекцію босів, мішок смерті, шкалу гаранту,
- * прокляття на наступний спуск, стан RNG слота, статистику.
+ * прокляття на наступний спуск, стан RNG слота, статистику і налаштування гравця.
  * Сцени не змінюють поля напряму — лише через функції нижче (їх легко тестувати).
  */
 import { ECONOMY, UPGRADES, UPGRADE_EFFECT, WEAPON_PRICES, type UpgradeId } from '../../config/economy';
@@ -36,6 +36,34 @@ export interface Stats {
   daysWithoutDodep: number;
 }
 
+/** Налаштування гравця (турбо, автоспін). Старі сейви їх не мають — loadGame підставляє значення за замовчуванням. */
+export interface Settings {
+  /** Турбо-режим слота: швидші барабани і паузи (лише показ — на результат спіна не впливає). */
+  slotTurbo: boolean;
+  /** Остання вибрана кількість автоспінів; 0 — без ліміту (∞). */
+  autoSpins: number;
+  /** Зупиняти автоспін на великому виграші («заносі»). */
+  autoStopBigWin: boolean;
+}
+
+export function defaultSettings(): Settings {
+  return { slotTurbo: false, autoSpins: 10, autoStopBigWin: true };
+}
+
+/** Налаштування зі сейва: поле відсутнє або зіпсоване → значення за замовчуванням (кожне поле окремо). */
+export function normalizeSettings(raw: unknown): Settings {
+  const d = defaultSettings();
+  if (!raw || typeof raw !== 'object') return d;
+  const r = raw as Record<string, unknown>;
+  const bool = (v: unknown, def: boolean) => (typeof v === 'boolean' ? v : def);
+  const count = r.autoSpins;
+  return {
+    slotTurbo: bool(r.slotTurbo, d.slotTurbo),
+    autoSpins: typeof count === 'number' && Number.isInteger(count) && count >= 0 ? count : d.autoSpins,
+    autoStopBigWin: bool(r.autoStopBigWin, d.autoStopBigWin),
+  };
+}
+
 export interface SaveData {
   version: number;
   balance: number;
@@ -59,6 +87,7 @@ export interface SaveData {
   spunSinceReturn: boolean;
   victory: boolean;
   stats: Stats;
+  settings: Settings;
 }
 
 export function newGame(seed = Date.now() >>> 0): SaveData {
@@ -94,6 +123,7 @@ export function newGame(seed = Date.now() >>> 0): SaveData {
       days: 0,
       daysWithoutDodep: 0,
     },
+    settings: defaultSettings(),
   };
 }
 
@@ -122,7 +152,13 @@ export function loadGame(storage: KeyValueStorage): SaveData {
     const data = JSON.parse(raw) as Partial<SaveData>;
     if (data.version !== SAVE_VERSION || typeof data.balance !== 'number') return newGame();
     const base = newGame(data.slotSeed);
-    return { ...base, ...data, upgrades: { ...base.upgrades, ...data.upgrades }, stats: { ...base.stats, ...data.stats } } as SaveData;
+    return {
+      ...base,
+      ...data,
+      upgrades: { ...base.upgrades, ...data.upgrades },
+      stats: { ...base.stats, ...data.stats },
+      settings: normalizeSettings(data.settings),
+    } as SaveData;
   } catch {
     return newGame();
   }
