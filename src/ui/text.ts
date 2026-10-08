@@ -34,9 +34,11 @@ export function txt(
 }
 
 /** Чекаємо, поки браузер завантажить шрифт (і латиницю, і кирилицю). */
-export function loadFonts(): Promise<unknown> {
+export function loadFonts(timeoutMs = 3000): Promise<unknown> {
   if (!('fonts' in document)) return Promise.resolve();
-  return Promise.all([document.fonts.load(`8px ${FONT_FAMILY}`, 'abc 123'), document.fonts.load(`8px ${FONT_FAMILY}`, 'Фішки ґїєі')]).catch(() => undefined);
+  const load = Promise.all([document.fonts.load(`8px ${FONT_FAMILY}`, 'abc 123'), document.fonts.load(`8px ${FONT_FAMILY}`, 'Фішки ґїєі')]).catch(() => undefined);
+  // повільна мережа не повинна блокувати старт: максимум timeoutMs, далі — запасний шрифт, поки догрузиться
+  return Promise.race([load, new Promise((r) => setTimeout(r, timeoutMs))]);
 }
 
 /**
