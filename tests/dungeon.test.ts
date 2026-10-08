@@ -1,13 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import rooms from '../src/levels/rooms.json';
 import { buildGraph, chooseTemplate, embedGraph, generateDungeon, mirrorTemplate, type RoomTemplate } from '../src/core/dungeon/generator';
-import { canStand, fall, reachableFrom, stateKey } from '../src/core/dungeon/reachability';
-import { EXIT_SLOTS, ROOM_SIZE } from '../src/config/dungeon';
-import { createGrid, type Grid } from '../src/core/level/grid';
+import { canStand, DEFAULT_MOVE_RULES, fall, reachableFrom, stateKey } from '../src/core/dungeon/reachability';
+import { EXIT_SLOTS, LAYOUT, ROOM_SIZE } from '../src/config/dungeon';
+import { createGrid, isOneWay, type Grid } from '../src/core/level/grid';
 import { mulberry32 } from '../src/core/rng';
 import { CURSES } from '../src/config/curses';
+import { ENEMIES } from '../src/config/enemies';
 
 const TEMPLATES = rooms as RoomTemplate[];
+
+/** Найбільше дошок (= і ^) в одному шаблоні: кімнати мають бути спокійними, без «драбин» з полиць. */
+const MAX_PLANKS_PER_ROOM = 20;
 
 /** Сітка з одного шаблону з УСІМА його виходами відкритими (поза кімнатою — скеля). */
 function templateGrid(t: RoomTemplate): { g: Grid; marks: Record<string, [number, number][]> } {
@@ -17,10 +21,22 @@ function templateGrid(t: RoomTemplate): { g: Grid; marks: Record<string, [number
     [...row].forEach((ch, x) => {
       (marks[ch] ??= []).push([x, y]);
       if (ch === '#') g.solid[y * g.width + x] = 1;
-      if (ch === '=' || ch === 'U' || ch === 'D') g.oneWay[y * g.width + x] = 1;
+      if (ch === '=' || ch === '^' || ch === 'U' || ch === 'D') g.oneWay[y * g.width + x] = 1;
     }),
   );
   return { g, marks };
+}
+
+/** Рядок клітинок: # скеля, = дошка, решта порожньо (для коротких тестових карт). */
+function asciiGrid(rows: string[]): Grid {
+  const g = createGrid(rows[0]!.length, rows.length);
+  rows.forEach((row, y) =>
+    [...row].forEach((ch, x) => {
+      if (ch === '#') g.solid[y * g.width + x] = 1;
+      if (ch === '=') g.oneWay[y * g.width + x] = 1;
+    }),
+  );
+  return g;
 }
 
 /** «Входи» шаблону: де опиняється гравець, коли заходить через кожен вихід. */
@@ -80,11 +96,76 @@ describe('шаблони кімнат', () => {
     });
   }
 
+  for (const t of TEMPLATES) {
+    it(`${t.id}: на кожну дошку можна стати, застрибнувши з підлоги кімнати`, () => {
+      const { g } = templateGrid(t);
+      for (const [from, [fx, fy]] of Object.entries(entries(t, g))) {
+        const reach = reachableFrom(g, fx, fy);
+        // рядок 0 і останній — дошки вертикальних виходів на кордоні, їх перевіряють сусідні кімнати
+        for (let y = 1; y < ROOM_SIZE.h - 1; y++) {
+          for (let x = 0; x < ROOM_SIZE.w; x++) {
+            if (!isOneWay(g, x, y)) continue;
+            expect(canStand(g, x, y - 1), `${t.id}: над дошкою (${x}, ${y}) не вміщається лицар`).toBe(true);
+            expect(reach.has(stateKey(g, x, y - 1)), `${t.id}: ${from} → дошка (${x}, ${y})`).toBe(true);
+          }
+        }
+      }
+    });
+  }
+
+  it(`у шаблоні не більше ${MAX_PLANKS_PER_ROOM} клітинок дощок, у бойових — 3–6 слотів наземних ворогів`, () => {
+    for (const t of TEMPLATES) {
+      const text = t.rows.join('');
+      const planks = [...text].filter((ch) => ch === '=' || ch === '^').length;
+      expect(planks, t.id).toBeLessThanOrEqual(MAX_PLANKS_PER_ROOM);
+      // дошки підйому ^ мають сенс лише з верхнім виходом
+      if (text.includes('^')) expect(t.exits.includes('U'), t.id).toBe(true);
+      const ground = [...text].filter((ch) => ch === 'e').length;
+      // вертикальний колодязь (лише U/D) — перехідна кімната, у ній ворогів менше
+      if (t.type === 'combat' && /[LR]/.test(t.exits)) {
+        expect(ground, t.id).toBeGreaterThanOrEqual(3);
+        expect(ground, t.id).toBeLessThanOrEqual(6);
+      }
+    }
+  });
+
   it('дзеркальна копія міняє L↔R і віддзеркалює рядки', () => {
     const t: RoomTemplate = { id: 'x', type: 'combat', exits: 'LU', rows: ['L.#', 'l..'] };
     const m = mirrorTemplate(t);
     expect(m.exits).toBe('RU');
     expect(m.rows).toEqual(['#.R', '..r']);
+  });
+});
+
+describe('модель руху (reachability)', () => {
+  it('прохід заввишки 2 клітинки лицарю (3) закритий, а низькому героєві (2) — ні', () => {
+    const g = asciiGrid(['##########', '#..####..#', '#........#', '#........#', '##########']);
+    const reach3 = reachableFrom(g, 1, 3);
+    expect(reach3.has(stateKey(g, 8, 3))).toBe(false);
+    const reach2 = reachableFrom(g, 1, 3, { ...DEFAULT_MOVE_RULES, bodyHeight: 2 });
+    expect(reach2.has(stateKey(g, 8, 3))).toBe(true);
+    expect(canStand(g, 4, 3)).toBe(false);
+    expect(canStand(g, 1, 3)).toBe(true);
+  });
+
+  it('стрибок: дошка на 3 рядки вище досяжна, на 4 — ні', () => {
+    // підлога — рядок 8, гравець стоїть у рядку 7
+    const room = (plankRow: number) =>
+      asciiGrid(Array.from({ length: 9 }, (_, y) => (y === 0 || y === 8 ? '#######' : y === plankRow ? '#..=..#' : '#.....#')));
+    const three = room(5);
+    expect(reachableFrom(three, 1, 7).has(stateKey(three, 3, 4))).toBe(true);
+    const four = room(4);
+    expect(canStand(four, 3, 3)).toBe(true);
+    expect(reachableFrom(four, 1, 7).has(stateKey(four, 3, 3))).toBe(false);
+  });
+
+  it('стрибок упирається головою в стелю з урахуванням зросту', () => {
+    // дошка на 2 рядки вище, але над нею лише 2 вільні клітинки — лицар там не вміщається
+    const low = asciiGrid(['#######', '#######', '#######', '#.....#', '#.....#', '#..=..#', '#.....#', '#######']);
+    expect(canStand(low, 3, 4)).toBe(false);
+    expect(reachableFrom(low, 1, 6).has(stateKey(low, 3, 4))).toBe(false);
+    const short = { ...DEFAULT_MOVE_RULES, bodyHeight: 2 };
+    expect(reachableFrom(low, 1, 6, short).has(stateKey(low, 3, 4))).toBe(true);
   });
 });
 
@@ -106,7 +187,7 @@ describe('граф і розкладка', () => {
   it('розкладка: кожна кімната в окремій клітинці, сусідні по графу — сусіди на сітці', () => {
     const rng = mulberry32(42);
     const nodes = buildGraph(rng, 3);
-    const cells = embedGraph(rng, nodes, 7, 5)!;
+    const cells = embedGraph(rng, nodes, LAYOUT.gridW, LAYOUT.gridH)!;
     expect(cells).not.toBeNull();
     expect(new Set(cells.map((c) => `${c.mx},${c.my}`)).size).toBe(nodes.length);
     for (const n of nodes) {
@@ -135,15 +216,74 @@ describe('generateDungeon', () => {
     expect(Array.from(a.grid.solid).join('') === Array.from(c.grid.solid).join('') && a.grid.width === c.grid.width).toBe(false);
   });
 
-  it('200 seed × глибини 1–6: генерується, має старт, ліфт і спуск, усе важливе досяжне', () => {
-    for (let depth = 1; depth <= 6; depth++) {
-      for (let seed = 1; seed <= 200; seed += depth) {
+  it('600 seed × глибини 1–7: генерується, має старт, ліфт, спуск і скриню', { timeout: 120_000 }, () => {
+    for (let depth = 1; depth <= 7; depth++) {
+      for (let seed = 1; seed <= 600; seed++) {
         const lvl = generateDungeon({ seed, depth, templates: TEMPLATES });
         const kinds = lvl.spawns.map((s) => s.kind);
         expect(kinds.filter((k) => k === 'player')).toHaveLength(1);
         expect(kinds).toContain('elevator');
         expect(kinds).toContain('descent');
         expect(kinds).toContain('chest');
+      }
+    }
+  });
+
+  it('лицар (3 клітинки заввишки) дістається з старту до кожної кімнати, скрині, бочки і наземного ворога', { timeout: 60_000 }, () => {
+    expect(DEFAULT_MOVE_RULES.bodyHeight).toBe(3);
+    for (let depth = 1; depth <= 7; depth++) {
+      for (let seed = depth; seed <= 600; seed += 7) {
+        const lvl = generateDungeon({ seed, depth, templates: TEMPLATES });
+        const g = lvl.grid;
+        const start = lvl.spawns.find((s) => s.kind === 'player')!;
+        const reach = reachableFrom(g, start.x, start.y);
+        const at = (x: number, y: number) => {
+          const land = canStand(g, x, y) ? [x, y] : fall(g, x, y);
+          return !!land && reach.has(stateKey(g, land[0]!, land[1]!));
+        };
+        for (const s of lvl.spawns) {
+          if (s.kind === 'door') continue; // двері стоять у самому отворі виходу
+          if (s.kind === 'enemy' && ENEMIES[s.enemyId!]?.flying) continue;
+          expect(at(s.x, s.y), `seed ${seed}, глибина ${depth}: ${s.kind} (${s.x}, ${s.y})`).toBe(true);
+        }
+        // у кожній кімнаті є досяжне місце
+        for (const r of lvl.rooms) {
+          let found = false;
+          for (let y = r.y + 1; y < r.y + ROOM_SIZE.h - 1 && !found; y++) {
+            for (let x = r.x + 1; x < r.x + ROOM_SIZE.w - 1 && !found; x++) found = reach.has(stateKey(g, x, y));
+          }
+          expect(found, `seed ${seed}, глибина ${depth}: кімната ${r.template}`).toBe(true);
+        }
+      }
+    }
+  });
+
+  it('вертикальні переходи між кімнатами рідкісні: здебільшого поверх іде вбік', () => {
+    let links = 0;
+    let vertical = 0;
+    for (let seed = 1; seed <= 200; seed++) {
+      const lvl = generateDungeon({ seed, depth: 1 + (seed % 7), templates: TEMPLATES });
+      for (const r of lvl.rooms) {
+        if (r.node.parent === null) continue;
+        links++;
+        if (lvl.rooms[r.node.parent]!.mx === r.mx) vertical++;
+      }
+    }
+    expect(vertical / links).toBeLessThan(0.3);
+  });
+
+  it('дошки підйому ^ з’являються лише в кімнатах з використаним верхнім виходом', () => {
+    for (let seed = 1; seed <= 60; seed++) {
+      const lvl = generateDungeon({ seed, depth: 3, templates: TEMPLATES });
+      for (const r of lvl.rooms) {
+        if (r.exits.includes('U')) continue;
+        const tpl = TEMPLATES.find((t) => t.id === r.template)!;
+        tpl.rows.forEach((row, y) =>
+          [...row].forEach((ch, x) => {
+            const gx = r.x + (r.mirrored ? ROOM_SIZE.w - 1 - x : x);
+            if (ch === '^') expect(isOneWay(lvl.grid, gx, r.y + y), `${r.template} (${x}, ${y})`).toBe(false);
+          }),
+        );
       }
     }
   });

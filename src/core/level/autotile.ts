@@ -9,7 +9,7 @@
  * 2. ЗАТЕМНЕННЯ — заповнення глибше в скелі темніше (BFS-відстань до порожнечі).
  * 3. ДЕКОР — рідкісні сталактити під стелею (з шансом, теж через хеш).
  * 4. ДЕРЕВО — дошки односторонніх платформ (лівий край / середина / правий край)
- *    і риштування під ними до найближчої опори.
+ *    і риштування під довшими дошками — лише якщо воно стоїть на скелі (не на іншій дошці).
  *
  * Порядок малювання: риштування → скеля → сталактити → дошки.
  * Модуль без Phaser — тестується в Vitest.
@@ -45,7 +45,7 @@ export interface ScaffoldDef {
   minRun: number;
   /** Довша за це дошка отримує дві опори (по краях). */
   doubleRun: number;
-  /** Максимальна висота опори в клітинках (немає землі ближче — опори нема). */
+  /** Максимальна висота опори в клітинках (немає скелі ближче — опори нема). */
   maxDepth: number;
 }
 
@@ -234,9 +234,22 @@ export interface ScaffoldCell {
 }
 
 /**
+ * Скільки порожніх клітинок під (x, y) до скелі. null — раніше трапилась дошка
+ * або скелі немає ближче за maxDepth (за межами сітки — теж не опора).
+ */
+function depthToRock(grid: Grid, x: number, y: number, maxDepth: number): number | null {
+  for (let depth = 0; depth < maxDepth; depth++) {
+    if (isSolid(grid, x, y + 1 + depth, false)) return depth;
+    if (isOneWay(grid, x, y + 1 + depth)) return null;
+  }
+  return null;
+}
+
+/**
  * Опори під дошками. Для кожного горизонтального відрізка дошок довжиною ≥ minRun ставимо
  * одну опору шириною 3 по центру (або дві по краях, якщо відрізок ≥ doubleRun).
- * Кожен стовпець опори йде вниз до першої твердої клітинки / іншої дошки; немає опори ближче за maxDepth — не малюємо.
+ * Опору ставимо, лише якщо всі три її стовпці дістають скелі не глибше maxDepth і не впираються
+ * в іншу дошку: так немає «драбин» з риштування і опор, що висять у повітрі.
  */
 export function scaffoldCells(grid: Grid, def: ScaffoldDef): ScaffoldCell[] {
   const out: ScaffoldCell[] = [];
@@ -253,17 +266,12 @@ export function scaffoldCells(grid: Grid, def: ScaffoldDef): ScaffoldCell[] {
       if (len < def.minRun) continue;
       const starts = len >= def.doubleRun ? [x0, x0 + len - 3] : [x0 + Math.floor((len - 3) / 2)];
       for (const sx of starts) {
-        for (let col = 0; col < 3; col++) {
-          const cx = sx + col;
-          // рахуємо порожні клітинки під дошкою (за межами сітки — не опора, тому outside=false)
-          let depth = 0;
-          while (depth < def.maxDepth && !isSolid(grid, cx, y + 1 + depth, false) && !isOneWay(grid, cx, y + 1 + depth)) depth++;
-          // depth = 0 — дошка лежить на скелі; depth = maxDepth — опори не знайшли
-          if (depth === 0 || depth >= def.maxDepth) continue;
-          for (let k = 0; k < depth; k++) {
-            out.push({ frame: def.frames[(k % 3) * 3 + col]!, x: cx, y: y + 1 + k });
-          }
-        }
+        const depths = [0, 1, 2].map((col) => depthToRock(grid, sx + col, y, def.maxDepth));
+        if (depths.some((d) => d === null)) continue;
+        depths.forEach((depth, col) => {
+          // depth = 0 — цей стовпець дошки лежить просто на скелі, малювати нічого
+          for (let k = 0; k < depth!; k++) out.push({ frame: def.frames[(k % 3) * 3 + col]!, x: sx + col, y: y + 1 + k });
+        });
       }
     }
   }

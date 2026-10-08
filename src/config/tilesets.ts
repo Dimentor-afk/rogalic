@@ -3,7 +3,7 @@
  * Кадри нарізає tools/pack.config.json з PixelFantasy Caves (mainlev_build.png):
  *  - сіра скеля з холодним обідком — основна земля, стіни, стеля;
  *  - коричневі шматки — лише декор (сталактити під стелею);
- *  - дошки і риштування — односторонні платформи.
+ *  - дошки — односторонні платформи, риштування — опори під довшими з них.
  */
 import type { Piece, TilesetDef } from '../core/level/autotile';
 
@@ -48,10 +48,11 @@ export const CAVE_TILESET: TilesetDef = {
     mid: frames('cave/plank_m/', 9),
     right: frames('cave/plank_r/', 1),
   },
+  // риштування — лише під довгими дошками (місток, платформа), невисоке і завжди на скелі
   scaffold: {
     frames: Array.from({ length: 9 }, (_, i) => `cave/scaffold/${i}`),
-    minRun: 3,
-    doubleRun: 8,
-    maxDepth: 14,
+    minRun: 5,
+    doubleRun: 10,
+    maxDepth: 5,
   },
 };
