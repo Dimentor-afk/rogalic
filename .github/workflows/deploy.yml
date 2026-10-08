@@ -1,0 +1,51 @@
+# Перевірки на кожен push/PR; на main — ще й публікація гри на GitHub Pages.
+# Один раз: Settings → Pages → Source: «GitHub Actions».
+name: CI і деплой
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Типи
+        run: npm run typecheck
+      - name: Тести
+        run: npm test
+      - name: Симуляція слота (1 000 000 спінів, фіксований seed) — RTP у цільовому діапазоні
+        run: npm run sim -- 1000000 --seed 42
+      - name: Збірка
+        run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: dist
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - id: pages
+        uses: actions/deploy-pages@v4

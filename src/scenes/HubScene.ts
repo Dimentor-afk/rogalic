@@ -186,7 +186,9 @@ export class HubScene extends GameplayScene {
       ? 'Борг закрито, боси переможені.\nВихід відчинено. Мур.'
       : `Борг: ${s.debt} фішок\nБосів переможено: ${BOSS_ORDER.length - left} з ${BOSS_ORDER.length}`;
     this.catBubble.setText(this.catLine ? `${status}\n«${this.catLine}»` : status);
-    this.catBubble.setPosition(cat.x, cat.y - 34);
+    // бульбашка не виходить за край рівня
+    const half = this.catBubble.width / 2 + 4;
+    this.catBubble.setPosition(Phaser.Math.Clamp(cat.x, half, this.level.widthPx - 16 - half), cat.y - 34);
     const target = near ? 1 : 0;
     this.catBubble.setAlpha(Phaser.Math.Linear(this.catBubble.alpha, target, 0.15));
     if (!near) this.catLine = '';

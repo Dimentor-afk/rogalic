@@ -79,6 +79,7 @@ export class DungeonScene extends GameplayScene {
       onPlayerDeath: () => this.onDeath(),
     });
     this.combat.enemySpeedMultiplier = this.curse?.enemySpeed ?? 1;
+    this.combat.chipsMultiplier = this.curse?.chipsMultiplier ?? 1;
 
     const ts = CAVE_TILESET.tileSize;
     const loadout = loadoutOf(save, this.curse?.maxHpDelta ?? 0);

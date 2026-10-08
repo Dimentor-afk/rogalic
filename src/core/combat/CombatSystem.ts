@@ -71,6 +71,8 @@ export class CombatSystem implements EnemyWorld {
   enemySpeedMultiplier = 1;
   /** Чи дають вбиті вороги фішки (на арені боса міньйони — без нагороди). */
   rewardChips = true;
+  /** Множник фішок за ворогів (прокляття дають більше фішок). */
+  chipsMultiplier = 1;
   private debugG: Phaser.GameObjects.Graphics;
   private lastBreakableSwing = new WeakMap<Breakable, number>();
 
@@ -180,7 +182,7 @@ export class CombatSystem implements EnemyWorld {
 
   onEnemyKilled(enemy: Enemy): void {
     const [min, max] = enemy.def.chips;
-    const reward = this.rewardChips ? Phaser.Math.Between(min, max) : 0;
+    const reward = this.rewardChips ? Math.round(Phaser.Math.Between(min, max) * this.chipsMultiplier) : 0;
     if (reward > 0) this.addChips(reward, enemy.x, enemy.y - enemy.displayHeight / 2);
     this.events.onEnemyKilled?.(enemy);
   }
