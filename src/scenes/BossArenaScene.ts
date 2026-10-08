@@ -290,7 +290,7 @@ export class BossArenaScene extends GameplayScene {
   }
 
   private pauseMenu(): void {
-    if (this.fight !== 'fight') return;
+    if (this.fight !== 'fight' || this.transitioning) return;
     openMenu(this, {
       title: 'ПАУЗА',
       subtitle: () => this.def.name,

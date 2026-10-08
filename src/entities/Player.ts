@@ -890,6 +890,13 @@ export class Player extends ManifestSprite {
     return res.outcome;
   }
 
+  /** Здатися (з меню паузи): одразу смерть, як від смертельного удару. */
+  forfeit(): void {
+    if (this.mode === 'dead') return;
+    this.hp = 0;
+    this.die();
+  }
+
   private die(): void {
     sfx.play('death');
     this.enter('dead');

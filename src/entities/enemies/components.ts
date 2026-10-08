@@ -9,6 +9,7 @@
  */
 import type { EnemyDef } from '../../config/enemies';
 import type { Enemy, EnemyComponent, EnemyWorld } from './Enemy';
+import { chips } from '../../config/texts';
 
 export function buildComponents(def: EnemyDef): EnemyComponent[] {
   switch (def.archetype) {
@@ -232,7 +233,7 @@ export function thief(def: EnemyDef): EnemyComponent {
       const got = w.stealChips(want);
       if (got <= 0) return;
       e.stolenChips += got;
-      w.fx.floatText(e.x, e.y - e.displayHeight - 4, `-${got} фішок!`, '#ff7a7a');
+      w.fx.floatText(e.x, e.y - e.displayHeight - 4, `-${chips(got)}!`, '#ff7a7a');
       w.fx.playFx('coins', e.x, e.y - 14, { scale: 0.5 });
       e.enter('flee');
     },

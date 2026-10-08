@@ -9,7 +9,7 @@ import { BOSSES, BOSS_ORDER } from '../config/bosses';
 import { CURSES } from '../config/curses';
 import { UPGRADES, WEAPON_PRICES, type UpgradeId } from '../config/economy';
 import { WEAPONS, type WeaponId } from '../config/weapons';
-import { TEXTS, pick } from '../config/texts';
+import { TEXTS, chips, pick } from '../config/texts';
 import { parseRoom, type Legend } from '../core/level/grid';
 import { buyUpgrade, buyWeapon, canExit, equipWeapon, loadoutOf, payDebt, startRun, upgradePrice } from '../core/state/GameState';
 import { gameState, persist } from '../core/state/store';
@@ -51,6 +51,8 @@ export class HubScene extends GameplayScene {
   private cat: ManifestSprite | null = null;
   private catBubble!: Phaser.GameObjects.Text;
   private catLine = '';
+  /** Точка «P» хабу — куди повертаємо гравця, якщо він випав за межі рівня. */
+  private spawnPoint = { x: 0, y: 0 };
 
   constructor() {
     super(SCENES.hub);
@@ -69,7 +71,11 @@ export class HubScene extends GameplayScene {
     for (const s of room.spawns) {
       const x = (s.x + 0.5) * ts;
       const y = (s.y + 1) * ts;
-      if (s.type === 'player') this.createPlayer(nearSlot ? (nearSlot.x + 1.5) * ts : x, y, loadoutOf(save));
+      if (s.type === 'player') {
+        this.spawnPoint = { x, y };
+        // автомати стоять на підвищенні — з'являємось на їхньому рівні, а не всередині скелі
+        this.createPlayer(nearSlot ? (nearSlot.x + 1.5) * ts : x, nearSlot ? (nearSlot.y + 1) * ts : y, loadoutOf(save));
+      }
       else this.spawnObject(s.type, x, y);
     }
     this.decorate();
@@ -80,6 +86,11 @@ export class HubScene extends GameplayScene {
 
   update(_t: number, delta: number): void {
     this.gameplayUpdate(delta);
+    // випав за межі рівня (не мало б статися) — повертаємо на старт хабу
+    if (this.player.y > this.level.heightPx + 32) {
+      this.player.body.reset(this.spawnPoint.x, this.spawnPoint.y);
+      this.player.body.setVelocity(0, 0);
+    }
     this.updateCat();
   }
 
@@ -196,14 +207,20 @@ export class HubScene extends GameplayScene {
     const left = BOSS_ORDER.filter((id) => !s.bosses.includes(id)).length;
     const status = canExit(s, BOSS_ORDER)
       ? 'Борг закрито, боси переможені.\nВихід відчинено. Мур.'
-      : `Борг: ${s.debt} фішок\nБосів переможено: ${BOSS_ORDER.length - left} з ${BOSS_ORDER.length}`;
+      : `Борг: ${chips(s.debt)}\nБосів переможено: ${BOSS_ORDER.length - left} з ${BOSS_ORDER.length}`;
     this.catBubble.setText(this.catLine ? `${status}\n«${this.catLine}»` : status);
     // бульбашка не виходить за край рівня
     const half = this.catBubble.width / 2 + 4;
-    this.catBubble.setPosition(Phaser.Math.Clamp(cat.x, half, this.level.widthPx - 16 - half), cat.y - 34);
+    // cat.y — низ кадру 64 px, під лапами 16 порожніх рядків; бульбашка — над вухами
+    this.catBubble.setPosition(Phaser.Math.Clamp(cat.x, half, this.level.widthPx - 16 - half), cat.y - 52);
     const target = near ? 1 : 0;
     this.catBubble.setAlpha(Phaser.Math.Linear(this.catBubble.alpha, target, 0.15));
     if (!near) this.catLine = '';
+  }
+
+  /** Банер хабу — нижче за неонову вивіску над автоматами. */
+  private hubBanner(text: string, color?: string, ms?: number): void {
+    this.hud.banner(text, color, ms, 0.52);
   }
 
   private label(x: number, y: number, text: string, color: string): void {
@@ -221,19 +238,19 @@ export class HubScene extends GameplayScene {
   private greet(a: HubArrival): void {
     const s = gameState();
     if (a.kind === 'elevator') {
-      this.hud.banner(`+${a.banked ?? 0} фішок на баланс`, COLORS.gold, 1600);
-      this.time.delayedCall(1900, () => this.hud.banner(`Відсотки: борг +${a.interest ?? 0}`, COLORS.red, 1500));
+      this.hubBanner(`+${chips(a.banked ?? 0)} на баланс`, COLORS.gold, 1600);
+      this.time.delayedCall(1900, () => this.hubBanner(`Відсотки: борг +${a.interest ?? 0}`, COLORS.red, 1500));
     } else if (a.kind === 'death') {
       const bag = a.bagChips ? `Мішок (${a.bagChips}) лишився на глибині ${a.depth}` : 'Помер з порожніми кишенями';
-      this.hud.banner(pick(TEXTS.death), COLORS.red, 1400);
-      this.time.delayedCall(1700, () => this.hud.banner(bag, COLORS.text, 1800));
-      if (a.bagBurned) this.time.delayedCall(3700, () => this.hud.banner(`Старий мішок (${a.bagBurned}) згорів`, COLORS.red, 1500));
-      this.time.delayedCall(a.bagBurned ? 5400 : 3700, () => this.hud.banner(`Відсотки: борг +${a.interest ?? 0}`, COLORS.red, 1400));
+      this.hubBanner(pick(TEXTS.death), COLORS.red, 1400);
+      this.time.delayedCall(1700, () => this.hubBanner(bag, COLORS.text, 1800));
+      if (a.bagBurned) this.time.delayedCall(3700, () => this.hubBanner(`Старий мішок (${a.bagBurned}) згорів`, COLORS.red, 1500));
+      this.time.delayedCall(a.bagBurned ? 5400 : 3700, () => this.hubBanner(`Відсотки: борг +${a.interest ?? 0}`, COLORS.red, 1400));
     } else if (a.kind === 'bossLost') {
-      this.hud.banner('Бонуска згоріла', COLORS.red, 1500);
-      this.time.delayedCall(1800, () => this.hud.banner(pick(TEXTS.noWin), COLORS.gold, 1400));
+      this.hubBanner('Бонуска згоріла', COLORS.red, 1500);
+      this.time.delayedCall(1800, () => this.hubBanner(pick(TEXTS.noWin), COLORS.gold, 1400));
     } else if (s.stats.runs === 0 && s.stats.spins === 0) {
-      this.hud.banner('Борг сам себе не поверне', COLORS.gold, 2000);
+      this.hubBanner('Борг сам себе не поверне', COLORS.gold, 2000);
     }
   }
 
@@ -261,7 +278,7 @@ export class HubScene extends GameplayScene {
       const paid = payDebt(s, n);
       persist();
       if (paid > 0) this.fx.floatText(this.player.x, this.player.y - 40, `-${paid} боргу`, COLORS.green);
-      if (s.debt === 0) this.hud.banner(pick(TEXTS.debtPaid), COLORS.green, 2400);
+      if (s.debt === 0) this.hubBanner(pick(TEXTS.debtPaid), COLORS.green, 2400);
     };
     openMenu(this, {
       title: 'КАСА',
@@ -295,7 +312,7 @@ export class HubScene extends GameplayScene {
     };
     openMenu(this, {
       title: 'КОВАЛЬ',
-      subtitle: () => `Баланс: ${s.balance} фішок`,
+      subtitle: () => `Баланс: ${chips(s.balance)}`,
       width: 340,
       items: (): MenuItem[] => [
         ...(Object.keys(UPGRADES) as UpgradeId[]).map((id) => {
@@ -349,7 +366,7 @@ export class HubScene extends GameplayScene {
   private tryExit(): void {
     const s = gameState();
     if (!canExit(s, BOSS_ORDER)) {
-      this.hud.banner('Охорона: «Спершу розрахуйся»', COLORS.red, 1500);
+      this.hubBanner('Охорона: «Спершу розрахуйся»', COLORS.red, 1500);
       return;
     }
     s.victory = true;
@@ -358,6 +375,8 @@ export class HubScene extends GameplayScene {
   }
 
   private pauseMenu(): void {
+    // під час молитви чи переходу між сценами меню не відкриваємо — інакше два переходи накладаються
+    if (this.transitioning || this.player.inputLocked) return;
     openMenu(this, {
       title: 'ПАУЗА',
       items: () => [

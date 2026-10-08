@@ -2,6 +2,7 @@
  * Головне меню: продовжити / нова гра / тренування / статистика / галерея асетів.
  */
 import Phaser from 'phaser';
+import { ECONOMY } from '../config/economy';
 import { CAVE_PARALLAX } from '../config/game';
 import { gameState, persist, resetGame } from '../core/state/store';
 import { MenuList, type MenuItem } from '../ui/MenuList';
@@ -32,7 +33,8 @@ export class MainMenuScene extends Phaser.Scene {
     txt(this, width / 2, 74, 'soulslike-рогалик про борг перед підземним казино', 8, COLORS.dim).setOrigin(0.5, 0);
 
     const s = gameState();
-    const started = s.stats.runs > 0 || s.stats.spins > 0;
+    // будь-який прогрес: спуски, спіни, сплачений борг, змінений баланс
+    const started = s.stats.runs > 0 || s.stats.spins > 0 || s.stats.paidDebt > 0 || s.balance !== ECONOMY.startBalance;
     txt(this, width / 2, height - 40, started ? `Борг: ${s.debt}   Баланс: ${s.balance}   Твій RTP: ${playerRtp(s)}` : 'Борг сам себе не поверне.', 8, COLORS.text).setOrigin(0.5, 0);
     txt(this, width / 2, height - 14, 'A/D рух  Space стрибок  J атака  L перекат  K блок  Q фляга  E взаємодія', 8, COLORS.dim).setOrigin(0.5, 0);
 

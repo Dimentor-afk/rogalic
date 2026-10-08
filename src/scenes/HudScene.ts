@@ -3,8 +3,12 @@
  * Ігрова сцена щокадру викликає sync(...) з поточним станом.
  */
 import Phaser from 'phaser';
+import { chips } from '../config/texts';
 import { COLORS, icon, txt } from '../ui/text';
 import { SCENES } from './keys';
+
+/** Чорне обведення — щоб дрібний текст HUD читався поверх світлих сталактитів. */
+const OUTLINE = { stroke: '#000000', strokeThickness: 2 } as const;
 
 export interface MinimapRoom {
   mx: number;
@@ -106,8 +110,8 @@ export class HudScene extends Phaser.Scene {
 
     // хабовий HUD
     this.hubG = this.add.graphics();
-    this.hubText = txt(this, 6, 6, '', 8, COLORS.text, { lineSpacing: 2 });
-    this.hubCurse = txt(this, 6, 52, '', 8, COLORS.red);
+    this.hubText = txt(this, 6, 6, '', 8, COLORS.text, { lineSpacing: 2, ...OUTLINE });
+    this.hubCurse = txt(this, 6, 52, '', 8, COLORS.red, OUTLINE);
     this.bossIcons = [];
     this.hubUi = this.add.container(0, 0, [this.hubG, this.hubText, this.hubCurse]).setVisible(false);
     this.chipsText = txt(this, this.scale.width - 6, 6, '', 8, COLORS.gold).setOrigin(1, 0);
@@ -212,7 +216,7 @@ export class HudScene extends Phaser.Scene {
   }
 
   private syncHub(h: HubInfo): void {
-    this.hubText.setText([`БАЛАНС: ${h.balance} фішок`, `БОРГ:   ${h.debt}`].join('\n'));
+    this.hubText.setText([`БАЛАНС: ${chips(h.balance)}`, `БОРГ:   ${h.debt}`].join('\n'));
     this.hubText.setColor(h.debt > 0 ? COLORS.text : COLORS.green);
     this.hubCurse.setText(h.curse ? `Прокляття на спуск: ${h.curse}` : '');
     // шкала гаранту
@@ -222,11 +226,11 @@ export class HudScene extends Phaser.Scene {
     g.fillStyle(0x000000, 0.6).fillRect(6, 30, w + 2, 6);
     g.fillStyle(h.guarantee >= 100 ? 0xffd25a : 0xc0a050, 1).fillRect(7, 31, Math.round((Math.min(100, h.guarantee) / 100) * w), 4);
     if (!this.bossIcons.length) {
-      const label = txt(this, 6, 39, 'ГАРАНТ', 8, COLORS.dim);
+      const label = txt(this, 6, 39, 'ГАРАНТ', 8, COLORS.dim, OUTLINE);
       this.hubUi.add(label);
-      txt(this, this.scale.width - 6, 6, 'КОЛЕКЦІЯ БОСІВ', 8, COLORS.dim).setOrigin(1, 0).setName('bossTitle');
+      txt(this, this.scale.width - 6, 6, 'КОЛЕКЦІЯ БОСІВ', 8, COLORS.dim, OUTLINE).setOrigin(1, 0).setName('bossTitle');
       h.bosses.forEach((_, i) => {
-        const t = txt(this, this.scale.width - 6, 17 + i * 9, '', 8, COLORS.dim).setOrigin(1, 0);
+        const t = txt(this, this.scale.width - 6, 17 + i * 9, '', 8, COLORS.dim, OUTLINE).setOrigin(1, 0);
         this.bossIcons.push(t);
         this.hubUi.add(t);
       });
@@ -241,9 +245,10 @@ export class HudScene extends Phaser.Scene {
   }
 
   /** Великий напис посеред екрана («Майже!», «ПОВЕРХ 2»…). */
-  banner(text: string, color: string = COLORS.gold, ms = 1800): void {
+  /** y — частка висоти екрана (у хабі банер нижче, щоб не налазив на неонову вивіску). */
+  banner(text: string, color: string = COLORS.gold, ms = 1800, y = 0.36): void {
     this.tweens.killTweensOf(this.bannerText);
-    this.bannerText.setText(text).setColor(color).setAlpha(0).setScale(0.8);
+    this.bannerText.setY(this.scale.height * y).setText(text).setColor(color).setAlpha(0).setScale(0.8);
     this.tweens.add({ targets: this.bannerText, alpha: 1, scale: 1, duration: 180, ease: 'Back.easeOut' });
     this.tweens.add({ targets: this.bannerText, alpha: 0, delay: ms, duration: 400 });
   }

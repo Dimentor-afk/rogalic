@@ -12,3 +12,17 @@ export const TEXTS = {
 export function pick<T>(list: readonly T[]): T {
   return list[Math.floor(Math.random() * list.length)]!;
 }
+
+/** «фішка / фішки / фішок» за числом (1, 21 — фішка; 2–4, 22–24 — фішки; 0, 5–20, 25 — фішок). */
+export function chipsWord(n: number): string {
+  const a = Math.abs(Math.trunc(n));
+  const d = a % 10, h = a % 100;
+  if (d === 1 && h !== 11) return 'фішка';
+  if (d >= 2 && d <= 4 && (h < 12 || h > 14)) return 'фішки';
+  return 'фішок';
+}
+
+/** Число з правильним словом: chips(21) → «21 фішка». */
+export function chips(n: number): string {
+  return `${n} ${chipsWord(n)}`;
+}

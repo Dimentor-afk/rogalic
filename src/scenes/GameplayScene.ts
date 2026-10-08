@@ -32,6 +32,9 @@ export abstract class GameplayScene extends Phaser.Scene {
   protected blockers!: Phaser.Physics.Arcade.StaticGroup;
   protected debugOn = false;
   private nearest: Interactable | null = null;
+  /** Уже йде перехід в іншу сцену (fadeTo) — другий перехід ігноруємо. */
+  protected transitioning = false;
+  private readonly onResume = (): void => this.inputMap.suppress();
 
   /** Будує рівень і всі системи. Викликати на початку create(). */
   protected buildWorld(grid: Grid, seed: number, events: CombatEvents): void {
@@ -40,6 +43,7 @@ export abstract class GameplayScene extends Phaser.Scene {
     this.interactables = [];
     this.nearest = null;
     this.debugOn = false;
+    this.transitioning = false;
     this.level = new LevelView(this, grid, CAVE_TILESET, seed).setDepth(0);
     this.parallax = new Parallax(this, CAVE_PARALLAX, this.level.heightPx);
     this.physics.world.setBounds(0, 0, this.level.widthPx, this.level.heightPx);
@@ -56,7 +60,9 @@ export abstract class GameplayScene extends Phaser.Scene {
       this.combat.destroy();
     });
     this.input.keyboard!.on('keydown-H', () => this.toggleDebug());
-    this.events.on(Phaser.Scenes.Events.RESUME, () => this.inputMap.suppress());
+    // події сцени живуть між перезапусками — знімаємо старий обробник, щоб не накопичувались
+    this.events.off(Phaser.Scenes.Events.RESUME, this.onResume);
+    this.events.on(Phaser.Scenes.Events.RESUME, this.onResume);
   }
 
   /** Створює гравця, колізії і камеру. */
@@ -151,6 +157,8 @@ export abstract class GameplayScene extends Phaser.Scene {
 
   /** Перехід в іншу сцену з затемненням. */
   protected fadeTo(scene: string, data?: object, ms = 400): void {
+    if (this.transitioning) return;
+    this.transitioning = true;
     this.player.inputLocked = true;
     this.cameras.main.fadeOut(ms, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start(scene, data));

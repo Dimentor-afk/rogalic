@@ -9,7 +9,7 @@ import Phaser from 'phaser';
 import { CAVE_PARALLAX } from '../config/game';
 import { BOSSES } from '../config/bosses';
 import { MULTIPLIER_VALUE, SLOT, SYMBOLS } from '../config/slot';
-import { TEXTS, pick } from '../config/texts';
+import { TEXTS, chips, pick } from '../config/texts';
 import { createSlotPlaceholders } from '../core/assets/placeholders';
 import { sfx } from '../core/audio/Sfx';
 import { Fx } from '../core/fx/Fx';
@@ -219,14 +219,14 @@ export class FreeSpinsScene extends Phaser.Scene {
     }
     const head = win > 0 ? (big ? 'ЗАНОС!' : pick(TEXTS.smallWin)) : 'Майже!';
     this.msgText
-      .setText(`${head}  +${win} фішок (${bets.toFixed(1)} ставки, множник x${this.series.totalMultiplier})\nE / пробіл — назад до автомата`)
+      .setText(`${head}  +${chips(win)} (${bets.toFixed(1)} ставки, множник x${this.series.totalMultiplier})\nE / пробіл — назад до автомата`)
       .setColor(COLORS.gold);
   }
 
   private leave(): void {
     if (!this.finished || this.left) return;
     this.left = true;
-    const back: SlotReturn = { message: `Фріспіни: +${this.series.win} фішок`, color: COLORS.gold };
+    const back: SlotReturn = { message: `Фріспіни: +${chips(this.series.win)}`, color: COLORS.gold };
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start(SCENES.slot, back));
   }

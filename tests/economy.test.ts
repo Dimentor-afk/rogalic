@@ -19,6 +19,7 @@ import {
 } from '../src/core/state/GameState';
 import { ECONOMY, UPGRADES } from '../src/config/economy';
 import { SLOT } from '../src/config/slot';
+import { chips } from '../src/config/texts';
 
 function memoryStorage(): KeyValueStorage & { data: Map<string, string> } {
   const data = new Map<string, string>();
@@ -203,5 +204,14 @@ describe('ставка в сейві', () => {
     expect(loadGame(storage).bet).toBe(SLOT.bets[0]);
     saveGame(storage, { ...newGame(), bet: SLOT.bets[2]! });
     expect(loadGame(storage).bet).toBe(SLOT.bets[2]);
+  });
+});
+
+describe('слово «фішка» за числом', () => {
+  it('1/21 — фішка, 2–4/22–24 — фішки, 0/5–20/25/111–114 — фішок', () => {
+    const w = (n: number) => chips(n).split(' ')[1];
+    expect([1, 21, 101, 1231].map(w)).toEqual(['фішка', 'фішка', 'фішка', 'фішка']);
+    expect([2, 3, 4, 22, 1234].map(w)).toEqual(['фішки', 'фішки', 'фішки', 'фішки', 'фішки']);
+    expect([0, 5, 11, 12, 14, 20, 25, 111, 114, 25000].map(w)).toEqual(Array(10).fill('фішок'));
   });
 });

@@ -6,7 +6,7 @@ import Phaser from 'phaser';
 import { CAVE_TILESET } from '../config/tilesets';
 import { ROOM_SIZE } from '../config/dungeon';
 import { CURSES, type CurseDef } from '../config/curses';
-import { TEXTS, pick } from '../config/texts';
+import { TEXTS, chips, pick } from '../config/texts';
 import { generateDungeon, type DungeonLevel, type RoomTemplate } from '../core/dungeon/generator';
 import { hash32 } from '../core/rng';
 import { finishRun, loadoutOf } from '../core/state/GameState';
@@ -15,6 +15,7 @@ import { Barrel, Chest, DeathBag, Door, Trigger } from '../entities/props';
 import rooms from '../levels/rooms.json';
 import { COLORS } from '../ui/text';
 import { GameplayScene } from './GameplayScene';
+import { openMenu } from './MenuScene';
 import type { HudState, MinimapRoom } from './HudScene';
 import { SCENES } from './keys';
 import { sfx } from '../core/audio/Sfx';
@@ -116,7 +117,7 @@ export class DungeonScene extends GameplayScene {
           this.add.image(x, y, 'cave', 'cave/mine_frame/0').setOrigin(0.5, 1).setDepth(2);
           this.add.image(x, y, 'ph/elevator').setOrigin(0.5, 1).setDepth(3);
           this.interactables.push(
-            new Trigger(x, y - 8, 30, () => `E — ліфт нагору (зарахувати ${this.combat.runChips()} фішок)`, () => this.useElevator()),
+            new Trigger(x, y - 8, 30, () => `E — ліфт нагору (у кишені ${chips(this.combat.runChips())})`, () => this.useElevator()),
           );
           break;
         case 'descent': {
@@ -137,6 +138,7 @@ export class DungeonScene extends GameplayScene {
 
     if (this.curse?.lightRadius) this.createDarkness();
 
+    this.input.keyboard!.on('keydown-ESC', () => this.pauseMenu());
     this.cameras.main.fadeIn(400, 0, 0, 0);
     this.time.delayedCall(250, () => {
       this.hud.banner(`ГЛИБИНА ${data.depth}`, COLORS.gold, 1400);
@@ -209,6 +211,21 @@ export class DungeonScene extends GameplayScene {
     // «витираємо» темряву колом світла навколо гравця
     this.lightImg!.setPosition(this.player.x - cam.worldView.x, this.player.y - 16 - cam.worldView.y);
     rt.erase(this.lightImg!);
+  }
+
+  private pauseMenu(): void {
+    if (this.finished || this.transitioning || !this.player.alive) return;
+    openMenu(this, {
+      title: 'ПАУЗА',
+      subtitle: () => `Глибина ${this.run.depth}`,
+      items: () => [
+        { label: 'Продовжити', action: () => 'close' as const },
+        {
+          label: 'Здатися (як смерть: фішки — у мішок)',
+          action: () => (this.time.delayedCall(0, () => this.player.forfeit()), 'close' as const),
+        },
+      ],
+    });
   }
 
   // ---------------- кінець поверху ----------------
