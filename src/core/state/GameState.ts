@@ -7,6 +7,7 @@
  */
 import { ECONOMY, UPGRADES, UPGRADE_EFFECT, WEAPON_PRICES, type UpgradeId } from '../../config/economy';
 import { FLASK, PLAYER_COMBAT } from '../../config/combat';
+import { SLOT } from '../../config/slot';
 import type { WeaponId } from '../../config/weapons';
 import type { PlayerLoadout } from '../../entities/Player';
 
@@ -104,7 +105,7 @@ export function newGame(seed = Date.now() >>> 0): SaveData {
     nextCurse: null,
     slotSeed: seed,
     runCounter: 0,
-    bet: 2,
+    bet: SLOT.bets[0]!,
     spunSinceReturn: false,
     victory: false,
     stats: {
@@ -158,6 +159,8 @@ export function loadGame(storage: KeyValueStorage): SaveData {
       upgrades: { ...base.upgrades, ...data.upgrades },
       stats: { ...base.stats, ...data.stats },
       settings: normalizeSettings(data.settings),
+      // старі сейви зберігали ставку не з таблиці (напр. 2) — беремо найменшу дозволену
+      bet: SLOT.bets.includes(data.bet as number) ? (data.bet as number) : base.bet,
     } as SaveData;
   } catch {
     return newGame();

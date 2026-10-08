@@ -18,6 +18,7 @@ import {
   type KeyValueStorage,
 } from '../src/core/state/GameState';
 import { ECONOMY, UPGRADES } from '../src/config/economy';
+import { SLOT } from '../src/config/slot';
 
 function memoryStorage(): KeyValueStorage & { data: Map<string, string> } {
   const data = new Map<string, string>();
@@ -191,5 +192,16 @@ describe('вихід з казино', () => {
     expect(canExit(s, ['a', 'b'])).toBe(false);
     s.debt = 0;
     expect(canExit(s, ['a', 'b'])).toBe(true);
+  });
+});
+
+describe('ставка в сейві', () => {
+  it('нова гра і старий сейв з недопустимою ставкою — найменша ставка з таблиці слота', () => {
+    expect(SLOT.bets).toContain(newGame().bet);
+    const storage = memoryStorage();
+    saveGame(storage, { ...newGame(), bet: 2 });
+    expect(loadGame(storage).bet).toBe(SLOT.bets[0]);
+    saveGame(storage, { ...newGame(), bet: SLOT.bets[2]! });
+    expect(loadGame(storage).bet).toBe(SLOT.bets[2]);
   });
 });
