@@ -35,6 +35,8 @@ jobs:
         run: npm run sim -- 1000000 --seed 42
       - name: Збірка
         run: npm run build
+      - name: Онлайн-версія в docs/play відповідає коду (інакше — npm run build:docs і закомітити)
+        run: npm run build:docs && git diff --exit-code --stat -- docs/play
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
         with:

@@ -9,9 +9,13 @@
 **Стек:** Phaser 3 (Arcade Physics, `pixelArt: true`) · TypeScript (strict) · Vite · Vitest. Збереження — `localStorage`.
 Статичний білд, без сервера.
 
-**Грати:** https://dimentor-afk.github.io/rogalic/ — GitHub Actions збирає гру й публікує її з основної гілки
-репозиторію (`.github/workflows/deploy.yml`), щойно в налаштуваннях увімкнено *Settings → Pages → Source: GitHub Actions*.
-Поки Pages вимкнено, публікація пропускається, а перевірки (типи, тести, симуляція RTP, збірка) все одно працюють.
+**Грати:** https://raw.githack.com/Dimentor-afk/rogalic/claude/affectionate-einstein-t3fofs/docs/play/index.html —
+зібрана гра лежить у репозиторії (`docs/play`, команда `npm run build:docs`), а безкоштовний CDN raw.githack.com
+віддає її прямо з публічного репозиторію, без жодних налаштувань.
+
+Ще один варіант — GitHub Pages (https://dimentor-afk.github.io/rogalic/): workflow `.github/workflows/deploy.yml`
+збирає і публікує гру з основної гілки, щойно в налаштуваннях увімкнено *Settings → Pages → Source: GitHub Actions*.
+Поки Pages вимкнено, публікація пропускається, а перевірки (типи, тести, симуляція RTP, збірка) працюють.
 
 ---
 
@@ -32,6 +36,7 @@ npm run dev        # http://localhost:5173  (?seed=123 — фіксоване п
 npm test           # 153 юніт-тести (Vitest)
 npm run sim        # симуляція слота: 1 000 000 спінів → RTP, частота бонусок, розподіл виграшів
 npm run build      # перевірка типів + статичний білд у dist/
+npm run build:docs # той самий білд у docs/play — онлайн-версія з репозиторію (оновлювати після змін)
 npm run pack       # перепакувати спрайти з assets-src/ (потрібні сирі паки, див. assets-src/README.md)
 ```
 
