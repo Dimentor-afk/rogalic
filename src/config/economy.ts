@@ -14,7 +14,7 @@ export const ECONOMY = {
   minInterest: 50,
 };
 
-/** Зменшення шкоди від рівня броні 0..4 (броню видно на спрайті гравця). */
+/** Зменшення шкоди від рівня броні 0..4 (броня — лише характеристика: спрайт лицаря один). */
 export const ARMOR_DAMAGE_REDUCTION: readonly number[] = [0, 0.1, 0.2, 0.3, 0.4];
 
 export type UpgradeId = 'armor' | 'flask' | 'stamina' | 'hp';
@@ -28,7 +28,7 @@ export interface UpgradeDef {
 }
 
 export const UPGRADES: Record<UpgradeId, UpgradeDef> = {
-  armor: { id: 'armor', name: 'Броня', description: '−10% шкоди за рівень. Видно на персонажі.', prices: [1500, 3500, 7000, 12000] },
+  armor: { id: 'armor', name: 'Броня', description: '−10% шкоди за рівень. Лати під плащем — не видно, зате відчутно.', prices: [1500, 3500, 7000, 12000] },
   flask: { id: 'flask', name: '+1 Енергетик', description: 'Ще одна фляга на забіг.', prices: [1200, 3000, 6000] },
   stamina: { id: 'stamina', name: 'Міцні нерви', description: '+20 до максимуму «Нервів».', prices: [1000, 2500, 5000] },
   hp: { id: 'hp', name: 'Друге серце', description: '+1 серце.', prices: [1500, 3500, 6500, 10000] },

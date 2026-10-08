@@ -5,6 +5,12 @@ import { resolveHit, type DefenderState } from '../src/core/combat/defense';
 import { hasLineOfSight } from '../src/core/level/los';
 import { parseRoom } from '../src/core/level/grid';
 import { ROOM_LEGEND } from '../src/config/legend';
+import { findLedge, rectFree } from '../src/core/combat/ledge';
+import { CROUCH_ATTACK, WEAPONS, type AttackMove } from '../src/config/weapons';
+import { AIR_ATTACK, FLASK } from '../src/config/combat';
+import { LEDGE, PLAYER_MOVE, SLIDE } from '../src/config/player';
+import { GAME } from '../src/config/game';
+import { readFileSync } from 'node:fs';
 
 const RULES = { regenPerSec: 50, regenDelayMs: 400 };
 
@@ -107,5 +113,105 @@ describe('hasLineOfSight (DDA)', () => {
   });
   it('та сама клітинка — видно', () => {
     expect(hasLineOfSight(g, 16, 1, 1, 5, 5)).toBe(true);
+  });
+});
+
+describe('rectFree (місце для тіла)', () => {
+  const g = parseRoom(['....', '.#..', '....'], ROOM_LEGEND).grid;
+  it('прямокутник, що лише торкається межі клітинки, її не займає', () => {
+    expect(rectFree(g, 16, { x: 0, y: 0, w: 16, h: 16 })).toBe(true);
+    expect(rectFree(g, 16, { x: 0, y: 0, w: 16.5, h: 16.5 })).toBe(false); // зачепив (1,1)
+    expect(rectFree(g, 16, { x: 32, y: 16, w: 30, h: 30 })).toBe(true);
+  });
+  it('за межами сітки — скеля', () => {
+    expect(rectFree(g, 16, { x: -4, y: 0, w: 10, h: 10 })).toBe(false);
+  });
+});
+
+describe('findLedge (уступи)', () => {
+  // Стіна x=4..5 заввишки 4 тайли (верх рядка 6 → y=96); над нею вільно; підлога — рядок 10 (y=160).
+  const g = parseRoom(
+    [
+      '..........',
+      '..........',
+      '..........',
+      '..........',
+      '..........',
+      '..........',
+      '....##....',
+      '....##....',
+      '....##....',
+      '....##....',
+      '##########',
+    ],
+    ROOM_LEGEND,
+  ).grid;
+  const q = (x: number, feet: number, dir: 1 | -1 = 1) => ({
+    body: { x, y: feet - 38, w: 14, h: 38 },
+    dir,
+    handAboveFeet: 55,
+    tolerance: 6,
+    reach: 6,
+  });
+
+  it('руки на рівні краю, тіло біля стіни — хапаємось; стати нагорі можна', () => {
+    const l = findLedge(g, 16, q(64 - 14, 96 + 55));
+    expect(l).toEqual({ top: 96, wallX: 64, hangX: 50, standX: 65 });
+  });
+  it('з іншого боку стіни — дзеркально', () => {
+    const l = findLedge(g, 16, q(96, 96 + 55, -1));
+    expect(l).toEqual({ top: 96, wallX: 96, hangX: 96, standX: 81 });
+  });
+  it('стіна трохи попереду (у межах reach) — дотягуємось; задалеко — ні', () => {
+    expect(findLedge(g, 16, q(64 - 14 - 5, 96 + 55))?.hangX).toBe(50);
+    expect(findLedge(g, 16, q(64 - 14 - 9, 96 + 55))).toBeNull();
+  });
+  it('руки далеко від краю — не хапаємось (ні вище, ні нижче)', () => {
+    expect(findLedge(g, 16, q(50, 96 + 55 + 8))).toBeNull();
+    expect(findLedge(g, 16, q(50, 96 + 55 - 8))).toBeNull();
+    expect(findLedge(g, 16, q(50, 96 + 55 + 5))).not.toBeNull();
+  });
+  it('тягнемось від стіни — не хапаємось', () => {
+    expect(findLedge(g, 16, q(50, 96 + 55, -1))).toBeNull();
+  });
+  it('над краєм немає місця на весь зріст — не хапаємось', () => {
+    const low = parseRoom(['..........', '..........', '..........', '..........', '....##....', '..........', '....##....', '....##....', '....##....', '....##....', '##########'], ROOM_LEGEND).grid;
+    expect(findLedge(low, 16, q(50, 96 + 55))).toBeNull();
+  });
+  it('дошка — не уступ', () => {
+    const plank = parseRoom(['..........', '..........', '..........', '..........', '..........', '..........', '....==....', '..........', '..........', '..........', '##########'], ROOM_LEGEND).grid;
+    expect(findLedge(plank, 16, q(50, 96 + 55))).toBeNull();
+  });
+});
+
+describe('лицар: кадри прийомів і стрибок', () => {
+  const atlas = JSON.parse(readFileSync('public/assets/atlases/player.json', 'utf8')) as { frames: Record<string, unknown> };
+  const count = (anim: string) => Object.keys(atlas.frames).filter((n) => n.startsWith(`player/${anim}/`)).length;
+
+  it('кожна фаза удару посилається на наявні кадри своєї анімації', () => {
+    const moves: AttackMove[] = [...Object.values(WEAPONS), CROUCH_ATTACK];
+    for (const m of moves) {
+      const n = count(m.anim);
+      expect(n, m.anim).toBeGreaterThan(0);
+      for (const phase of [m.frames.windup, m.frames.active, m.frames.recovery]) {
+        expect(phase.length, m.anim).toBeGreaterThan(0);
+        for (const f of phase) expect(f, m.anim).toBeLessThan(n);
+      }
+    }
+    const air = count('air_attack');
+    for (const f of [...AIR_ATTACK.frames.hover, ...AIR_ATTACK.frames.dive, ...AIR_ATTACK.frames.land]) expect(f).toBeLessThan(air);
+    for (const f of SLIDE.frames) expect(f).toBeLessThan(count('slide'));
+  });
+
+  it('ковток фляги — на кадрі 3 анімації heal (спалах лікування)', () => {
+    expect(Math.floor((FLASK.gulpAtMs / FLASK.drinkMs) * count('heal'))).toBe(3);
+  });
+
+  it('повний стрибок вищий за 3 тайли, але нижчий за руки на уступі в 4 тайли', () => {
+    const h = PLAYER_MOVE.jumpVelocity ** 2 / (2 * GAME.gravity);
+    expect(h).toBeGreaterThan(3 * 16 + 8);
+    expect(h).toBeLessThan(4 * 16);
+    // уступ на 4 тайли: руки дістають край, коли ноги ще над підлогою
+    expect(4 * 16 - LEDGE.handAboveFeet).toBeGreaterThan(0);
   });
 });

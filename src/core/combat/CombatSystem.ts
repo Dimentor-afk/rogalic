@@ -7,16 +7,16 @@ import Phaser from 'phaser';
 import { BLOCK, HIT_FEEL } from '../../config/combat';
 import { ENEMIES } from '../../config/enemies';
 import { FX } from '../../config/assets';
-import type { WeaponDef } from '../../config/weapons';
+import type { AttackMove } from '../../config/weapons';
 import { Enemy, type EnemyWorld, type PlayerHit } from '../../entities/enemies/Enemy';
-import { Player, type PlayerHooks } from '../../entities/Player';
+import { Player, type MeleeSwing, type PlayerHooks } from '../../entities/Player';
 import { Projectile } from '../../entities/Projectile';
 import type { Fx } from '../fx/Fx';
 import { isOneWay, isSolid, type Grid } from '../level/grid';
 import { hasLineOfSight } from '../level/los';
 import type { LevelView } from '../level/LevelView';
 import type { DefenseOutcome } from './defense';
-import { rectsOverlap, sectorHitsRect, type Rect } from './geometry';
+import { closestPointOnRect, rectsOverlap, sectorHitsRect, type Rect } from './geometry';
 import { sfx } from '../audio/Sfx';
 
 /** Події для сцени (HUD, мішок смерті, статистика). */
@@ -77,10 +77,11 @@ export class CombatSystem implements EnemyWorld {
   private lastBreakableSwing = new WeakMap<Breakable, number>();
 
   readonly playerHooks: PlayerHooks = {
-    onMeleeActive: (p, w, swingId) => this.playerMelee(p, w, swingId),
+    onMeleeActive: (_p, swing, swingId) => this.playerMelee(swing, swingId),
     onShoot: (p, w) => this.playerShoot(p, w),
     onDefense: (p, outcome, attacker) => this.onDefense(p, outcome, attacker),
     onDeath: (p) => this.events.onPlayerDeath?.(p),
+    level: () => ({ grid: this.grid, tileSize: this.tileSize }),
   };
 
   constructor(
@@ -204,50 +205,42 @@ export class CombatSystem implements EnemyWorld {
 
   // ======================= удари гравця =======================
 
-  private playerMelee(p: Player, w: WeaponDef, swingId: number): void {
-    const origin = p.attackOrigin();
-    if (this.debug) this.drawSector(origin.x, origin.y, p.facing, w.range, w.arcDeg);
-    this.enemies.getChildren().forEach((obj) => {
-      const e = obj as Enemy;
-      if (!e.alive || e.lastSwingHit === swingId) return;
-      if (!sectorHitsRect(origin, p.facing, w.range, w.arcDeg, e.hitRect())) return;
-      e.lastSwingHit = swingId;
-      const r = e.hitRect();
-      e.takeHit({
-        damage: w.damage,
-        knockback: w.knockback,
-        dir: p.facing,
-        heavy: w.heavy,
-        x: Phaser.Math.Clamp(origin.x + p.facing * w.range * 0.6, r.x, r.x + r.w),
-        y: Phaser.Math.Clamp(origin.y, r.y, r.y + r.h),
-      });
-    });
-    for (const t of this.targets) {
+  /**
+   * Удар гравця: усі вороги, боси і бочки, яких зачепила дуга (або коло) удару, отримують його по разу за замах.
+   * Точка влучання (для іскор) — на цілі ближче до клинка; відкидання — туди, куди дивиться гравець,
+   * а для кругового удару (пікірування) — від точки удару в бік цілі.
+   */
+  private playerMelee(s: MeleeSwing, swingId: number): void {
+    const o = s.origin;
+    if (this.debug) this.drawSector(o.x, o.y, s.facing, s.range, s.arcDeg);
+    const inReach = (r: Rect) => sectorHitsRect(o, s.facing, s.range, s.arcDeg, r);
+    const dirTo = (r: Rect): 1 | -1 => (s.radial ? (r.x + r.w / 2 >= o.x ? 1 : -1) : s.facing);
+    const hitOn = (r: Rect): PlayerHit => {
+      // іскри: для дуги — на цілі там, куди дістає клинок; для кола — у найближчій до точки удару точці
+      const at = s.radial ? closestPointOnRect(o, r) : closestPointOnRect({ x: o.x + s.facing * s.range * 0.6, y: o.y }, r);
+      return { damage: s.damage, knockback: s.knockback, dir: dirTo(r), heavy: s.heavy, x: at.x, y: at.y };
+    };
+    const victims: Hittable[] = [...(this.enemies.getChildren() as Enemy[]), ...this.targets];
+    for (const t of victims) {
       if (!t.alive || t.lastSwingHit === swingId) continue;
-      if (!sectorHitsRect(origin, p.facing, w.range, w.arcDeg, t.hitRect())) continue;
-      t.lastSwingHit = swingId;
       const r = t.hitRect();
-      t.takeHit({
-        damage: w.damage,
-        knockback: w.knockback,
-        dir: p.facing,
-        heavy: w.heavy,
-        x: Phaser.Math.Clamp(origin.x + p.facing * w.range * 0.6, r.x, r.x + r.w),
-        y: Phaser.Math.Clamp(origin.y, r.y, r.y + r.h),
-      });
+      if (!inReach(r)) continue;
+      t.lastSwingHit = swingId;
+      t.takeHit(hitOn(r));
     }
     for (const b of this.breakables) {
       if (!b.alive || this.lastBreakableSwing.get(b) === swingId) continue;
-      if (!sectorHitsRect(origin, p.facing, w.range, w.arcDeg, b.hitRect())) continue;
+      const r = b.hitRect();
+      if (!inReach(r)) continue;
       this.lastBreakableSwing.set(b, swingId);
-      b.hit(p.facing, swingId);
+      b.hit(dirTo(r), swingId);
     }
   }
 
-  private playerShoot(p: Player, w: WeaponDef): void {
+  private playerShoot(p: Player, w: AttackMove): void {
     const spec = w.projectile!;
-    const o = p.attackOrigin();
-    this.spawnProjectile(spec.fx, o.x + p.facing * 12, o.y, {
+    const b = p.body;
+    const pr = this.spawnProjectile(spec.fx, b.center.x + p.facing * spec.spawnAhead, b.bottom - spec.spawnHeight, {
       owner: 'player',
       vx: p.facing * spec.speed,
       vy: 0,
@@ -259,6 +252,7 @@ export class CombatSystem implements EnemyWorld {
       pierce: spec.pierce,
       knockback: w.knockback,
     });
+    if (spec.originY !== undefined) pr.setOrigin(0.5, spec.originY);
   }
 
   /** Реакція світу на захист гравця: паріру оглушує атакувального. */

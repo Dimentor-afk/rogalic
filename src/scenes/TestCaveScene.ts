@@ -21,6 +21,8 @@ const WEAPON_KEYS: WeaponId[] = ['sword', 'axe', 'scepter', 'special'];
 export class TestCaveScene extends GameplayScene {
   private spawnPoint = new Phaser.Math.Vector2();
   private debugText!: Phaser.GameObjects.Text;
+  /** Підказка тренування: який прийом у руках і скільки шкоди зрізає броня. */
+  private loadoutText!: Phaser.GameObjects.Text;
 
   constructor() {
     super(SCENES.testCave);
@@ -48,18 +50,26 @@ export class TestCaveScene extends GameplayScene {
       .setScrollFactor(0)
       .setDepth(1000)
       .setVisible(false);
+    this.loadoutText = this.add
+      .text(this.scale.width - 4, 22, '', { fontFamily: 'Tiny5, monospace', fontSize: '8px', color: '#c8c0b4', align: 'right' })
+      .setOrigin(1, 0)
+      .setScrollFactor(0)
+      .setDepth(1000);
     this.bindKeys();
   }
 
   update(_time: number, delta: number): void {
     if (this.gameplayUpdate(delta) && this.player.y > this.level.heightPx + 64) this.respawn();
+    const p = this.player;
+    const armor = Math.round((ARMOR_DAMAGE_REDUCTION[p.loadout.armor] ?? 0) * 100);
+    this.loadoutText.setText(`1–4 прийом: ${p.weapon.name}\nT броня: −${armor}% шкоди\nH хітбокси  Esc — меню`);
     if (this.debugOn) this.updateDebugText();
   }
 
   protected hudExtras(): Partial<HudState> {
     return {
       chips: this.combat.runChips(),
-      hint: 'J атака  L/Shift перекат  K блок (вчасно — паріру)  Q фляга  Esc — меню',
+      hint: 'J удар (у стрибку — пікірування)  S присід (на бігу — підкат)  L перекат  K блок  Q фляга',
     };
   }
 
@@ -79,7 +89,7 @@ export class TestCaveScene extends GameplayScene {
     kb.on('keydown-G', () => this.scene.start(SCENES.gallery));
     kb.on('keydown-R', () => this.respawn());
     kb.on('keydown-ESC', () => this.fadeTo(SCENES.menu));
-    // 1–4: зброя, T: наступний рівень броні — перевірка мувсетів і варіантів спрайтів
+    // 1–4: прийом меча; T: наступний рівень броні (лише характеристика — зменшує шкоду, спрайт той самий)
     ['ONE', 'TWO', 'THREE', 'FOUR'].forEach((k, i) => {
       kb.on(`keydown-${k}`, () => this.player.setLoadout(WEAPON_KEYS[i]!, this.player.loadout.armor));
     });
@@ -99,8 +109,8 @@ export class TestCaveScene extends GameplayScene {
       [
         `fps ${this.game.loop.actualFps.toFixed(0)}  ворогів ${this.combat.enemies.countActive()}`,
         `pos ${p.x.toFixed(0)},${p.y.toFixed(0)}  vel ${b.velocity.x.toFixed(0)},${b.velocity.y.toFixed(0)}  ground ${b.blocked.down}`,
-        `sprite ${p.key}  ${p.weapon.name}`,
-        `1-4 зброя, T броня (${p.loadout.armor}), R — на старт, G — галерея`,
+        `стан ${p.stateName}  хітбокс ${b.width}×${b.height}`,
+        `R — на старт, G — галерея`,
         `проблем з асетами: ${problems.length}`,
       ].join('\n'),
     );

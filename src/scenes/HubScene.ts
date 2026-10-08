@@ -115,7 +115,7 @@ export class HubScene extends GameplayScene {
         const m = this.add.image(x, y, 'ph/slot_machine').setOrigin(0.5, 1).setDepth(2);
         // «живі» лампи автомата
         this.tweens.add({ targets: m, alpha: { from: 1, to: 0.85 }, yoyo: true, repeat: -1, duration: 260 + Math.random() * 200 });
-        this.interactables.push(new Trigger(x, y - 8, 24, () => `E — грати (ставка ${save.bet})`, () => this.fadeTo(SCENES.slot, {}, 300)));
+        this.interactables.push(new Trigger(x, y - 8, 24, () => `E — грати (ставка ${save.bet})`, () => this.prayAndPlay()));
         break;
       }
       case 'cashier':
@@ -173,6 +173,16 @@ export class HubScene extends GameplayScene {
           );
         }
     }
+  }
+
+  /** Перед автоматом лицар стає на коліно й молиться — і лише тоді йде грати. */
+  private prayAndPlay(): void {
+    const p = this.player;
+    const ms = p.pray();
+    p.inputLocked = true;
+    if (ms > 0) this.fx.floatText(p.x, p.y - 52, pick(PRAY_LINES), COLORS.gold);
+    // затемнення починається, коли лицар підводиться з колін
+    this.time.delayedCall(ms * 0.8, () => this.fadeTo(SCENES.slot, {}, 300));
   }
 
   /** Кіт говорить, коли гравець поруч: борг, боси, а після погладжування — іронічна фраза. */
@@ -370,6 +380,9 @@ const CAT_LINES = [
   'Котам кредит не дають. І правильно.',
   'Вихід — он там. Ніхто не користується.',
 ];
+
+/** Що шепоче лицар, стоячи на колінах перед автоматом. */
+const PRAY_LINES = ['Тільки б зайшло…', 'Ну хоч трійку…', 'Останній раз, чесно…', 'Цього разу відчуваю…'];
 
 /** ?seed=123 у адресі — фіксований seed підземелля (демонстрація відтворюваності). */
 function urlSeed(): number | null {
