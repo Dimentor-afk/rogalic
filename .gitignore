@@ -7,3 +7,4 @@ dist/
 # У репо йдуть лише запаковані атласи (public/assets) — вони частина гри.
 assets-src/*
 !assets-src/README.md
+.claude/worktrees/

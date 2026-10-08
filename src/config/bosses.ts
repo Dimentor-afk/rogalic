@@ -2,6 +2,7 @@
  * БОСИ. Логіка знає лише бібліотеку патернів атак (src/entities/boss/patterns.ts) і фази;
  * конкретні боси — тут: спрайт, HP, арена, фази (пороги HP → набір атак), тип фріспінів.
  * Новий бос = спрайт у маніфесті + запис тут (+ арена в src/levels/arenas.json).
+ * scale підібрано так, щоб піксель арту лишався цілим числом екранних пікселів (боси з базового паку запаковані в 0.5).
  */
 import type { FreeSpinType } from './slot';
 
@@ -92,6 +93,7 @@ export const BOSSES: Record<string, BossDef> = {
     targetTimeMs: 60000,
     freeSpins: { name: 'Часті дрібні', multipliers: { 2: 30, 5: 6, 10: 1, 25: 0.2 } },
     sprite: 'boss_goblin_king',
+    scale: 1.5,
     hp: 380,
     speed: 70,
     preferredDistance: 70,
@@ -139,7 +141,7 @@ export const BOSSES: Record<string, BossDef> = {
     targetTimeMs: 70000,
     freeSpins: { name: 'Липкі середні', multipliers: { 2: 14, 5: 10, 10: 2, 25: 0.4 } },
     sprite: 'boss_slime_king',
-    scale: 0.75,
+    scale: 1,
     hp: 520,
     speed: 40,
     preferredDistance: 60,
@@ -160,7 +162,7 @@ export const BOSSES: Record<string, BossDef> = {
         pauseMs: [700, 1100],
         shout: 'Рефінансування!',
         patterns: [
-          { kind: 'grow', weight: 2, factor: 1.12, max: 1.0, windupMs: 900 },
+          { kind: 'grow', weight: 2, factor: 1.1, max: 1.25, windupMs: 900 },
           { kind: 'slam', weight: 3, damage: 3, shockSpeed: 200, windupMs: 620 },
           { kind: 'obstacles', weight: 2, damage: 1, count: 4, lifeMs: 4500, windupMs: 700, frame: 'slimePuddle', blocking: false },
           { kind: 'summon', weight: 1, enemy: 'creditBlob', count: 1, windupMs: 700 },
@@ -188,7 +190,7 @@ export const BOSSES: Record<string, BossDef> = {
     targetTimeMs: 70000,
     freeSpins: { name: 'Камʼяні стабільні', multipliers: { 2: 23, 5: 8, 10: 1.7, 25: 0.25 } },
     sprite: 'golem_blue',
-    scale: 2,
+    scale: 3,
     hp: 600,
     speed: 45,
     preferredDistance: 56,
@@ -199,7 +201,7 @@ export const BOSSES: Record<string, BossDef> = {
         hpAbove: 0.6,
         pauseMs: [800, 1300],
         patterns: [
-          { kind: 'melee', weight: 3, damage: 3, reach: 46, height: 56, windupMs: 700 },
+          { kind: 'melee', weight: 3, damage: 3, reach: 64, height: 84, windupMs: 700 },
           { kind: 'slam', weight: 2, damage: 2, shockSpeed: 160, windupMs: 800 },
           { kind: 'dash', weight: 1, damage: 3, speed: 250, windupMs: 850 },
         ],
@@ -209,9 +211,9 @@ export const BOSSES: Record<string, BossDef> = {
         pauseMs: [650, 1100],
         shout: 'Камʼяна гарантія!',
         patterns: [
-          { kind: 'obstacles', weight: 3, damage: 3, count: 4, lifeMs: 700, windupMs: 800, frame: 'earthSpike', blocking: false, w: 40, h: 30 },
+          { kind: 'obstacles', weight: 3, damage: 3, count: 4, lifeMs: 700, windupMs: 800, frame: 'earthSpike', blocking: false, w: 46, h: 34 },
           { kind: 'rain', weight: 2, damage: 2, count: 6, fx: 'rockFall', windupMs: 900 },
-          { kind: 'melee', weight: 2, damage: 3, reach: 48, height: 56, windupMs: 620 },
+          { kind: 'melee', weight: 2, damage: 3, reach: 66, height: 84, windupMs: 620 },
           { kind: 'slam', weight: 2, damage: 3, shockSpeed: 190, windupMs: 700 },
         ],
       },
@@ -221,7 +223,7 @@ export const BOSSES: Record<string, BossDef> = {
         speedMult: 1.35,
         shout: 'Гарантія закінчилась!',
         patterns: [
-          { kind: 'obstacles', weight: 3, damage: 3, count: 6, lifeMs: 650, windupMs: 650, frame: 'earthSpike', blocking: false, w: 40, h: 30 },
+          { kind: 'obstacles', weight: 3, damage: 3, count: 6, lifeMs: 650, windupMs: 650, frame: 'earthSpike', blocking: false, w: 46, h: 34 },
           { kind: 'slam', weight: 2, damage: 3, shockSpeed: 220, windupMs: 600 },
           { kind: 'dash', weight: 2, damage: 3, speed: 320, windupMs: 620 },
           { kind: 'rain', weight: 2, damage: 2, count: 9, fx: 'rockFall', windupMs: 750 },
@@ -237,7 +239,7 @@ export const BOSSES: Record<string, BossDef> = {
     targetTimeMs: 75000,
     freeSpins: { name: 'Рідкі великі', multipliers: { 2: 6, 5: 6, 10: 4, 25: 1 } },
     sprite: 'boss_skeleton_king',
-    scale: 0.85,
+    scale: 1,
     hp: 560,
     speed: 75,
     preferredDistance: 50,
@@ -336,6 +338,7 @@ export const BOSSES: Record<string, BossDef> = {
     targetTimeMs: 80000,
     freeSpins: { name: 'Все або нічого', multipliers: { 2: 2, 5: 3, 10: 3, 25: 2 } },
     sprite: 'boss_dungeon_master',
+    scale: 1.5,
     hp: 500,
     speed: 55,
     preferredDistance: 150,
@@ -385,7 +388,7 @@ export const BOSSES: Record<string, BossDef> = {
     targetTimeMs: 100000,
     freeSpins: { name: 'Підкручені', multipliers: { 2: 10, 5: 8, 10: 5, 25: 3 } },
     sprite: 'boss_archdemon',
-    scale: 1.5,
+    scale: 2,
     tint: 0xffd8a0,
     hp: 760,
     speed: 65,
@@ -401,7 +404,7 @@ export const BOSSES: Record<string, BossDef> = {
           { kind: 'fan', weight: 3, damage: 2, count: 6, spreadDeg: 70, speed: 190, fx: 'casinoChip', windupMs: 650 },
           { kind: 'dash', weight: 2, damage: 3, speed: 340, windupMs: 650 },
           { kind: 'rain', weight: 2, damage: 2, count: 7, fx: 'casinoChip', windupMs: 850 },
-          { kind: 'melee', weight: 2, damage: 3, reach: 40, height: 60, windupMs: 560 },
+          { kind: 'melee', weight: 2, damage: 3, reach: 52, height: 80, windupMs: 560 },
         ],
       },
       {
@@ -426,7 +429,7 @@ export const BOSSES: Record<string, BossDef> = {
           { kind: 'fan', weight: 3, damage: 2, count: 9, spreadDeg: 120, speed: 210, fx: 'casinoChip', windupMs: 560, waves: 2 },
           { kind: 'dash', weight: 2, damage: 3, speed: 400, windupMs: 500 },
           { kind: 'slam', weight: 2, damage: 3, shockSpeed: 240, windupMs: 560 },
-          { kind: 'grow', weight: 1, factor: 1.1, max: 1.9, windupMs: 700 },
+          { kind: 'grow', weight: 1, factor: 1.1, max: 2.4, windupMs: 700 },
         ],
       },
     ],
