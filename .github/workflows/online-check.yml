@@ -1,5 +1,5 @@
-# Перевірка, що публічне посилання на гру (docs/play через raw.githack.com) справді відкривається і гра запускається.
-# Браузер на серверах GitHub відкриває версію саме цього коміту і поточну версію гілки.
+# Перевірка, що публічне посилання на гру справді відкривається і гра запускається у браузері.
+# Тимчасово: перебираємо CDN, що віддають файли з публічного GitHub-репозиторію, щоб знайти робочий.
 name: Онлайн-версія
 
 on:
@@ -16,6 +16,13 @@ permissions:
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - statically
+          - jsdelivr
+          - githack
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,18 +32,20 @@ jobs:
         run: |
           npm i --no-save playwright@1.63.0
           npx playwright install --with-deps chromium
-      - name: Версія цього коміту (rawcdn.githack.com)
-        run: node tools/smoke-online.mjs "https://rawcdn.githack.com/${{ github.repository }}/${{ github.sha }}/docs/play/index.html" commit.png
-      - name: Поточна версія гілки (посилання з README)
+      - name: Перевірка (${{ matrix.host }})
+        env:
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
         run: |
-          # dev-адреса githack кешує файли кілька хвилин — даємо їй оновитися
-          for i in 1 2 3 4 5; do
-            node tools/smoke-online.mjs "https://raw.githack.com/${{ github.repository }}/${{ github.ref_name }}/docs/play/index.html" branch.png && exit 0
-            sleep 60
-          done
-          exit 1
+          case "${{ matrix.host }}" in
+            statically) URL="https://cdn.statically.io/gh/$REPO/$SHA/docs/play/index.html" ;;
+            jsdelivr)   URL="https://cdn.jsdelivr.net/gh/$REPO@$SHA/docs/play/index.html" ;;
+            githack)    URL="https://rawcdn.githack.com/$REPO/$SHA/docs/play/index.html" ;;
+          esac
+          echo "$URL"
+          node tools/smoke-online.mjs "$URL" "${{ matrix.host }}.png"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: online-screenshots
+          name: online-${{ matrix.host }}
           path: '*.png'
