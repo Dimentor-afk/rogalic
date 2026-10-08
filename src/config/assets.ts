@@ -16,8 +16,20 @@ import type { AnimDef, BodyDef, SpriteDef, SpriteManifest } from '../core/assets
  */
 export const PLAYER_SPRITE = 'player';
 
-/** Хітбокс лицаря: ~2.4 тайла заввишки (у присіді — нижчий, див. Player). */
-export const PLAYER_BODY: BodyDef = { w: 14, h: 38, bottomPad: 0, offsetX: -2 };
+/** Хітбокс лицаря: 2.75 тайла заввишки (майже до гребеня шолома; прохід 3 тайли) (у присіді — нижчий, див. Player). */
+export const PLAYER_BODY: BodyDef = { w: 14, h: 44, bottomPad: 0, offsetX: -2 };
+
+/**
+ * Вигляд лат за рівнем броні (0 — рідна сталь пака): колір, у який шейдер перефарбовує сталеві пікселі,
+ * і сила перефарбування. Окремих спрайтів броні в паку лицаря немає — див. src/core/fx/ArmorPipeline.ts.
+ */
+export const ARMOR_LOOK: readonly { name: string; color: readonly [number, number, number]; amount: number }[] = [
+  { name: 'сталь', color: [1, 1, 1], amount: 0 },
+  { name: 'полірована сталь', color: [0.8, 0.92, 1.12], amount: 0.6 },
+  { name: 'воронована сталь', color: [0.5, 0.62, 1.0], amount: 0.85 },
+  { name: 'бронза', color: [0.95, 0.6, 0.34], amount: 0.85 },
+  { name: 'золото', color: [1.2, 0.95, 0.42], amount: 0.95 },
+];
 
 function buildManifest(): SpriteManifest {
   const m: SpriteManifest = {};

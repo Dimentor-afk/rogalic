@@ -21,7 +21,7 @@ import { CROUCH, LEDGE, PLAYER_MOVE as M, PRAY, SLIDE } from '../config/player';
 import { AIR_ATTACK, BLOCK, FLASK, HIT_FEEL, PLAYER_COMBAT, ROLL } from '../config/combat';
 import { CROUCH_ATTACK, WEAPONS, type AttackMove, type WeaponDef, type WeaponId } from '../config/weapons';
 import { ARMOR_DAMAGE_REDUCTION } from '../config/economy';
-import { PLAYER_SPRITE } from '../config/assets';
+import { ARMOR_LOOK, PLAYER_SPRITE } from '../config/assets';
 import { animKey, type BodyDef } from '../core/assets/manifest';
 import type { InputMap } from '../core/input/InputMap';
 import type { Grid } from '../core/level/grid';
@@ -30,6 +30,7 @@ import { resolveHit, type DefenseOutcome } from '../core/combat/defense';
 import type { Rect, Vec } from '../core/combat/geometry';
 import { findLedge, rectFree, type Ledge } from '../core/combat/ledge';
 import type { Fx } from '../core/fx/Fx';
+import { ArmorPipeline } from '../core/fx/ArmorPipeline';
 import { ManifestSprite } from './ManifestSprite';
 import { sfx } from '../core/audio/Sfx';
 
@@ -164,6 +165,7 @@ export class Player extends ManifestSprite {
     this.stamina = createStamina(loadout.maxStamina);
     this.body.setMaxVelocity(1000, M.maxFallSpeed);
     this.playAnim('idle');
+    this.applyArmorLook(loadout.armor);
   }
 
   get weapon(): WeaponDef {
@@ -206,10 +208,29 @@ export class Player extends ManifestSprite {
     return { x: this.body.center.x, y: this.body.bottom - heightAboveFeet };
   }
 
-  /** Зброя (прийом) і рівень броні. Спрайт лицаря один — броня впливає лише на шкоду. */
+  /** Зброя (прийом) і рівень броні. Броня зменшує шкоду і перефарбовує лати (шейдер, див. ARMOR_LOOK). */
   setLoadout(weapon: WeaponId, armor: number): void {
     this.loadout.weapon = weapon;
     this.loadout.armor = armor;
+    this.applyArmorLook(armor);
+  }
+
+  private applyArmorLook(level: number): void {
+    if (!(this.scene.renderer instanceof Phaser.Renderer.WebGL.WebGLRenderer)) return;
+    const look = ARMOR_LOOK[level];
+    if (!look || look.amount <= 0) {
+      this.removePostPipeline(ArmorPipeline.KEY);
+      return;
+    }
+    let fx = this.getPostPipeline(ArmorPipeline.KEY);
+    if (!fx || (Array.isArray(fx) && !fx.length)) {
+      this.setPostPipeline(ArmorPipeline.KEY);
+      fx = this.getPostPipeline(ArmorPipeline.KEY);
+    }
+    const pipe = (Array.isArray(fx) ? fx[0] : fx) as ArmorPipeline | undefined;
+    if (!pipe) return;
+    pipe.color = look.color;
+    pipe.amount = look.amount;
   }
 
   /** Нові характеристики (після прокачки в хабі) + повне відновлення. */

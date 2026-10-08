@@ -51,7 +51,11 @@ export abstract class Pattern {
   protected tick(_dt: number): void {}
 
   clearMarks(): void {
-    for (const m of this.marks) m.destroy();
+    // нескінченні твіни блимання самі не зникають разом з міткою — прибираємо їх явно
+    for (const m of this.marks) {
+      this.b.scene.tweens.killTweensOf(m);
+      m.destroy();
+    }
     this.marks = [];
     this.stopBlink?.();
   }

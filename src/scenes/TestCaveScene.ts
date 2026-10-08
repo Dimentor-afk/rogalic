@@ -3,6 +3,7 @@
  * Доступна з головного меню («Тренування»). Смерть тут нічого не коштує.
  */
 import Phaser from 'phaser';
+import { ARMOR_LOOK } from '../config/assets';
 import { ROOM_LEGEND } from '../config/legend';
 import { CAVE_TILESET } from '../config/tilesets';
 import { ARMOR_DAMAGE_REDUCTION } from '../config/economy';
@@ -62,7 +63,7 @@ export class TestCaveScene extends GameplayScene {
     if (this.gameplayUpdate(delta) && this.player.y > this.level.heightPx + 64) this.respawn();
     const p = this.player;
     const armor = Math.round((ARMOR_DAMAGE_REDUCTION[p.loadout.armor] ?? 0) * 100);
-    this.loadoutText.setText(`1–4 прийом: ${p.weapon.name}\nT броня: −${armor}% шкоди\nH хітбокси  Esc — меню`);
+    this.loadoutText.setText(`1–4 прийом: ${p.weapon.name}\nT броня: −${armor}% шкоди (${ARMOR_LOOK[p.loadout.armor]?.name ?? ''})\nH хітбокси  Esc — меню`);
     if (this.debugOn) this.updateDebugText();
   }
 

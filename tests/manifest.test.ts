@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { bodyOffset, selectFrames, trailingNumber } from '../src/core/assets/manifest';
-import { SPRITES, PLAYER_SPRITE } from '../src/config/assets';
+import { ARMOR_LOOK, SPRITES, PLAYER_SPRITE } from '../src/config/assets';
+import { ARMOR_DAMAGE_REDUCTION } from '../src/config/economy';
 import { WEAPONS } from '../src/config/weapons';
 import { readFileSync } from 'node:fs';
 import { CAVE_TILESET } from '../src/config/tilesets';
@@ -59,5 +60,13 @@ describe('тайлсет vs запакований атлас', () => {
     used.push(...(t.scaffold?.frames ?? []));
     const missing = used.filter((f) => !(f in json.frames));
     expect(missing).toEqual([]);
+  });
+});
+
+describe('вигляд броні', () => {
+  it('для кожного рівня броні є колір лат', () => {
+    expect(ARMOR_LOOK.length).toBe(ARMOR_DAMAGE_REDUCTION.length);
+    expect(ARMOR_LOOK[0]!.amount).toBe(0);
+    for (const l of ARMOR_LOOK.slice(1)) expect(l.amount).toBeGreaterThan(0);
   });
 });

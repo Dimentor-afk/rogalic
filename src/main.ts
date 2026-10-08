@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { ArmorPipeline } from './core/fx/ArmorPipeline';
 import '@fontsource/tiny5/400.css';
 import { loadFonts } from './ui/text';
 import { HudScene } from './scenes/HudScene';
@@ -33,6 +34,9 @@ const game = new Phaser.Game({
   // pixelArt: NEAREST-фільтрація текстур, без згладжування; roundPixels — без «дрижання» на півпікселях
   pixelArt: true,
   roundPixels: true,
+  // шейдер «видимої броні» лицаря (лише WebGL)
+  // (PostFX-конструктор приймає game, а не config — тому приведення типу)
+  pipeline: { [ArmorPipeline.KEY]: ArmorPipeline } as unknown as Phaser.Types.Core.PipelineConfig,
   scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
   physics: {
     default: 'arcade',
