@@ -4,7 +4,7 @@
  */
 import Phaser from 'phaser';
 import { SPRITES } from '../config/assets';
-import { animKey, bodyOffset, type AnimName, type SpriteDef } from '../core/assets/manifest';
+import { animKey, bodyOffset, type AnimName, type BodyDef, type SpriteDef } from '../core/assets/manifest';
 
 export class ManifestSprite extends Phaser.Physics.Arcade.Sprite {
   declare body: Phaser.Physics.Arcade.Body;
@@ -100,10 +100,22 @@ export class ManifestSprite extends Phaser.Physics.Arcade.Sprite {
     else this.setTexture('__MISSING');
   }
 
-  private applyBody(): void {
-    const b = this.spriteDef.body;
-    this.body.setSize(b.w, b.h, false);
+  /** Хітбокс, який має бути зараз. За замовчуванням — з маніфесту; нащадок може підмінити (присід гравця). */
+  protected currentBody(): BodyDef {
+    return this.spriteDef.body;
+  }
+
+  /** Ставить хітбокс з currentBody(). */
+  protected applyBody(): void {
+    const b = this.currentBody();
+    const body = this.body;
     const off = bodyOffset(b, this.width, this.height, this.flipX);
-    this.body.setOffset(off.x, off.y);
+    // Тіло вже могло зрушити на цьому кроці фізики, а спрайт наздожене його лише після кадру —
+    // тому не перечитуємо позицію зі спрайта, а зсуваємо тіло на різницю офсетів (разом з prev, щоб спрайт не смикнувся).
+    const dx = (off.x - body.offset.x) * this.scaleX;
+    const dy = (off.y - body.offset.y) * this.scaleY;
+    for (const v of [body.position, body.prev, body.prevFrame]) v.set(v.x + dx, v.y + dy);
+    body.setSize(b.w, b.h, false);
+    body.setOffset(off.x, off.y);
   }
 }
