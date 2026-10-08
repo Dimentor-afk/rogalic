@@ -1,5 +1,6 @@
-# Перевірки на кожен push/PR; на main — ще й публікація гри на GitHub Pages.
-# Один раз: Settings → Pages → Source: «GitHub Actions».
+# Перевірки на кожен push/PR; на основній гілці репозиторію — ще й публікація гри на GitHub Pages.
+# Публікація вмикається один раз: Settings → Pages → Source: «GitHub Actions».
+# Поки Pages не увімкнено, крок публікації пропускається (з поясненням у журналі), перевірки лишаються зеленими.
 name: CI і деплой
 
 on:
@@ -35,17 +36,29 @@ jobs:
       - name: Збірка
         run: npm run build
       - uses: actions/upload-pages-artifact@v3
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
         with:
           path: dist
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
     needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.pages.outputs.page_url }}
     steps:
+      - name: Чи увімкнено GitHub Pages
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${{ github.repository }}/pages" --silent 2>/dev/null; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::GitHub Pages ще не увімкнено (Settings → Pages → Source: GitHub Actions) — публікацію пропущено."
+          fi
       - id: pages
+        if: steps.check.outputs.enabled == 'true'
         uses: actions/deploy-pages@v4

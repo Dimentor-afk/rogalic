@@ -9,8 +9,9 @@
 **Стек:** Phaser 3 (Arcade Physics, `pixelArt: true`) · TypeScript (strict) · Vite · Vitest. Збереження — `localStorage`.
 Статичний білд, без сервера.
 
-**Грати:** https://dimentor-afk.github.io/rogalic/ — збирається і публікується GitHub Actions з гілки `main`
-(`.github/workflows/deploy.yml`; один раз увімкнути *Settings → Pages → Source: GitHub Actions*).
+**Грати:** https://dimentor-afk.github.io/rogalic/ — GitHub Actions збирає гру й публікує її з основної гілки
+репозиторію (`.github/workflows/deploy.yml`), щойно в налаштуваннях увімкнено *Settings → Pages → Source: GitHub Actions*.
+Поки Pages вимкнено, публікація пропускається, а перевірки (типи, тести, симуляція RTP, збірка) все одно працюють.
 
 ---
 
