@@ -15,40 +15,949 @@
     "archdemon": "DuskBorne-ArchDemon",
     "blacksmith": "FREE - Blacksmith 2D Pixel Art",
     "fx": "Super Pixel Effects Gigapack (Free Version) v2.9.0",
-    "magic": "Foozle_2DE0001_Pixel_Magic_Effects"
+    "magic": "Foozle_2DE0001_Pixel_Magic_Effects",
+    "knight": "2D_SL_Knight_v1.0"
   },
   "atlases": {
     "player": {
-      "scale": 0.5,
+      "scale": 1,
       "trim": true,
       "sources": [
         {
-          "kind": "frames",
-          "pack": "roguelike",
-          "dir": "Sprites/Player",
-          "match": "^(Sword|Axe|Scepter)/Defence(\\d)/Player_(Idle|Walk|Attack)_[A-Za-z]+_Defence\\d_(\\d+)\\.png$",
-          "name": "player/$1/d$2/$3/$4"
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Idle.png",
+          "cell": 64,
+          "name": "player/idle/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              1
+            ]
+          ]
         },
         {
-          "kind": "frames",
-          "pack": "roguelike",
-          "dir": "Sprites/Player",
-          "match": "^(Sword|Axe|Scepter)/Player_Death_[A-Za-z]+_(\\d+)\\.png$",
-          "name": "player/$1/death/$2"
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Run.png",
+          "cell": 64,
+          "name": "player/walk/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              1
+            ]
+          ]
         },
         {
-          "kind": "frames",
-          "pack": "roguelike",
-          "dir": "Sprites/Player",
-          "match": "^Special/Player_(Idle|Walk|Attack|Death)_Special_(\\d+)\\.png$",
-          "name": "player/special/$1/$2"
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Jump.png",
+          "cell": 64,
+          "name": "player/jump/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ]
+          ]
         },
         {
-          "kind": "frames",
-          "pack": "roguelike",
-          "dir": "Sprites/Player",
-          "match": "^Scepter/Projectile/Player_(Blast|Projectile)_(\\d+)\\.png$",
-          "name": "fx/scepter_$1/$2"
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Jump.png",
+          "cell": 64,
+          "name": "player/fall/{i}",
+          "rects": [
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Roll.png",
+          "cell": 64,
+          "name": "player/roll/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Hurt.png",
+          "cell": 64,
+          "name": "player/hurt/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Death.png",
+          "cell": 64,
+          "name": "player/death/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Health.png",
+          "cell": 64,
+          "name": "player/heal/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Pray.png",
+          "cell": 64,
+          "name": "player/pray/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              4,
+              0,
+              2,
+              1
+            ],
+            [
+              6,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              4,
+              1,
+              2,
+              1
+            ],
+            [
+              6,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              4,
+              2,
+              2,
+              1
+            ],
+            [
+              6,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "crouch_idle.png",
+          "cell": 64,
+          "name": "player/crouch/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "crouch_attacks.png",
+          "cell": 64,
+          "name": "player/crouch_attack/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "attack_from_air.png",
+          "cell": 64,
+          "name": "player/air_attack/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Climb.png",
+          "cell": 64,
+          "name": "player/climb/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Hanging.png",
+          "cell": 64,
+          "name": "player/hang/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              0,
+              3,
+              2,
+              1
+            ],
+            [
+              2,
+              3,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Slide.png",
+          "cell": 64,
+          "name": "player/slide/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              4,
+              0,
+              2,
+              1
+            ],
+            [
+              6,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ],
+            [
+              4,
+              1,
+              2,
+              1
+            ],
+            [
+              6,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Attacks.png",
+          "cell": 64,
+          "name": "player/attack_sword/{i}",
+          "rects": [
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              4,
+              0,
+              2,
+              1
+            ],
+            [
+              6,
+              0,
+              2,
+              1
+            ],
+            [
+              8,
+              0,
+              2,
+              1
+            ],
+            [
+              10,
+              0,
+              2,
+              1
+            ],
+            [
+              12,
+              0,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Attacks.png",
+          "cell": 64,
+          "name": "player/attack_axe/{i}",
+          "rects": [
+            [
+              0,
+              0,
+              2,
+              1
+            ],
+            [
+              2,
+              0,
+              2,
+              1
+            ],
+            [
+              4,
+              0,
+              2,
+              1
+            ],
+            [
+              6,
+              0,
+              2,
+              1
+            ],
+            [
+              14,
+              0,
+              2,
+              1
+            ],
+            [
+              0,
+              1,
+              2,
+              1
+            ],
+            [
+              2,
+              1,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Attacks.png",
+          "cell": 64,
+          "name": "player/attack_wave/{i}",
+          "rects": [
+            [
+              12,
+              1,
+              2,
+              1
+            ],
+            [
+              14,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              2,
+              2,
+              1
+            ],
+            [
+              2,
+              2,
+              2,
+              1
+            ],
+            [
+              4,
+              2,
+              2,
+              1
+            ],
+            [
+              6,
+              2,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Attacks.png",
+          "cell": 64,
+          "name": "player/attack_thrust/{i}",
+          "rects": [
+            [
+              4,
+              1,
+              2,
+              1
+            ],
+            [
+              6,
+              1,
+              2,
+              1
+            ],
+            [
+              8,
+              1,
+              2,
+              1
+            ],
+            [
+              10,
+              1,
+              2,
+              1
+            ],
+            [
+              12,
+              1,
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "cells",
+          "pack": "knight",
+          "file": "Attacks.png",
+          "cell": 1,
+          "name": "fx/slash_wave/{i}",
+          "rects": [
+            [
+              214,
+              128,
+              40,
+              64
+            ]
+          ]
         }
       ]
     },
@@ -709,14 +1618,6 @@
           "name": "dummy/death/{i}"
         },
         {
-          "kind": "frames",
-          "pack": "roguelike",
-          "dir": "Sprites/Monsters",
-          "scale": 0.5,
-          "match": "^(Goblin|Skeleton|Slime)/Variant(\\d)/[A-Za-z]+_(Walk|Death)_(\\d+)\\.png$",
-          "name": "$1$2/$3/$4"
-        },
-        {
           "kind": "strip",
           "pack": "golems",
           "file": "Blue/White_Swoosh_VFX/Golem_1_idle.png",
@@ -1067,6 +1968,86 @@
           "frameWidth": 100,
           "frameHeight": 100,
           "name": "bloodling/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BrownSpider_walk.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_brown/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BrownSpider_attack.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_brown/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BrownSpider_hurt.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_brown/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BrownSpider_death.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_brown/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "BrownSpider_sleep.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_brown/sleep/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "AquaSpider_walk.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_aqua/walk/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "AquaSpider_attack.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_aqua/attack/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "AquaSpider_hurt.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_aqua/hurt/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "AquaSpider_death.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_aqua/death/{i}"
+        },
+        {
+          "kind": "strip",
+          "pack": "spider",
+          "file": "AquaSpider_sleep.png",
+          "frameWidth": 56,
+          "frameHeight": 34,
+          "name": "spider_aqua/sleep/{i}"
         }
       ]
     },
@@ -1199,6 +2180,13 @@
           "dir": "Fire_Ball",
           "match": "^0(0[1-9]|10)\\.png$",
           "name": "fx/fire_ball/$1"
+        },
+        {
+          "kind": "frames",
+          "pack": "magic",
+          "dir": "Water",
+          "match": "^0(0[1-9]|10)\\.png$",
+          "name": "fx/water_ball/$1"
         }
       ]
     },

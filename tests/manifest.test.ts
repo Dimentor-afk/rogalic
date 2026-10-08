@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { bodyOffset, selectFrames, trailingNumber } from '../src/core/assets/manifest';
-import { SPRITES, PLAYER_ARMOR_LEVELS, PLAYER_WEAPON_SPRITES, playerSpriteKey } from '../src/config/assets';
+import { SPRITES, PLAYER_SPRITE } from '../src/config/assets';
+import { WEAPONS } from '../src/config/weapons';
 import { readFileSync } from 'node:fs';
 import { CAVE_TILESET } from '../src/config/tilesets';
 
@@ -40,9 +41,9 @@ describe('asset manifest vs запаковані атласи', () => {
     });
   }
 
-  it('є спрайти гравця для кожної зброї і кожного рівня броні', () => {
-    for (const w of PLAYER_WEAPON_SPRITES)
-      for (let d = 0; d < PLAYER_ARMOR_LEVELS; d++) expect(SPRITES[playerSpriteKey(w, d)]).toBeDefined();
+  it('у лицаря є анімація атаки для кожної зброї (прийому)', () => {
+    const def = SPRITES[PLAYER_SPRITE]!;
+    for (const w of Object.values(WEAPONS)) expect(def.anims[w.anim], w.id).toBeDefined();
   });
 });
 

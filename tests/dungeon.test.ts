@@ -151,7 +151,7 @@ describe('generateDungeon', () => {
   it('вороги: на глибині 1 немає ворогів, що з’являються глибше', () => {
     for (let seed = 1; seed < 40; seed++) {
       const lvl = generateDungeon({ seed, depth: 1, templates: TEMPLATES });
-      for (const s of lvl.spawns.filter((s) => s.kind === 'enemy')) expect(['goblinSlinger', 'skeletonVeteran', 'bloodling', 'spiderVenom', 'spider']).not.toContain(s.enemyId);
+      for (const s of lvl.spawns.filter((s) => s.kind === 'enemy')) expect(['spiderBrute', 'spiderSpitter', 'spiderVenom']).not.toContain(s.enemyId);
     }
   });
 

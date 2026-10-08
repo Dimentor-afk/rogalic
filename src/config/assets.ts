@@ -9,46 +9,43 @@
  */
 import type { AnimDef, BodyDef, SpriteDef, SpriteManifest } from '../core/assets/manifest';
 
-/** Види зброї гравця, для яких у паку є спрайти (з рівнями броні 0..4). */
-export const PLAYER_WEAPON_SPRITES = ['sword', 'axe', 'scepter'] as const;
-export type PlayerWeaponSprite = (typeof PLAYER_WEAPON_SPRITES)[number];
-export const PLAYER_ARMOR_LEVELS = 5;
+/**
+ * Гравець — лицар «2D SL Knight» (кадри 128×64, лицар по центру, ноги на нижньому краї кадру).
+ * Броня і зброя на спрайті не змінюються (у паку один лицар з мечем) — рівень броні впливає лише на шкоду,
+ * а різна «зброя» — це різні прийоми того самого меча (власна анімація атаки для кожного).
+ */
+export const PLAYER_SPRITE = 'player';
 
-/** Ключ спрайта гравця для зброї і рівня броні: "player.sword.d2". */
-export function playerSpriteKey(weapon: PlayerWeaponSprite, armor: number): string {
-  return `player.${weapon}.d${armor}`;
-}
-
-// Хітбокс гравця однаковий для всіх варіантів (кадри 80×80 після зменшення паку в 2 рази).
-const PLAYER_BODY = { w: 12, h: 28, bottomPad: 2 };
-
-function playerSprite(weapon: PlayerWeaponSprite, armor: number): SpriteDef {
-  const p = `player/${weapon}/d${armor}/`;
-  const anims: Record<string, AnimDef> = {
-    idle: { prefix: `${p}idle/`, fps: 6, loop: true },
-    walk: { prefix: `${p}walk/`, fps: 10, loop: true },
-    attack: { prefix: `${p}attack/`, fps: 14 },
-    // анімація смерті в паку одна на зброю, без варіантів броні
-    death: { prefix: `player/${weapon}/death/`, fps: 8 },
-  };
-  return { atlas: 'player', body: PLAYER_BODY, anims };
-}
+/** Хітбокс лицаря: ~2.4 тайла заввишки (у присіді — нижчий, див. Player). */
+export const PLAYER_BODY: BodyDef = { w: 14, h: 38, bottomPad: 0, offsetX: -2 };
 
 function buildManifest(): SpriteManifest {
   const m: SpriteManifest = {};
 
-  for (const w of PLAYER_WEAPON_SPRITES) {
-    for (let d = 0; d < PLAYER_ARMOR_LEVELS; d++) m[playerSpriteKey(w, d)] = playerSprite(w, d);
-  }
-
-  m['player.special'] = {
+  const a = (name: string, fps: number, loop = false): AnimDef => ({ prefix: `player/${name}/`, fps, loop });
+  m[PLAYER_SPRITE] = {
     atlas: 'player',
     body: PLAYER_BODY,
     anims: {
-      idle: { prefix: 'player/special/idle/', fps: 6, loop: true },
-      walk: { prefix: 'player/special/walk/', fps: 10, loop: true },
-      attack: { prefix: 'player/special/attack/', fps: 14 },
-      death: { prefix: 'player/special/death/', fps: 8 },
+      idle: a('idle', 8, true),
+      walk: a('walk', 12, true),
+      jump: a('jump', 10),
+      fall: a('fall', 10, true),
+      roll: a('roll', 14),
+      hurt: a('hurt', 12),
+      death: a('death', 8),
+      heal: a('heal', 10),
+      pray: a('pray', 10),
+      crouch: a('crouch', 8, true),
+      crouch_attack: a('crouch_attack', 16),
+      air_attack: a('air_attack', 14),
+      climb: a('climb', 12),
+      hang: a('hang', 8, true),
+      slide: a('slide', 14),
+      attack_sword: a('attack_sword', 14),
+      attack_axe: a('attack_axe', 14),
+      attack_wave: a('attack_wave', 14),
+      attack_thrust: a('attack_thrust', 14),
     },
   };
 
@@ -72,12 +69,6 @@ function buildManifest(): SpriteManifest {
     anims: Object.fromEntries(Object.entries(anims).map(([k, [dir, fps, loop]]) => [k, { prefix: `${base}/${dir}/`, fps, loop }])),
   });
 
-  // базовий пак: лише ходьба і смерть → атака/удар/idle через fallback
-  for (const v of [0, 1]) {
-    m[`goblin${v}`] = enemy(`goblin${v}`, { walk: ['walk', 10, true], death: ['death', 10] }, { w: 12, h: 22, bottomPad: 1, offsetX: 3 });
-    m[`skeleton${v}`] = enemy(`skeleton${v}`, { walk: ['walk', 8, true], death: ['death', 10] }, { w: 14, h: 30, bottomPad: 1, offsetX: 1 });
-    m[`slime${v}`] = enemy(`slime${v}`, { walk: ['walk', 8, true], death: ['death', 10] }, { w: 30, h: v ? 22 : 16, bottomPad: 0, offsetX: -5 });
-  }
   for (const c of ['blue', 'orange']) {
     m[`golem_${c}`] = enemy(
       `golem_${c}`,
@@ -97,7 +88,7 @@ function buildManifest(): SpriteManifest {
     { w: 18, h: 18, bottomPad: 16 },
     true,
   );
-  for (const c of ['black', 'purple']) {
+  for (const c of ['black', 'purple', 'brown', 'aqua']) {
     m[`spider_${c}`] = enemy(
       `spider_${c}`,
       { idle: ['sleep', 6, true], walk: ['walk', 10, true], attack: ['attack', 12], hurt: ['hurt', 12], death: ['death', 10] },
@@ -153,8 +144,8 @@ export const FX: Record<string, { atlas: string; prefix: string; fps: number; fa
   splatter: { atlas: 'fx', prefix: 'fx/splatter/', fps: 24 },
   explosion: { atlas: 'fx', prefix: 'fx/explosion/', fps: 20 },
   heal: { atlas: 'fx', prefix: 'fx/heal/', fps: 24 },
-  scepterBolt: { atlas: 'player', prefix: 'fx/scepter_projectile/', fps: 14 },
-  scepterBlast: { atlas: 'player', prefix: 'fx/scepter_blast/', fps: 16 },
+  slashWave: { atlas: 'player', prefix: 'fx/slash_wave/', fps: 1 },
+  waterBall: { atlas: 'fx', prefix: 'fx/water_ball/', fps: 14, loop: true },
   fireball: { atlas: 'enemies', prefix: 'flydemon/projectile/', fps: 1, facesLeft: true },
   // снаряди і вибухи босів
   goblinBolt: { atlas: 'bosses', prefix: 'bossfx/goblin_king/projectile/', fps: 12 },

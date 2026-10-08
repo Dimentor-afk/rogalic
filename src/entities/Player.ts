@@ -13,7 +13,7 @@ import { PLAYER_MOVE as M } from '../config/player';
 import { BLOCK, FLASK, HIT_FEEL, PLAYER_COMBAT, ROLL } from '../config/combat';
 import { WEAPONS, type WeaponDef, type WeaponId } from '../config/weapons';
 import { ARMOR_DAMAGE_REDUCTION } from '../config/economy';
-import { playerSpriteKey } from '../config/assets';
+import { PLAYER_SPRITE } from '../config/assets';
 import type { InputMap } from '../core/input/InputMap';
 import { canAct, createStamina, drain, spend, tick, type Stamina } from '../core/combat/stamina';
 import { resolveHit, type DefenseOutcome } from '../core/combat/defense';
@@ -114,18 +114,13 @@ export class Player extends ManifestSprite {
     private hooks: PlayerHooks,
     loadout: PlayerLoadout = DEFAULT_LOADOUT,
   ) {
-    super(scene, x, y, Player.spriteFor(loadout.weapon, loadout.armor));
+    super(scene, x, y, PLAYER_SPRITE);
     this.loadout = { ...loadout };
     this.hp = loadout.maxHp;
     this.flasks = loadout.flasks;
     this.stamina = createStamina(loadout.maxStamina);
     this.body.setMaxVelocity(1000, M.maxFallSpeed);
     this.playAnim('idle');
-  }
-
-  static spriteFor(weapon: WeaponId, armor: number): string {
-    const s = WEAPONS[weapon].sprite;
-    return s === 'special' ? 'player.special' : playerSpriteKey(s, armor);
   }
 
   get weapon(): WeaponDef {
@@ -163,10 +158,10 @@ export class Player extends ManifestSprite {
     return { x: this.body.center.x, y: this.body.y + this.body.height * 0.4 };
   }
 
+  /** Зброя (прийом) і рівень броні. Спрайт лицаря один — броня впливає лише на шкоду. */
   setLoadout(weapon: WeaponId, armor: number): void {
     this.loadout.weapon = weapon;
     this.loadout.armor = armor;
-    this.setSpriteKey(Player.spriteFor(weapon, armor));
   }
 
   /** Нові характеристики (після прокачки в хабі) + повне відновлення. */
@@ -342,8 +337,8 @@ export class Player extends ManifestSprite {
     this.attackPhase = 'windup';
     this.swingId++;
     sfx.play('swing');
-    // Анімація паку: кадри 0–1 — замах, 2 — удар, 3 — відновлення. Підганяємо тривалість під фази зброї.
-    if (this.hasAnim('attack')) this.play({ key: `${this.key}:attack`, duration: w.windupMs * 2, repeat: 0 });
+    // своя анімація для кожного прийому; тривалість — на весь удар (замах + активна фаза + відновлення)
+    if (this.hasAnim(w.anim)) this.play({ key: `${this.key}:${w.anim}`, duration: w.windupMs + w.activeMs + w.recoveryMs, repeat: 0 });
   }
 
   private updateAttack(dtMs: number): void {

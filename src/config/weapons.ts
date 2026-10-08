@@ -1,8 +1,8 @@
 /**
  * Зброя відрізняється мувсетом: швидкість (фази удару), дальність, дуга, стаміна, снаряд чи ні.
  * Фази удару: windup (замах — уразливий, ще не б'є) → active (зона удару працює) → recovery (відновлення).
+ * У лицаря один меч, тож «зброя» — це прийоми: кожен має власну анімацію атаки з паку.
  */
-import type { PlayerWeaponSprite } from './assets';
 
 export type WeaponId = 'sword' | 'axe' | 'scepter' | 'special';
 
@@ -23,8 +23,8 @@ export interface WeaponDef {
   id: WeaponId;
   name: string;
   description: string;
-  /** Набір спрайтів гравця. 'special' — окремий персонаж без рівнів броні. */
-  sprite: PlayerWeaponSprite | 'special';
+  /** Анімація атаки лицаря (src/config/assets.ts). */
+  anim: string;
   damage: number;
   windupMs: number;
   activeMs: number;
@@ -45,8 +45,8 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
   sword: {
     id: 'sword',
     name: 'Меч «Ставка»',
-    description: 'Збалансований. Швидкий замах, середня дальність.',
-    sprite: 'sword',
+    description: 'Збалансований удар. Швидкий замах, середня дальність.',
+    anim: 'attack_sword',
     damage: 10,
     windupMs: 110,
     activeMs: 90,
@@ -59,9 +59,9 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
   },
   axe: {
     id: 'axe',
-    name: 'Сокира «Ва-банк»',
-    description: 'Повільна і важка. Широка дуга, велика шкода, дорого по нервах.',
-    sprite: 'axe',
+    name: 'Розмах «Ва-банк»',
+    description: 'Повільний подвійний розмах. Широка дуга, велика шкода, дорого по нервах.',
+    anim: 'attack_axe',
     damage: 24,
     windupMs: 300,
     activeMs: 120,
@@ -75,9 +75,9 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
   },
   scepter: {
     id: 'scepter',
-    name: 'Скіпетр «Кешбек»',
-    description: 'Стріляє згустком магії. Можна тримати дистанцію.',
-    sprite: 'scepter',
+    name: 'Хвиля «Кешбек»',
+    description: 'Удар, що зриває з клинка хвилю. Можна тримати дистанцію.',
+    anim: 'attack_wave',
     damage: 9,
     windupMs: 160,
     activeMs: 60,
@@ -87,13 +87,13 @@ export const WEAPONS: Record<WeaponId, WeaponDef> = {
     arcDeg: 0,
     knockback: 70,
     lunge: 0,
-    projectile: { fx: 'scepterBolt', impactFx: 'scepterBlast', speed: 280, lifetimeMs: 900, size: 10 },
+    projectile: { fx: 'slashWave', impactFx: 'impact', speed: 280, lifetimeMs: 900, size: 14 },
   },
   special: {
     id: 'special',
-    name: 'Клинок «Джекпот»',
-    description: 'Дуже швидкий і дешевий. Мала дальність.',
-    sprite: 'special',
+    name: 'Укол «Джекпот»',
+    description: 'Дуже швидкий і дешевий укол уперед. Вузький, але далекий.',
+    anim: 'attack_thrust',
     damage: 8,
     windupMs: 70,
     activeMs: 80,

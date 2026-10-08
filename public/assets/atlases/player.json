@@ -1,4323 +1,2523 @@
 {
  "frames": {
-  "fx/scepter_blast/0": {
+  "fx/slash_wave/0": {
    "frame": {
-    "x": 1144,
-    "y": 136,
-    "w": 4,
-    "h": 4
+    "x": 673,
+    "y": 68,
+    "w": 37,
+    "h": 43
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 78,
-    "y": 78,
-    "w": 4,
-    "h": 4
+    "x": 2,
+    "y": 21,
+    "w": 37,
+    "h": 43
    },
    "sourceSize": {
-    "w": 160,
-    "h": 160
+    "w": 40,
+    "h": 64
    }
   },
-  "fx/scepter_blast/1": {
+  "player/air_attack/0": {
    "frame": {
-    "x": 776,
-    "y": 136,
-    "w": 12,
-    "h": 12
+    "x": 137,
+    "y": 2,
+    "w": 25,
+    "h": 59
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 74,
-    "y": 74,
-    "w": 12,
-    "h": 12
+    "x": 51,
+    "y": 0,
+    "w": 25,
+    "h": 59
    },
    "sourceSize": {
-    "w": 160,
-    "h": 160
+    "w": 128,
+    "h": 64
    }
   },
-  "fx/scepter_blast/2": {
+  "player/air_attack/1": {
    "frame": {
-    "x": 790,
-    "y": 136,
-    "w": 12,
-    "h": 12
+    "x": 327,
+    "y": 2,
+    "w": 25,
+    "h": 53
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 74,
-    "y": 74,
-    "w": 12,
-    "h": 12
+    "x": 51,
+    "y": 3,
+    "w": 25,
+    "h": 53
    },
    "sourceSize": {
-    "w": 160,
-    "h": 160
+    "w": 128,
+    "h": 64
    }
   },
-  "fx/scepter_blast/3": {
+  "player/air_attack/2": {
+   "frame": {
+    "x": 300,
+    "y": 2,
+    "w": 25,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 51,
+    "y": 4,
+    "w": 25,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/air_attack/3": {
+   "frame": {
+    "x": 990,
+    "y": 68,
+    "w": 63,
+    "h": 42
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 33,
+    "y": 22,
+    "w": 63,
+    "h": 42
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/air_attack/4": {
+   "frame": {
+    "x": 1937,
+    "y": 2,
+    "w": 74,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 27,
+    "y": 20,
+    "w": 74,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/air_attack/5": {
+   "frame": {
+    "x": 1772,
+    "y": 2,
+    "w": 86,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 20,
+    "y": 20,
+    "w": 86,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/air_attack/6": {
+   "frame": {
+    "x": 2,
+    "y": 2,
+    "w": 90,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 21,
+    "y": 0,
+    "w": 90,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_axe/0": {
+   "frame": {
+    "x": 950,
+    "y": 2,
+    "w": 27,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 27,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_axe/1": {
+   "frame": {
+    "x": 554,
+    "y": 2,
+    "w": 33,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 44,
+    "y": 17,
+    "w": 33,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_axe/2": {
+   "frame": {
+    "x": 476,
+    "y": 2,
+    "w": 37,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 42,
+    "y": 17,
+    "w": 37,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_axe/3": {
+   "frame": {
+    "x": 1182,
+    "y": 2,
+    "w": 43,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 18,
+    "w": 43,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_axe/4": {
+   "frame": {
+    "x": 56,
+    "y": 68,
+    "w": 51,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 46,
+    "y": 20,
+    "w": 51,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_axe/5": {
+   "frame": {
+    "x": 2,
+    "y": 68,
+    "w": 52,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 45,
+    "y": 20,
+    "w": 52,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_axe/6": {
+   "frame": {
+    "x": 109,
+    "y": 68,
+    "w": 38,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 44,
+    "y": 20,
+    "w": 38,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_sword/0": {
+   "frame": {
+    "x": 589,
+    "y": 2,
+    "w": 33,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 44,
+    "y": 17,
+    "w": 33,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_sword/1": {
+   "frame": {
+    "x": 515,
+    "y": 2,
+    "w": 37,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 42,
+    "y": 17,
+    "w": 37,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_sword/2": {
+   "frame": {
+    "x": 1227,
+    "y": 2,
+    "w": 43,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 18,
+    "w": 43,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_sword/3": {
+   "frame": {
+    "x": 429,
+    "y": 2,
+    "w": 45,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 17,
+    "w": 45,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_sword/4": {
+   "frame": {
+    "x": 659,
+    "y": 2,
+    "w": 32,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 47,
+    "y": 17,
+    "w": 32,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_sword/5": {
+   "frame": {
+    "x": 726,
+    "y": 2,
+    "w": 30,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 30,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_thrust/0": {
+   "frame": {
+    "x": 451,
+    "y": 68,
+    "w": 55,
+    "h": 43
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 52,
+    "y": 21,
+    "w": 55,
+    "h": 43
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_thrust/1": {
+   "frame": {
+    "x": 508,
+    "y": 68,
+    "w": 53,
+    "h": 43
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 21,
+    "w": 53,
+    "h": 43
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_thrust/2": {
+   "frame": {
+    "x": 563,
+    "y": 68,
+    "w": 53,
+    "h": 43
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 21,
+    "w": 53,
+    "h": 43
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_thrust/3": {
    "frame": {
     "x": 618,
-    "y": 136,
-    "w": 20,
-    "h": 20
+    "y": 68,
+    "w": 53,
+    "h": 43
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 70,
-    "y": 70,
-    "w": 20,
-    "h": 20
+    "x": 54,
+    "y": 21,
+    "w": 53,
+    "h": 43
    },
    "sourceSize": {
-    "w": 160,
-    "h": 160
+    "w": 128,
+    "h": 64
    }
   },
-  "fx/scepter_projectile/0": {
+  "player/attack_thrust/4": {
    "frame": {
-    "x": 952,
-    "y": 136,
+    "x": 758,
+    "y": 2,
     "w": 30,
-    "h": 8
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 30,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_wave/0": {
+   "frame": {
+    "x": 790,
+    "y": 2,
+    "w": 30,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 30,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_wave/1": {
+   "frame": {
+    "x": 1552,
+    "y": 2,
+    "w": 29,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 18,
+    "w": 29,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_wave/2": {
+   "frame": {
+    "x": 1860,
+    "y": 2,
+    "w": 75,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 47,
+    "y": 20,
+    "w": 75,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_wave/3": {
+   "frame": {
+    "x": 371,
+    "y": 68,
+    "w": 78,
+    "h": 43
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 47,
+    "y": 21,
+    "w": 78,
+    "h": 43
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_wave/4": {
+   "frame": {
+    "x": 824,
+    "y": 68,
+    "w": 81,
+    "h": 42
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 47,
+    "y": 22,
+    "w": 81,
+    "h": 42
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/attack_wave/5": {
+   "frame": {
+    "x": 907,
+    "y": 68,
+    "w": 81,
+    "h": 42
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 47,
+    "y": 22,
+    "w": 81,
+    "h": 42
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/climb/0": {
+   "frame": {
+    "x": 388,
+    "y": 2,
+    "w": 19,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 16,
+    "w": 19,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/climb/1": {
+   "frame": {
+    "x": 350,
+    "y": 68,
+    "w": 19,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 55,
+    "y": 19,
+    "w": 19,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/climb/2": {
+   "frame": {
+    "x": 783,
+    "y": 68,
+    "w": 19,
+    "h": 43
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 55,
+    "y": 19,
+    "w": 19,
+    "h": 43
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/climb/3": {
+   "frame": {
+    "x": 409,
+    "y": 2,
+    "w": 18,
+    "h": 48
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 56,
-    "y": 76,
-    "w": 30,
-    "h": 8
+    "y": 16,
+    "w": 18,
+    "h": 48
    },
    "sourceSize": {
-    "w": 160,
-    "h": 160
+    "w": 128,
+    "h": 64
    }
   },
-  "fx/scepter_projectile/1": {
+  "player/climb/4": {
    "frame": {
     "x": 804,
-    "y": 136,
-    "w": 58,
-    "h": 10
+    "y": 68,
+    "w": 18,
+    "h": 43
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 28,
-    "y": 74,
-    "w": 58,
-    "h": 10
+    "x": 55,
+    "y": 20,
+    "w": 18,
+    "h": 43
    },
    "sourceSize": {
-    "w": 160,
-    "h": 160
+    "w": 128,
+    "h": 64
    }
   },
-  "fx/scepter_projectile/2": {
+  "player/climb/5": {
    "frame": {
-    "x": 914,
-    "y": 136,
-    "w": 36,
-    "h": 10
+    "x": 1085,
+    "y": 68,
+    "w": 19,
+    "h": 42
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 55,
+    "y": 19,
+    "w": 19,
+    "h": 42
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/crouch_attack/0": {
+   "frame": {
+    "x": 1314,
+    "y": 68,
+    "w": 47,
+    "h": 39
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 50,
-    "y": 74,
-    "w": 36,
-    "h": 10
+    "y": 25,
+    "w": 47,
+    "h": 39
    },
    "sourceSize": {
-    "w": 160,
-    "h": 160
+    "w": 128,
+    "h": 64
    }
   },
-  "fx/scepter_projectile/3": {
+  "player/crouch_attack/1": {
    "frame": {
-    "x": 864,
-    "y": 136,
-    "w": 48,
-    "h": 10
+    "x": 1136,
+    "y": 68,
+    "w": 44,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 44,
+    "y": 24,
+    "w": 44,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/crouch_attack/2": {
+   "frame": {
+    "x": 1182,
+    "y": 68,
+    "w": 32,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 43,
+    "y": 24,
+    "w": 32,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/crouch_attack/3": {
+   "frame": {
+    "x": 1216,
+    "y": 68,
+    "w": 30,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 45,
+    "y": 24,
+    "w": 30,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/crouch_attack/4": {
+   "frame": {
+    "x": 1853,
+    "y": 68,
+    "w": 59,
+    "h": 37
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
     "x": 38,
-    "y": 74,
-    "w": 48,
-    "h": 10
+    "y": 27,
+    "w": 59,
+    "h": 37
    },
    "sourceSize": {
-    "w": 160,
-    "h": 160
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d0/attack/0": {
+  "player/crouch_attack/5": {
    "frame": {
-    "x": 1122,
-    "y": 98,
-    "w": 30,
-    "h": 34
+    "x": 1914,
+    "y": 68,
+    "w": 51,
+    "h": 37
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 30,
-    "h": 34
+    "x": 37,
+    "y": 27,
+    "w": 51,
+    "h": 37
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d0/attack/1": {
+  "player/crouch_attack/6": {
    "frame": {
-    "x": 1752,
-    "y": 98,
-    "w": 26,
-    "h": 34
+    "x": 1392,
+    "y": 68,
+    "w": 41,
+    "h": 38
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 20,
-    "y": 46,
-    "w": 26,
-    "h": 34
+    "x": 37,
+    "y": 26,
+    "w": 41,
+    "h": 38
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d0/attack/2": {
+  "player/crouch/0": {
    "frame": {
-    "x": 42,
-    "y": 98,
-    "w": 58,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 58,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d0/attack/3": {
-   "frame": {
-    "x": 1154,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d0/idle/0": {
-   "frame": {
-    "x": 772,
-    "y": 98,
-    "w": 34,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 34,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d0/idle/1": {
-   "frame": {
-    "x": 1886,
-    "y": 2,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d0/idle/2": {
-   "frame": {
-    "x": 1922,
-    "y": 2,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d0/idle/3": {
-   "frame": {
-    "x": 1958,
-    "y": 2,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d0/walk/0": {
-   "frame": {
-    "x": 744,
-    "y": 2,
-    "w": 28,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d0/walk/1": {
-   "frame": {
-    "x": 1798,
-    "y": 60,
-    "w": 24,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 24,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d0/walk/2": {
-   "frame": {
-    "x": 54,
-    "y": 2,
+    "x": 1435,
+    "y": 68,
     "w": 40,
-    "h": 48
+    "h": 38
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
+    "x": 37,
+    "y": 26,
     "w": 40,
-    "h": 48
+    "h": 38
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d0/walk/3": {
+  "player/crouch/1": {
    "frame": {
-    "x": 942,
-    "y": 60,
-    "w": 30,
-    "h": 36
+    "x": 1477,
+    "y": 68,
+    "w": 40,
+    "h": 38
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
+    "x": 37,
+    "y": 26,
+    "w": 40,
+    "h": 38
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d1/attack/0": {
+  "player/crouch/2": {
    "frame": {
-    "x": 1186,
-    "y": 98,
-    "w": 30,
-    "h": 34
+    "x": 1603,
+    "y": 68,
+    "w": 39,
+    "h": 38
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 30,
-    "h": 34
+    "x": 37,
+    "y": 26,
+    "w": 39,
+    "h": 38
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d1/attack/1": {
+  "player/crouch/3": {
    "frame": {
-    "x": 1780,
-    "y": 98,
-    "w": 26,
-    "h": 34
+    "x": 1967,
+    "y": 68,
+    "w": 39,
+    "h": 37
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 20,
-    "y": 46,
-    "w": 26,
-    "h": 34
+    "x": 37,
+    "y": 27,
+    "w": 39,
+    "h": 37
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d1/attack/2": {
-   "frame": {
-    "x": 102,
-    "y": 98,
-    "w": 58,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 58,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d1/attack/3": {
-   "frame": {
-    "x": 1218,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d1/idle/0": {
-   "frame": {
-    "x": 808,
-    "y": 98,
-    "w": 34,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 34,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d1/idle/1": {
-   "frame": {
-    "x": 1994,
-    "y": 2,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d1/idle/2": {
+  "player/crouch/4": {
    "frame": {
     "x": 2,
-    "y": 60,
-    "w": 34,
-    "h": 36
+    "y": 114,
+    "w": 39,
+    "h": 37
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
+    "x": 37,
+    "y": 27,
+    "w": 39,
+    "h": 37
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d1/idle/3": {
+  "player/crouch/5": {
    "frame": {
+    "x": 43,
+    "y": 114,
+    "w": 39,
+    "h": 37
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 37,
+    "y": 27,
+    "w": 39,
+    "h": 37
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/crouch/6": {
+   "frame": {
+    "x": 1519,
+    "y": 68,
+    "w": 40,
+    "h": 38
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 37,
+    "y": 26,
+    "w": 40,
+    "h": 38
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/crouch/7": {
+   "frame": {
+    "x": 1561,
+    "y": 68,
+    "w": 40,
+    "h": 38
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 37,
+    "y": 26,
+    "w": 40,
+    "h": 38
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/death/0": {
+   "frame": {
+    "x": 712,
+    "y": 68,
+    "w": 35,
+    "h": 43
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 41,
+    "y": 21,
+    "w": 35,
+    "h": 43
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/death/1": {
+   "frame": {
+    "x": 84,
+    "y": 114,
+    "w": 43,
+    "h": 35
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
     "x": 38,
-    "y": 60,
-    "w": 34,
-    "h": 36
+    "y": 29,
+    "w": 43,
+    "h": 35
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/death/2": {
+   "frame": {
+    "x": 150,
+    "y": 114,
+    "w": 49,
+    "h": 28
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
+    "x": 38,
+    "y": 36,
+    "w": 49,
+    "h": 28
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d1/walk/0": {
+  "player/death/3": {
    "frame": {
-    "x": 774,
-    "y": 2,
+    "x": 537,
+    "y": 114,
+    "w": 59,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 38,
+    "y": 54,
+    "w": 59,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/fall/0": {
+   "frame": {
+    "x": 149,
+    "y": 68,
+    "w": 32,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 18,
+    "w": 32,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/fall/1": {
+   "frame": {
+    "x": 216,
+    "y": 68,
     "w": 28,
-    "h": 42
+    "h": 44
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
+    "x": 50,
+    "y": 20,
     "w": 28,
-    "h": 42
+    "h": 44
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d1/walk/1": {
+  "player/fall/2": {
    "frame": {
-    "x": 1824,
-    "y": 60,
-    "w": 24,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 24,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d1/walk/2": {
-   "frame": {
-    "x": 96,
-    "y": 2,
-    "w": 40,
-    "h": 48
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 40,
-    "h": 48
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d1/walk/3": {
-   "frame": {
-    "x": 974,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/attack/0": {
-   "frame": {
-    "x": 1250,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/attack/1": {
-   "frame": {
-    "x": 1808,
-    "y": 98,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 20,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/attack/2": {
-   "frame": {
-    "x": 162,
-    "y": 98,
-    "w": 58,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 58,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/attack/3": {
-   "frame": {
-    "x": 1282,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/idle/0": {
-   "frame": {
-    "x": 844,
-    "y": 98,
-    "w": 34,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 34,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/idle/1": {
-   "frame": {
-    "x": 74,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/idle/2": {
-   "frame": {
-    "x": 110,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/idle/3": {
-   "frame": {
-    "x": 146,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/walk/0": {
-   "frame": {
-    "x": 804,
-    "y": 2,
+    "x": 1106,
+    "y": 68,
     "w": 28,
-    "h": 42
+    "h": 41
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
+    "x": 48,
+    "y": 23,
     "w": 28,
-    "h": 42
+    "h": 41
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d2/walk/1": {
+  "player/fall/3": {
    "frame": {
-    "x": 1850,
-    "y": 60,
-    "w": 24,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 24,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d2/walk/2": {
-   "frame": {
-    "x": 138,
+    "x": 1741,
     "y": 2,
-    "w": 40,
-    "h": 48
+    "w": 29,
+    "h": 45
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 40,
-    "h": 48
+    "x": 48,
+    "y": 19,
+    "w": 29,
+    "h": 45
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d2/walk/3": {
+  "player/hang/0": {
    "frame": {
-    "x": 1006,
-    "y": 60,
-    "w": 30,
-    "h": 36
+    "x": 200,
+    "y": 2,
+    "w": 15,
+    "h": 57
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
+    "x": 57,
+    "y": 7,
+    "w": 15,
+    "h": 57
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d3/attack/0": {
+  "player/hang/1": {
    "frame": {
-    "x": 1314,
-    "y": 98,
-    "w": 30,
-    "h": 34
+    "x": 164,
+    "y": 2,
+    "w": 16,
+    "h": 57
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 30,
-    "h": 34
+    "x": 56,
+    "y": 7,
+    "w": 16,
+    "h": 57
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d3/attack/1": {
+  "player/hang/2": {
    "frame": {
-    "x": 1836,
-    "y": 98,
-    "w": 26,
-    "h": 34
+    "x": 217,
+    "y": 2,
+    "w": 15,
+    "h": 57
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 20,
-    "y": 46,
-    "w": 26,
-    "h": 34
+    "x": 57,
+    "y": 7,
+    "w": 15,
+    "h": 57
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d3/attack/2": {
-   "frame": {
-    "x": 222,
-    "y": 98,
-    "w": 58,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 58,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d3/attack/3": {
-   "frame": {
-    "x": 1346,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d3/idle/0": {
-   "frame": {
-    "x": 880,
-    "y": 98,
-    "w": 34,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 34,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d3/idle/1": {
+  "player/hang/3": {
    "frame": {
     "x": 182,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d3/idle/2": {
-   "frame": {
-    "x": 218,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d3/idle/3": {
-   "frame": {
-    "x": 254,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d3/walk/0": {
-   "frame": {
-    "x": 834,
     "y": 2,
-    "w": 28,
-    "h": 42
+    "w": 16,
+    "h": 57
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
+    "x": 56,
+    "y": 7,
+    "w": 16,
+    "h": 57
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d3/walk/1": {
+  "player/hang/4": {
    "frame": {
-    "x": 1876,
-    "y": 60,
-    "w": 24,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 24,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d3/walk/2": {
-   "frame": {
-    "x": 180,
+    "x": 234,
     "y": 2,
-    "w": 40,
-    "h": 48
+    "w": 15,
+    "h": 57
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 40,
-    "h": 48
+    "x": 57,
+    "y": 7,
+    "w": 15,
+    "h": 57
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d3/walk/3": {
+  "player/hang/5": {
    "frame": {
-    "x": 1038,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/attack/0": {
-   "frame": {
-    "x": 1378,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/attack/1": {
-   "frame": {
-    "x": 1864,
-    "y": 98,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 20,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/attack/2": {
-   "frame": {
-    "x": 282,
-    "y": 98,
-    "w": 58,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 58,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/attack/3": {
-   "frame": {
-    "x": 1410,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/idle/0": {
-   "frame": {
-    "x": 916,
-    "y": 98,
-    "w": 34,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 34,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/idle/1": {
-   "frame": {
-    "x": 290,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/idle/2": {
-   "frame": {
-    "x": 326,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/idle/3": {
-   "frame": {
-    "x": 362,
-    "y": 60,
-    "w": 34,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 34,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/d4/walk/0": {
-   "frame": {
-    "x": 864,
+    "x": 268,
     "y": 2,
-    "w": 28,
-    "h": 42
+    "w": 14,
+    "h": 57
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
+    "x": 58,
+    "y": 7,
+    "w": 14,
+    "h": 57
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d4/walk/1": {
+  "player/hang/6": {
    "frame": {
-    "x": 1400,
+    "x": 284,
     "y": 2,
-    "w": 24,
-    "h": 38
+    "w": 14,
+    "h": 57
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 32,
-    "y": 42,
-    "w": 24,
-    "h": 38
+    "x": 58,
+    "y": 7,
+    "w": 14,
+    "h": 57
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d4/walk/2": {
+  "player/hang/7": {
    "frame": {
-    "x": 222,
+    "x": 251,
     "y": 2,
-    "w": 40,
-    "h": 48
+    "w": 15,
+    "h": 57
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 40,
-    "h": 48
+    "x": 57,
+    "y": 7,
+    "w": 15,
+    "h": 57
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/d4/walk/3": {
+  "player/heal/0": {
    "frame": {
-    "x": 1278,
+    "x": 822,
     "y": 2,
     "w": 30,
-    "h": 38
+    "h": 47
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 30,
-    "y": 42,
+    "x": 48,
+    "y": 17,
     "w": 30,
-    "h": 38
+    "h": 47
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/axe/death/0": {
+  "player/heal/1": {
    "frame": {
-    "x": 434,
-    "y": 136,
-    "w": 28,
-    "h": 30
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 36,
-    "y": 50,
-    "w": 28,
-    "h": 30
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/death/1": {
-   "frame": {
-    "x": 402,
-    "y": 136,
-    "w": 30,
-    "h": 30
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 50,
-    "w": 30,
-    "h": 30
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/death/2": {
-   "frame": {
-    "x": 640,
-    "y": 136,
-    "w": 32,
-    "h": 18
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 62,
-    "w": 32,
-    "h": 18
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/axe/death/3": {
-   "frame": {
-    "x": 984,
-    "y": 136,
-    "w": 38,
-    "h": 6
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 74,
-    "w": 38,
-    "h": 6
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/attack/0": {
-   "frame": {
-    "x": 1602,
-    "y": 98,
-    "w": 28,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 28,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/attack/1": {
-   "frame": {
-    "x": 142,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/attack/2": {
-   "frame": {
-    "x": 1528,
+    "x": 854,
     "y": 2,
-    "w": 46,
-    "h": 36
+    "w": 30,
+    "h": 47
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 46,
-    "h": 36
+    "x": 48,
+    "y": 17,
+    "w": 30,
+    "h": 47
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/scepter/d0/attack/3": {
+  "player/heal/2": {
    "frame": {
-    "x": 582,
-    "y": 98,
+    "x": 886,
+    "y": 2,
+    "w": 30,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 17,
+    "w": 30,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/heal/3": {
+   "frame": {
+    "x": 918,
+    "y": 2,
+    "w": 30,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 17,
+    "w": 30,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/heal/4": {
+   "frame": {
+    "x": 693,
+    "y": 2,
+    "w": 31,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 17,
+    "w": 31,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/heal/5": {
+   "frame": {
+    "x": 624,
+    "y": 2,
+    "w": 33,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 48,
+    "y": 17,
+    "w": 33,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/heal/6": {
+   "frame": {
+    "x": 1311,
+    "y": 2,
     "w": 36,
-    "h": 34
+    "h": 46
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
+    "x": 48,
+    "y": 18,
     "w": 36,
-    "h": 34
+    "h": 46
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/scepter/d0/idle/0": {
+  "player/heal/7": {
    "frame": {
-    "x": 952,
-    "y": 98,
-    "w": 32,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 32,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/idle/1": {
-   "frame": {
-    "x": 398,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/idle/2": {
-   "frame": {
-    "x": 432,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/idle/3": {
-   "frame": {
-    "x": 466,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/walk/0": {
-   "frame": {
-    "x": 894,
+    "x": 1272,
     "y": 2,
-    "w": 28,
-    "h": 42
+    "w": 37,
+    "h": 46
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
+    "x": 48,
+    "y": 18,
+    "w": 37,
+    "h": 46
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/scepter/d0/walk/1": {
-   "frame": {
-    "x": 1902,
-    "y": 60,
-    "w": 24,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 24,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/walk/2": {
-   "frame": {
-    "x": 264,
-    "y": 2,
-    "w": 32,
-    "h": 48
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 32,
-    "h": 48
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d0/walk/3": {
-   "frame": {
-    "x": 1070,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/attack/0": {
-   "frame": {
-    "x": 1632,
-    "y": 98,
-    "w": 28,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 28,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/attack/1": {
-   "frame": {
-    "x": 168,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/attack/2": {
-   "frame": {
-    "x": 1576,
-    "y": 2,
-    "w": 46,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 46,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/attack/3": {
-   "frame": {
-    "x": 620,
-    "y": 98,
-    "w": 36,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 36,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/idle/0": {
-   "frame": {
-    "x": 986,
-    "y": 98,
-    "w": 32,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 32,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/idle/1": {
-   "frame": {
-    "x": 500,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/idle/2": {
-   "frame": {
-    "x": 534,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/idle/3": {
-   "frame": {
-    "x": 568,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/walk/0": {
-   "frame": {
-    "x": 924,
-    "y": 2,
-    "w": 28,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/walk/1": {
-   "frame": {
-    "x": 1928,
-    "y": 60,
-    "w": 24,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 24,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/walk/2": {
-   "frame": {
-    "x": 298,
-    "y": 2,
-    "w": 32,
-    "h": 48
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 32,
-    "h": 48
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d1/walk/3": {
-   "frame": {
-    "x": 1102,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/attack/0": {
-   "frame": {
-    "x": 1662,
-    "y": 98,
-    "w": 28,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 28,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/attack/1": {
-   "frame": {
-    "x": 194,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/attack/2": {
-   "frame": {
-    "x": 1624,
-    "y": 2,
-    "w": 46,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 46,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/attack/3": {
-   "frame": {
-    "x": 658,
-    "y": 98,
-    "w": 36,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 36,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/idle/0": {
-   "frame": {
-    "x": 1020,
-    "y": 98,
-    "w": 32,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 32,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/idle/1": {
-   "frame": {
-    "x": 602,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/idle/2": {
-   "frame": {
-    "x": 636,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/idle/3": {
-   "frame": {
-    "x": 670,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/walk/0": {
-   "frame": {
-    "x": 954,
-    "y": 2,
-    "w": 28,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/walk/1": {
-   "frame": {
-    "x": 1954,
-    "y": 60,
-    "w": 24,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 24,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/walk/2": {
-   "frame": {
-    "x": 332,
-    "y": 2,
-    "w": 32,
-    "h": 48
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 32,
-    "h": 48
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d2/walk/3": {
-   "frame": {
-    "x": 1134,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/attack/0": {
-   "frame": {
-    "x": 1692,
-    "y": 98,
-    "w": 28,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 28,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/attack/1": {
-   "frame": {
-    "x": 220,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/attack/2": {
-   "frame": {
-    "x": 1672,
-    "y": 2,
-    "w": 46,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 46,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/attack/3": {
-   "frame": {
-    "x": 696,
-    "y": 98,
-    "w": 36,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 36,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/idle/0": {
-   "frame": {
-    "x": 1054,
-    "y": 98,
-    "w": 32,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 32,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/idle/1": {
-   "frame": {
-    "x": 704,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/idle/2": {
-   "frame": {
-    "x": 738,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/idle/3": {
-   "frame": {
-    "x": 772,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/walk/0": {
-   "frame": {
-    "x": 984,
-    "y": 2,
-    "w": 28,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/walk/1": {
-   "frame": {
-    "x": 1980,
-    "y": 60,
-    "w": 24,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 24,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/walk/2": {
-   "frame": {
-    "x": 366,
-    "y": 2,
-    "w": 32,
-    "h": 48
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 32,
-    "h": 48
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d3/walk/3": {
-   "frame": {
-    "x": 1166,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/attack/0": {
-   "frame": {
-    "x": 1722,
-    "y": 98,
-    "w": 28,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 28,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/attack/1": {
+  "player/hurt/0": {
    "frame": {
     "x": 246,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/attack/2": {
-   "frame": {
-    "x": 1720,
-    "y": 2,
-    "w": 46,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 46,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/attack/3": {
-   "frame": {
-    "x": 734,
-    "y": 98,
-    "w": 36,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 36,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/idle/0": {
-   "frame": {
-    "x": 1088,
-    "y": 98,
-    "w": 32,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 32,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/idle/1": {
-   "frame": {
-    "x": 806,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/idle/2": {
-   "frame": {
-    "x": 840,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/idle/3": {
-   "frame": {
-    "x": 874,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/walk/0": {
-   "frame": {
-    "x": 1014,
-    "y": 2,
-    "w": 28,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/walk/1": {
-   "frame": {
-    "x": 1426,
-    "y": 2,
-    "w": 24,
-    "h": 38
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 42,
-    "w": 24,
-    "h": 38
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/walk/2": {
-   "frame": {
-    "x": 400,
-    "y": 2,
-    "w": 32,
-    "h": 48
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 24,
-    "y": 32,
-    "w": 32,
-    "h": 48
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/d4/walk/3": {
-   "frame": {
-    "x": 1310,
-    "y": 2,
-    "w": 30,
-    "h": 38
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 42,
-    "w": 30,
-    "h": 38
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/death/0": {
-   "frame": {
-    "x": 494,
-    "y": 136,
-    "w": 26,
-    "h": 30
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 36,
-    "y": 50,
-    "w": 26,
-    "h": 30
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/death/1": {
-   "frame": {
-    "x": 464,
-    "y": 136,
-    "w": 28,
-    "h": 30
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 50,
-    "w": 28,
-    "h": 30
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/death/2": {
-   "frame": {
-    "x": 674,
-    "y": 136,
-    "w": 32,
-    "h": 18
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 62,
-    "w": 32,
-    "h": 18
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/scepter/death/3": {
-   "frame": {
-    "x": 1024,
-    "y": 136,
-    "w": 38,
-    "h": 6
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 74,
-    "w": 38,
-    "h": 6
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/attack/0": {
-   "frame": {
-    "x": 1810,
-    "y": 2,
-    "w": 36,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 44,
-    "w": 36,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/attack/1": {
-   "frame": {
-    "x": 908,
-    "y": 60,
-    "w": 32,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 14,
-    "y": 44,
-    "w": 32,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/attack/2": {
-   "frame": {
-    "x": 1472,
-    "y": 2,
-    "w": 54,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 26,
-    "y": 44,
-    "w": 54,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/attack/3": {
-   "frame": {
-    "x": 1848,
-    "y": 2,
-    "w": 36,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 36,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/death/0": {
-   "frame": {
-    "x": 602,
-    "y": 136,
-    "w": 14,
-    "h": 30
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 36,
-    "y": 50,
-    "w": 14,
-    "h": 30
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/death/1": {
-   "frame": {
-    "x": 550,
-    "y": 136,
-    "w": 24,
-    "h": 30
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 50,
-    "w": 24,
-    "h": 30
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/death/2": {
-   "frame": {
-    "x": 708,
-    "y": 136,
-    "w": 32,
-    "h": 18
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 62,
-    "w": 32,
-    "h": 18
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/death/3": {
-   "frame": {
-    "x": 1064,
-    "y": 136,
-    "w": 38,
-    "h": 6
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 74,
-    "w": 38,
-    "h": 6
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/idle/0": {
-   "frame": {
-    "x": 1768,
-    "y": 2,
-    "w": 40,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 40,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/idle/1": {
-   "frame": {
-    "x": 1194,
-    "y": 2,
-    "w": 40,
-    "h": 38
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 42,
-    "w": 40,
-    "h": 38
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/idle/2": {
-   "frame": {
-    "x": 664,
-    "y": 2,
-    "w": 40,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 38,
-    "w": 40,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/idle/3": {
-   "frame": {
-    "x": 1236,
-    "y": 2,
-    "w": 40,
-    "h": 38
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 42,
-    "w": 40,
-    "h": 38
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/special/walk/0": {
-   "frame": {
-    "x": 634,
-    "y": 2,
+    "y": 68,
     "w": 28,
     "h": 44
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 36,
+    "x": 50,
+    "y": 20,
     "w": 28,
     "h": 44
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/special/walk/1": {
+  "player/hurt/1": {
    "frame": {
-    "x": 1372,
-    "y": 2,
-    "w": 26,
-    "h": 38
+    "x": 749,
+    "y": 68,
+    "w": 32,
+    "h": 43
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 32,
-    "y": 42,
-    "w": 26,
-    "h": 38
+    "x": 48,
+    "y": 21,
+    "w": 32,
+    "h": 43
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/special/walk/2": {
+  "player/hurt/2": {
    "frame": {
-    "x": 2,
+    "x": 1641,
     "y": 2,
-    "w": 50,
-    "h": 56
+    "w": 32,
+    "h": 45
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
+    "x": 49,
+    "y": 19,
+    "w": 32,
+    "h": 45
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/idle/0": {
+   "frame": {
+    "x": 979,
+    "y": 2,
+    "w": 27,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 27,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/idle/1": {
+   "frame": {
+    "x": 1008,
+    "y": 2,
+    "w": 27,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 27,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/idle/2": {
+   "frame": {
+    "x": 1037,
+    "y": 2,
+    "w": 27,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 27,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/idle/3": {
+   "frame": {
+    "x": 1066,
+    "y": 2,
+    "w": 27,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 27,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/idle/4": {
+   "frame": {
+    "x": 1095,
+    "y": 2,
+    "w": 27,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 27,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/idle/5": {
+   "frame": {
+    "x": 1124,
+    "y": 2,
+    "w": 27,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 17,
+    "w": 27,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/idle/6": {
+   "frame": {
+    "x": 1583,
+    "y": 2,
+    "w": 27,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 18,
+    "w": 27,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/idle/7": {
+   "frame": {
+    "x": 1612,
+    "y": 2,
+    "w": 27,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 18,
+    "w": 27,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/jump/0": {
+   "frame": {
+    "x": 276,
+    "y": 68,
+    "w": 28,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 49,
+    "y": 20,
+    "w": 28,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/jump/1": {
+   "frame": {
+    "x": 354,
+    "y": 2,
+    "w": 32,
+    "h": 49
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 47,
+    "y": 14,
+    "w": 32,
+    "h": 49
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/jump/2": {
+   "frame": {
+    "x": 1153,
+    "y": 2,
+    "w": 27,
+    "h": 47
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 53,
+    "y": 14,
+    "w": 27,
+    "h": 47
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/jump/3": {
+   "frame": {
+    "x": 183,
+    "y": 68,
+    "w": 31,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 50,
+    "y": 16,
+    "w": 31,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/pray/0": {
+   "frame": {
+    "x": 306,
+    "y": 68,
+    "w": 20,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 56,
+    "y": 20,
+    "w": 20,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/pray/1": {
+   "frame": {
+    "x": 1248,
+    "y": 68,
+    "w": 20,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
     "y": 24,
-    "w": 50,
-    "h": 56
+    "w": 20,
+    "h": 40
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/special/walk/3": {
+  "player/pray/10": {
    "frame": {
-    "x": 706,
-    "y": 2,
-    "w": 36,
-    "h": 42
+    "x": 1270,
+    "y": 68,
+    "w": 20,
+    "h": 40
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 30,
-    "y": 38,
-    "w": 36,
-    "h": 42
+    "x": 54,
+    "y": 24,
+    "w": 20,
+    "h": 40
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/attack/0": {
+  "player/pray/11": {
    "frame": {
-    "x": 1892,
-    "y": 98,
-    "w": 26,
-    "h": 34
+    "x": 328,
+    "y": 68,
+    "w": 20,
+    "h": 44
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 26,
-    "h": 34
+    "x": 56,
+    "y": 20,
+    "w": 20,
+    "h": 44
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/attack/1": {
+  "player/pray/2": {
    "frame": {
-    "x": 272,
-    "y": 136,
+    "x": 1671,
+    "y": 68,
     "w": 24,
-    "h": 34
+    "h": 38
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
+    "x": 54,
+    "y": 26,
     "w": 24,
-    "h": 34
+    "h": 38
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/attack/2": {
+  "player/pray/3": {
    "frame": {
-    "x": 342,
-    "y": 98,
-    "w": 46,
-    "h": 34
+    "x": 1697,
+    "y": 68,
+    "w": 24,
+    "h": 38
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 46,
-    "h": 34
+    "x": 54,
+    "y": 26,
+    "w": 24,
+    "h": 38
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/attack/3": {
+  "player/pray/4": {
    "frame": {
-    "x": 1920,
-    "y": 98,
+    "x": 1723,
+    "y": 68,
+    "w": 24,
+    "h": 38
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 26,
+    "w": 24,
+    "h": 38
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/pray/5": {
+   "frame": {
+    "x": 1749,
+    "y": 68,
+    "w": 24,
+    "h": 38
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 26,
+    "w": 24,
+    "h": 38
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/pray/6": {
+   "frame": {
+    "x": 1644,
+    "y": 68,
+    "w": 25,
+    "h": 38
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 26,
+    "w": 25,
+    "h": 38
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/pray/7": {
+   "frame": {
+    "x": 1775,
+    "y": 68,
+    "w": 24,
+    "h": 38
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 26,
+    "w": 24,
+    "h": 38
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/pray/8": {
+   "frame": {
+    "x": 1801,
+    "y": 68,
+    "w": 24,
+    "h": 38
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 26,
+    "w": 24,
+    "h": 38
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/pray/9": {
+   "frame": {
+    "x": 1827,
+    "y": 68,
+    "w": 24,
+    "h": 38
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 54,
+    "y": 26,
+    "w": 24,
+    "h": 38
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/roll/0": {
+   "frame": {
+    "x": 129,
+    "y": 114,
+    "w": 19,
+    "h": 31
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 56,
+    "y": 33,
+    "w": 19,
+    "h": 31
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/roll/1": {
+   "frame": {
+    "x": 506,
+    "y": 114,
+    "w": 29,
+    "h": 18
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 51,
+    "y": 46,
+    "w": 29,
+    "h": 18
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/roll/2": {
+   "frame": {
+    "x": 478,
+    "y": 114,
     "w": 26,
-    "h": 34
+    "h": 20
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
+    "x": 48,
+    "y": 44,
     "w": 26,
-    "h": 34
+    "h": 20
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/idle/0": {
+  "player/roll/3": {
    "frame": {
-    "x": 1442,
-    "y": 98,
-    "w": 30,
-    "h": 34
+    "x": 201,
+    "y": 114,
+    "w": 23,
+    "h": 28
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 30,
-    "h": 34
+    "x": 54,
+    "y": 36,
+    "w": 23,
+    "h": 28
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/idle/1": {
+  "player/slide/0": {
    "frame": {
-    "x": 1198,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d0/idle/2": {
-   "frame": {
-    "x": 1230,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d0/idle/3": {
-   "frame": {
-    "x": 1262,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d0/walk/0": {
-   "frame": {
-    "x": 1044,
-    "y": 2,
+    "x": 1055,
+    "y": 68,
     "w": 28,
     "h": 42
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
+    "x": 49,
+    "y": 22,
     "w": 28,
     "h": 42
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/walk/1": {
+  "player/slide/1": {
    "frame": {
-    "x": 2006,
-    "y": 60,
-    "w": 18,
-    "h": 36
+    "x": 1363,
+    "y": 68,
+    "w": 27,
+    "h": 39
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 18,
-    "h": 36
+    "x": 54,
+    "y": 25,
+    "w": 27,
+    "h": 39
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/walk/2": {
+  "player/slide/2": {
    "frame": {
-    "x": 434,
+    "x": 437,
+    "y": 114,
+    "w": 39,
+    "h": 22
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 56,
+    "y": 42,
+    "w": 39,
+    "h": 22
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/slide/3": {
+   "frame": {
+    "x": 266,
+    "y": 114,
+    "w": 41,
+    "h": 22
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 55,
+    "y": 42,
+    "w": 41,
+    "h": 22
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/slide/4": {
+   "frame": {
+    "x": 309,
+    "y": 114,
+    "w": 41,
+    "h": 22
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 55,
+    "y": 42,
+    "w": 41,
+    "h": 22
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/slide/5": {
+   "frame": {
+    "x": 94,
     "y": 2,
+    "w": 41,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 55,
+    "y": 0,
+    "w": 41,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/slide/6": {
+   "frame": {
+    "x": 352,
+    "y": 114,
+    "w": 41,
+    "h": 22
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 55,
+    "y": 42,
+    "w": 41,
+    "h": 22
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/slide/7": {
+   "frame": {
+    "x": 395,
+    "y": 114,
+    "w": 40,
+    "h": 22
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 56,
+    "y": 42,
+    "w": 40,
+    "h": 22
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/slide/8": {
+   "frame": {
+    "x": 226,
+    "y": 114,
     "w": 38,
+    "h": 24
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 57,
+    "y": 40,
+    "w": 38,
+    "h": 24
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/slide/9": {
+   "frame": {
+    "x": 1292,
+    "y": 68,
+    "w": 20,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 53,
+    "y": 24,
+    "w": 20,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/walk/0": {
+   "frame": {
+    "x": 1675,
+    "y": 2,
+    "w": 31,
+    "h": 45
+   },
+   "rotated": false,
+   "trimmed": true,
+   "spriteSourceSize": {
+    "x": 47,
+    "y": 19,
+    "w": 31,
+    "h": 45
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 64
+   }
+  },
+  "player/walk/1": {
+   "frame": {
+    "x": 1385,
+    "y": 2,
+    "w": 33,
     "h": 46
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
-    "y": 34,
-    "w": 38,
+    "x": 45,
+    "y": 18,
+    "w": 33,
     "h": 46
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d0/walk/3": {
+  "player/walk/2": {
    "frame": {
-    "x": 1678,
-    "y": 60,
-    "w": 28,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 28,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/attack/0": {
-   "frame": {
-    "x": 1948,
-    "y": 98,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/attack/1": {
-   "frame": {
-    "x": 298,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/attack/2": {
-   "frame": {
-    "x": 390,
-    "y": 98,
-    "w": 46,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 46,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/attack/3": {
-   "frame": {
-    "x": 1976,
-    "y": 98,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/idle/0": {
-   "frame": {
-    "x": 1474,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/idle/1": {
-   "frame": {
-    "x": 1294,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/idle/2": {
-   "frame": {
-    "x": 1326,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/idle/3": {
-   "frame": {
-    "x": 1358,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/walk/0": {
-   "frame": {
-    "x": 1074,
+    "x": 1349,
     "y": 2,
-    "w": 28,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/walk/1": {
-   "frame": {
-    "x": 2026,
-    "y": 60,
-    "w": 18,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 18,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d1/walk/2": {
-   "frame": {
-    "x": 474,
-    "y": 2,
-    "w": 38,
+    "w": 34,
     "h": 46
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
-    "y": 34,
-    "w": 38,
+    "x": 45,
+    "y": 18,
+    "w": 34,
     "h": 46
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d1/walk/3": {
-   "frame": {
-    "x": 1708,
-    "y": 60,
-    "w": 28,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 28,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/attack/0": {
-   "frame": {
-    "x": 2004,
-    "y": 98,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/attack/1": {
-   "frame": {
-    "x": 324,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/attack/2": {
-   "frame": {
-    "x": 438,
-    "y": 98,
-    "w": 46,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 46,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/attack/3": {
-   "frame": {
-    "x": 2,
-    "y": 136,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/idle/0": {
-   "frame": {
-    "x": 1506,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/idle/1": {
-   "frame": {
-    "x": 1390,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/idle/2": {
-   "frame": {
-    "x": 1422,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/idle/3": {
+  "player/walk/3": {
    "frame": {
     "x": 1454,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/walk/0": {
-   "frame": {
-    "x": 1104,
     "y": 2,
-    "w": 28,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/walk/1": {
-   "frame": {
-    "x": 2,
-    "y": 98,
-    "w": 18,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 18,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d2/walk/2": {
-   "frame": {
-    "x": 514,
-    "y": 2,
-    "w": 38,
+    "w": 31,
     "h": 46
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
-    "y": 34,
-    "w": 38,
+    "x": 46,
+    "y": 18,
+    "w": 31,
     "h": 46
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d2/walk/3": {
+  "player/walk/4": {
    "frame": {
-    "x": 1738,
-    "y": 60,
-    "w": 28,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 28,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/attack/0": {
-   "frame": {
-    "x": 30,
-    "y": 136,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/attack/1": {
-   "frame": {
-    "x": 350,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/attack/2": {
-   "frame": {
-    "x": 486,
-    "y": 98,
-    "w": 46,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 46,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/attack/3": {
-   "frame": {
-    "x": 58,
-    "y": 136,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/idle/0": {
-   "frame": {
-    "x": 1538,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/idle/1": {
-   "frame": {
-    "x": 1486,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/idle/2": {
-   "frame": {
-    "x": 1518,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/idle/3": {
-   "frame": {
-    "x": 1550,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/walk/0": {
-   "frame": {
-    "x": 1134,
+    "x": 1708,
     "y": 2,
-    "w": 28,
-    "h": 42
+    "w": 31,
+    "h": 45
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
+    "x": 47,
+    "y": 19,
+    "w": 31,
+    "h": 45
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d3/walk/1": {
+  "player/walk/5": {
    "frame": {
-    "x": 22,
-    "y": 98,
-    "w": 18,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 44,
-    "w": 18,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d3/walk/2": {
-   "frame": {
-    "x": 554,
+    "x": 1520,
     "y": 2,
-    "w": 38,
+    "w": 30,
     "h": 46
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 24,
-    "y": 34,
-    "w": 38,
+    "x": 47,
+    "y": 18,
+    "w": 30,
     "h": 46
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/d3/walk/3": {
+  "player/walk/6": {
    "frame": {
-    "x": 1768,
-    "y": 60,
-    "w": 28,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 28,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/attack/0": {
-   "frame": {
-    "x": 86,
-    "y": 136,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 28,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/attack/1": {
-   "frame": {
-    "x": 376,
-    "y": 136,
-    "w": 24,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 46,
-    "w": 24,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/attack/2": {
-   "frame": {
-    "x": 534,
-    "y": 98,
-    "w": 46,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 46,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/attack/3": {
-   "frame": {
-    "x": 114,
-    "y": 136,
-    "w": 26,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 46,
-    "w": 26,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/idle/0": {
-   "frame": {
-    "x": 1570,
-    "y": 98,
-    "w": 30,
-    "h": 34
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 46,
-    "w": 30,
-    "h": 34
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/idle/1": {
-   "frame": {
-    "x": 1582,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/idle/2": {
-   "frame": {
-    "x": 1614,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/idle/3": {
-   "frame": {
-    "x": 1646,
-    "y": 60,
-    "w": 30,
-    "h": 36
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 44,
-    "w": 30,
-    "h": 36
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/walk/0": {
-   "frame": {
-    "x": 1164,
+    "x": 1420,
     "y": 2,
-    "w": 28,
-    "h": 42
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 22,
-    "y": 38,
-    "w": 28,
-    "h": 42
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/walk/1": {
-   "frame": {
-    "x": 1452,
-    "y": 2,
-    "w": 18,
-    "h": 38
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 32,
-    "y": 42,
-    "w": 18,
-    "h": 38
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/walk/2": {
-   "frame": {
-    "x": 594,
-    "y": 2,
-    "w": 38,
-    "h": 46
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 24,
-    "y": 34,
-    "w": 38,
-    "h": 46
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/d4/walk/3": {
-   "frame": {
-    "x": 1342,
-    "y": 2,
-    "w": 28,
-    "h": 38
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 30,
-    "y": 42,
-    "w": 28,
-    "h": 38
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/death/0": {
-   "frame": {
-    "x": 576,
-    "y": 136,
-    "w": 24,
-    "h": 30
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 36,
-    "y": 50,
-    "w": 24,
-    "h": 30
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/death/1": {
-   "frame": {
-    "x": 522,
-    "y": 136,
-    "w": 26,
-    "h": 30
-   },
-   "rotated": false,
-   "trimmed": true,
-   "spriteSourceSize": {
-    "x": 34,
-    "y": 50,
-    "w": 26,
-    "h": 30
-   },
-   "sourceSize": {
-    "w": 80,
-    "h": 80
-   }
-  },
-  "player/sword/death/2": {
-   "frame": {
-    "x": 742,
-    "y": 136,
     "w": 32,
-    "h": 18
+    "h": 46
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 34,
-    "y": 62,
+    "x": 45,
+    "y": 18,
     "w": 32,
-    "h": 18
+    "h": 46
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   },
-  "player/sword/death/3": {
+  "player/walk/7": {
    "frame": {
-    "x": 1104,
-    "y": 136,
-    "w": 38,
-    "h": 6
+    "x": 1487,
+    "y": 2,
+    "w": 31,
+    "h": 46
    },
    "rotated": false,
    "trimmed": true,
    "spriteSourceSize": {
-    "x": 34,
-    "y": 74,
-    "w": 38,
-    "h": 6
+    "x": 46,
+    "y": 18,
+    "w": 31,
+    "h": 46
    },
    "sourceSize": {
-    "w": 80,
-    "h": 80
+    "w": 128,
+    "h": 64
    }
   }
  },
@@ -4326,8 +2526,8 @@
   "image": "player.png",
   "format": "RGBA8888",
   "size": {
-   "w": 2046,
-   "h": 172
+   "w": 2013,
+   "h": 153
   },
   "scale": "1"
  }

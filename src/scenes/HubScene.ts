@@ -124,8 +124,10 @@ export class HubScene extends GameplayScene {
         this.interactables.push(new Trigger(x, y - 8, 30, () => 'E — каса (погасити борг)', () => this.cashier()));
         break;
       case 'smith': {
-        const b = this.add.sprite(x, y + 1, 'props', 'blacksmith/idle/0').setOrigin(0.5, 1).setDepth(2);
+        const b = this.add.sprite(x, y, 'props', 'blacksmith/idle/0').setOrigin(0.5, 1).setDepth(2);
         if (this.anims.exists('fx:blacksmith')) b.play('fx:blacksmith');
+        // під ногами коваля в кадрі порожні рядки — опускаємо спрайт, щоб він стояв на підлозі, а не левітував
+        b.y = y + (b.frame.realHeight - (b.frame.y + b.frame.cutHeight));
         this.label(x, y - 60, 'КОВАЛЬ', COLORS.dim);
         this.interactables.push(new Trigger(x, y - 8, 34, () => 'E — коваль (прокачка і зброя)', () => this.smith()));
         break;

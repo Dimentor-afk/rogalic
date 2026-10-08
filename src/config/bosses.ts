@@ -113,7 +113,7 @@ export const BOSSES: Record<string, BossDef> = {
         shout: 'Колектори, до мене!',
         patterns: [
           { kind: 'fan', weight: 3, damage: 2, count: 5, spreadDeg: 60, speed: 170, fx: 'goblinBolt', windupMs: 620 },
-          { kind: 'summon', weight: 2, enemy: 'goblin', count: 2, windupMs: 700 },
+          { kind: 'summon', weight: 2, enemy: 'spider', count: 2, windupMs: 700 },
           { kind: 'dash', weight: 2, damage: 2, speed: 330, windupMs: 560 },
           { kind: 'melee', weight: 2, damage: 2, reach: 34, height: 40, windupMs: 420 },
         ],
@@ -126,7 +126,7 @@ export const BOSSES: Record<string, BossDef> = {
         patterns: [
           { kind: 'fan', weight: 3, damage: 2, count: 7, spreadDeg: 80, speed: 190, fx: 'goblinBolt', windupMs: 560, waves: 2 },
           { kind: 'dash', weight: 2, damage: 3, speed: 360, windupMs: 500 },
-          { kind: 'summon', weight: 1, enemy: 'goblinSlinger', count: 2, windupMs: 650 },
+          { kind: 'summon', weight: 1, enemy: 'spiderSpitter', count: 1, windupMs: 650 },
         ],
       },
     ],
@@ -152,7 +152,7 @@ export const BOSSES: Record<string, BossDef> = {
         patterns: [
           { kind: 'slam', weight: 3, damage: 2, shockSpeed: 170, windupMs: 700 },
           { kind: 'obstacles', weight: 2, damage: 1, count: 3, lifeMs: 4000, windupMs: 800, frame: 'slimePuddle', blocking: false },
-          { kind: 'summon', weight: 1, enemy: 'slimeling', count: 2, windupMs: 700 },
+          { kind: 'summon', weight: 1, enemy: 'microLoan', count: 2, windupMs: 700 },
         ],
       },
       {
@@ -163,7 +163,7 @@ export const BOSSES: Record<string, BossDef> = {
           { kind: 'grow', weight: 2, factor: 1.12, max: 1.0, windupMs: 900 },
           { kind: 'slam', weight: 3, damage: 3, shockSpeed: 200, windupMs: 620 },
           { kind: 'obstacles', weight: 2, damage: 1, count: 4, lifeMs: 4500, windupMs: 700, frame: 'slimePuddle', blocking: false },
-          { kind: 'summon', weight: 1, enemy: 'slime', count: 1, windupMs: 700 },
+          { kind: 'summon', weight: 1, enemy: 'creditBlob', count: 1, windupMs: 700 },
         ],
       },
       {
@@ -174,7 +174,7 @@ export const BOSSES: Record<string, BossDef> = {
         patterns: [
           { kind: 'slam', weight: 4, damage: 3, shockSpeed: 230, windupMs: 560 },
           { kind: 'dash', weight: 2, damage: 3, speed: 260, windupMs: 700 },
-          { kind: 'summon', weight: 1, enemy: 'slimeling', count: 3, windupMs: 600 },
+          { kind: 'summon', weight: 1, enemy: 'microLoan', count: 3, windupMs: 600 },
         ],
       },
     ],
@@ -272,7 +272,7 @@ export const BOSSES: Record<string, BossDef> = {
         patterns: [
           { kind: 'rain', weight: 3, damage: 2, count: 9, fx: 'boneShard', windupMs: 750 },
           { kind: 'dash', weight: 3, damage: 3, speed: 380, windupMs: 520 },
-          { kind: 'summon', weight: 1, enemy: 'skeleton', count: 2, windupMs: 700 },
+          { kind: 'summon', weight: 1, enemy: 'spiderBrute', count: 1, windupMs: 700 },
         ],
       },
     ],
@@ -311,7 +311,7 @@ export const BOSSES: Record<string, BossDef> = {
           { kind: 'rain', weight: 3, damage: 2, count: 7, fx: 'demonFire', windupMs: 850 },
           { kind: 'fan', weight: 2, damage: 2, count: 7, spreadDeg: 90, speed: 180, fx: 'demonFire', windupMs: 600, waves: 2 },
           { kind: 'dash', weight: 2, damage: 3, speed: 330, windupMs: 620 },
-          { kind: 'summon', weight: 1, enemy: 'bloodling', count: 2, windupMs: 700 },
+          { kind: 'summon', weight: 1, enemy: 'microLoan', count: 2, windupMs: 700 },
         ],
       },
       {
@@ -358,7 +358,7 @@ export const BOSSES: Record<string, BossDef> = {
         patterns: [
           { kind: 'rain', weight: 3, damage: 2, count: 7, fx: 'masterBoltRed', windupMs: 850 },
           { kind: 'fan', weight: 2, damage: 2, count: 7, spreadDeg: 90, speed: 180, fx: 'masterBoltBlue', windupMs: 600, waves: 2 },
-          { kind: 'summon', weight: 1, enemy: 'skeleton', count: 2, windupMs: 700 },
+          { kind: 'summon', weight: 1, enemy: 'spiderBrute', count: 1, windupMs: 700 },
           { kind: 'teleport', weight: 2, windupMs: 420 },
         ],
       },
@@ -371,7 +371,7 @@ export const BOSSES: Record<string, BossDef> = {
           { kind: 'rain', weight: 3, damage: 2, count: 10, fx: 'masterBoltRed', windupMs: 700 },
           { kind: 'shot', weight: 2, damage: 2, count: 5, intervalMs: 220, speed: 240, fx: 'masterBoltGreen', windupMs: 450 },
           { kind: 'teleport', weight: 2, windupMs: 380 },
-          { kind: 'summon', weight: 1, enemy: 'bloodling', count: 2, windupMs: 700 },
+          { kind: 'summon', weight: 1, enemy: 'microLoan', count: 2, windupMs: 700 },
         ],
       },
     ],
@@ -412,7 +412,7 @@ export const BOSSES: Record<string, BossDef> = {
           { kind: 'fan', weight: 3, damage: 2, count: 8, spreadDeg: 100, speed: 200, fx: 'casinoChip', windupMs: 600, waves: 2 },
           { kind: 'obstacles', weight: 2, damage: 2, count: 3, lifeMs: 4500, windupMs: 800, frame: 'bonePillar', blocking: true },
           { kind: 'dash', weight: 2, damage: 3, speed: 380, windupMs: 560 },
-          { kind: 'summon', weight: 1, enemy: 'bloodling', count: 2, windupMs: 650 },
+          { kind: 'summon', weight: 1, enemy: 'microLoan', count: 2, windupMs: 650 },
           { kind: 'teleport', weight: 1, windupMs: 420 },
         ],
       },

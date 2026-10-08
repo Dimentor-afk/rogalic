@@ -5,7 +5,7 @@
 import Phaser from 'phaser';
 import { ROOM_LEGEND } from '../config/legend';
 import { CAVE_TILESET } from '../config/tilesets';
-import { PLAYER_ARMOR_LEVELS } from '../config/assets';
+import { ARMOR_DAMAGE_REDUCTION } from '../config/economy';
 import { TEXTS, pick } from '../config/texts';
 import type { WeaponId } from '../config/weapons';
 import { parseRoom } from '../core/level/grid';
@@ -83,7 +83,7 @@ export class TestCaveScene extends GameplayScene {
     ['ONE', 'TWO', 'THREE', 'FOUR'].forEach((k, i) => {
       kb.on(`keydown-${k}`, () => this.player.setLoadout(WEAPON_KEYS[i]!, this.player.loadout.armor));
     });
-    kb.on('keydown-T', () => this.player.setLoadout(this.player.loadout.weapon, (this.player.loadout.armor + 1) % PLAYER_ARMOR_LEVELS));
+    kb.on('keydown-T', () => this.player.setLoadout(this.player.loadout.weapon, (this.player.loadout.armor + 1) % ARMOR_DAMAGE_REDUCTION.length));
   }
 
   protected override toggleDebug(): void {
