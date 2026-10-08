@@ -173,8 +173,11 @@ export class Boss extends ManifestSprite implements Hittable {
     }
 
     if (this.mode === 'attack' && this.pattern) {
-      this.pattern.update(dt);
-      if (this.pattern.done) {
+      const pattern = this.pattern;
+      pattern.update(dt);
+      // під час кадру атаку могли перервати: паріру гравця оглушує боса (stun обнуляє pattern) або бос загинув
+      if (this.pattern !== pattern) return;
+      if (pattern.done) {
         this.pattern = null;
         this.mode = 'idle';
         const [a, b] = this.phase.pauseMs;
