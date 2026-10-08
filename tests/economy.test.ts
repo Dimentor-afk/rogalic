@@ -24,7 +24,7 @@ function memoryStorage(): KeyValueStorage & { data: Map<string, string> } {
 
 describe('борг і відсотки', () => {
   it('відсотки: частка боргу з округленням вгору, але не менше мінімуму; без боргу — 0', () => {
-    expect(interestFor(2500)).toBe(Math.ceil(2500 * ECONOMY.interestRate));
+    expect(interestFor(25000)).toBe(Math.ceil(25000 * ECONOMY.interestRate));
     expect(interestFor(10)).toBe(ECONOMY.minInterest);
     expect(interestFor(0)).toBe(0);
   });
@@ -104,7 +104,7 @@ describe('прокачка', () => {
 
   it('зброя: купівля, повторна купівля, екіпірування', () => {
     const s = newGame(1);
-    s.balance = 1000;
+    s.balance = 10000;
     expect(equipWeapon(s, 'axe')).toBe(false);
     expect(buyWeapon(s, 'axe')).toBe('ok');
     expect(s.equipped).toBe('axe');

@@ -4,7 +4,8 @@
     "cave",
     "enemies",
     "fx",
-    "props"
+    "props",
+    "bosses"
   ],
   "images": [
     "backgrounds/cave_1.png",

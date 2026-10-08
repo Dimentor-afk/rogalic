@@ -5,13 +5,13 @@ import type { WeaponId } from './weapons';
 
 export const ECONOMY = {
   /** Стартовий борг перед казино. */
-  startDebt: 2500,
+  startDebt: 25000,
   /** Стартовий баланс (щоб одразу можна було покрутити — так завжди починається). */
-  startBalance: 40,
+  startBalance: 400,
   /** Відсотки на борг після кожного повернення з підземелля (частка від боргу), округлення вгору. */
-  interestRate: 0.03,
+  interestRate: 0.015,
   /** Мінімальні відсотки за повернення (поки борг > 0). */
-  minInterest: 5,
+  minInterest: 50,
 };
 
 /** Зменшення шкоди від рівня броні 0..4 (броню видно на спрайті гравця). */
@@ -28,18 +28,18 @@ export interface UpgradeDef {
 }
 
 export const UPGRADES: Record<UpgradeId, UpgradeDef> = {
-  armor: { id: 'armor', name: 'Броня', description: '−10% шкоди за рівень. Видно на персонажі.', prices: [150, 350, 700, 1200] },
-  flask: { id: 'flask', name: '+1 Енергетик', description: 'Ще одна фляга на забіг.', prices: [120, 300, 600] },
-  stamina: { id: 'stamina', name: 'Міцні нерви', description: '+20 до максимуму «Нервів».', prices: [100, 250, 500] },
-  hp: { id: 'hp', name: 'Друге серце', description: '+1 серце.', prices: [150, 350, 650, 1000] },
+  armor: { id: 'armor', name: 'Броня', description: '−10% шкоди за рівень. Видно на персонажі.', prices: [1500, 3500, 7000, 12000] },
+  flask: { id: 'flask', name: '+1 Енергетик', description: 'Ще одна фляга на забіг.', prices: [1200, 3000, 6000] },
+  stamina: { id: 'stamina', name: 'Міцні нерви', description: '+20 до максимуму «Нервів».', prices: [1000, 2500, 5000] },
+  hp: { id: 'hp', name: 'Друге серце', description: '+1 серце.', prices: [1500, 3500, 6500, 10000] },
 };
 
 /** Ціни відкриття зброї (меч є з початку). */
 export const WEAPON_PRICES: Record<WeaponId, number> = {
   sword: 0,
-  axe: 300,
-  scepter: 400,
-  special: 900,
+  axe: 3000,
+  scepter: 4000,
+  special: 9000,
 };
 
 /** Що дає кожен рівень прокачки. */

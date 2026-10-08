@@ -17,6 +17,7 @@ import { COLORS } from '../ui/text';
 import { GameplayScene } from './GameplayScene';
 import type { HudState, MinimapRoom } from './HudScene';
 import { SCENES } from './keys';
+import { sfx } from '../core/audio/Sfx';
 
 export interface DungeonRun {
   depth: number;
@@ -31,7 +32,8 @@ export interface DungeonRun {
 }
 
 export interface HubArrival {
-  kind: 'elevator' | 'death' | 'start';
+  /** start — з меню; slot — від автомата; bossLost — бонуска згоріла. */
+  kind: 'elevator' | 'death' | 'start' | 'slot' | 'bossLost';
   banked?: number;
   bagChips?: number;
   bagBurned?: number;
@@ -181,6 +183,7 @@ export class DungeonScene extends GameplayScene {
     if (!b || !b.alive || !this.player.alive) return;
     if (Math.abs(b.x - this.player.x) < 14 && Math.abs(b.y - this.player.y) < 24) {
       b.pickUp(this.fx);
+      sfx.play('bonus');
       this.bagPicked = true;
       this.combat.addChips(b.chips, b.x, b.y - 16, 'мішок +');
       this.hud.banner('Мішок повернуто!', COLORS.gold, 1200);
@@ -212,6 +215,7 @@ export class DungeonScene extends GameplayScene {
   private useElevator(): void {
     if (this.finished) return;
     this.finished = true;
+    sfx.play('door');
     const save = gameState();
     const summary = finishRun(save, { chips: this.combat.runChips(), died: false, depth: this.run.depth, bagPicked: this.bagPicked });
     persist();

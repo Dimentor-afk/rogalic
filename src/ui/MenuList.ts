@@ -4,6 +4,7 @@
  */
 import Phaser from 'phaser';
 import { COLORS, txt } from './text';
+import { sfx } from '../core/audio/Sfx';
 
 export interface MenuItem {
   label: string;
@@ -83,6 +84,7 @@ export class MenuList {
 
   private move(d: number): void {
     this.select(this.index + d);
+    sfx.play('tick');
   }
 
   private confirm(): void {
@@ -91,6 +93,7 @@ export class MenuList {
       this.scene.cameras.main.shake(80, 0.004);
       return;
     }
+    sfx.play('click');
     if (it.action() === 'close') this.onBack?.();
     else this.refresh();
   }

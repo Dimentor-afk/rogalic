@@ -12,6 +12,14 @@ import { HubScene } from './scenes/HubScene';
 import { DungeonScene } from './scenes/DungeonScene';
 import { MenuScene } from './scenes/MenuScene';
 import { EndingScene } from './scenes/EndingScene';
+import { SlotScene } from './scenes/SlotScene';
+import { BossArenaScene } from './scenes/BossArenaScene';
+import { FreeSpinsScene } from './scenes/FreeSpinsScene';
+import { installAudioUnlock } from './core/audio/Sfx';
+import { gameState } from './core/state/store';
+
+// Браузер дозволяє звук лише після першої дії гравця — «розблоковуємо» WebAudio на перше натискання.
+installAudioUnlock();
 
 // Шрифт треба дочекатися до створення текстів, інакше перші написи намалюються запасним шрифтом.
 await loadFonts();
@@ -31,8 +39,23 @@ const game = new Phaser.Game({
     arcade: { gravity: { x: 0, y: GAME.gravity }, debug: false },
   },
   input: { gamepad: true },
-  scene: [BootScene, PreloadScene, MainMenuScene, HubScene, DungeonScene, TestCaveScene, EndingScene, AssetGalleryScene, HudScene, MenuScene],
+  scene: [
+    BootScene,
+    PreloadScene,
+    MainMenuScene,
+    HubScene,
+    DungeonScene,
+    SlotScene,
+    BossArenaScene,
+    FreeSpinsScene,
+    TestCaveScene,
+    EndingScene,
+    AssetGalleryScene,
+    HudScene,
+    MenuScene,
+  ],
 });
 
-// Лише в dev-режимі: доступ до гри з консолі браузера / автотестів (window.__game.scene.getScene('TestCave')).
-if (import.meta.env.DEV) (window as unknown as { __game: Phaser.Game }).__game = game;
+// Лише в dev-режимі: доступ до гри і стану з консолі браузера / автотестів
+// (window.__game.scene.getScene('TestCave'), window.__state().balance = 5000).
+if (import.meta.env.DEV) Object.assign(window, { __game: game, __state: gameState });

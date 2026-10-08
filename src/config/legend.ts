@@ -2,8 +2,7 @@
  * Легенда ASCII-шаблонів кімнат: що означає кожен символ.
  *   # скеля   . порожньо   = дерев'яна платформа (стрибай крізь знизу, вниз+стрибок — зістрибнути)
  *   P гравець   T манекен
- *   вороги: g гоблін  k скелет  o голем  d демон  s слиз  c кіт  p павук  i біс
- * (У Milestone 3 тут з'являться виходи кімнат L/R/U/D, бочки, двері, ліфт…)
+ *   вороги: g гоблін  k скелет  o скелет-вишибала  d гоблін-пращник  s слиз  c біс-злодій  p павук  i кровосос
  */
 import type { Legend } from '../core/level/grid';
 
@@ -15,10 +14,10 @@ export const ROOM_LEGEND: Legend = {
   T: { spawn: 'enemy:dummy' },
   g: { spawn: 'enemy:goblin' },
   k: { spawn: 'enemy:skeleton' },
-  o: { spawn: 'enemy:golem' },
-  d: { spawn: 'enemy:demon' },
+  o: { spawn: 'enemy:skeletonVeteran' },
+  d: { spawn: 'enemy:goblinSlinger' },
   s: { spawn: 'enemy:slime' },
-  c: { spawn: 'enemy:cat' },
+  c: { spawn: 'enemy:imp' },
   p: { spawn: 'enemy:spider' },
-  i: { spawn: 'enemy:imp' },
+  i: { spawn: 'enemy:bloodling' },
 };

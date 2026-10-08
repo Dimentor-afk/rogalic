@@ -20,6 +20,7 @@ import { resolveHit, type DefenseOutcome } from '../core/combat/defense';
 import type { Rect } from '../core/combat/geometry';
 import type { Fx } from '../core/fx/Fx';
 import { ManifestSprite } from './ManifestSprite';
+import { sfx } from '../core/audio/Sfx';
 
 /** Що з прокачки/інвентаря визначає гравця на початку забігу. */
 export interface PlayerLoadout {
@@ -340,6 +341,7 @@ export class Player extends ManifestSprite {
     this.enter('attack');
     this.attackPhase = 'windup';
     this.swingId++;
+    sfx.play('swing');
     // Анімація паку: кадри 0–1 — замах, 2 — удар, 3 — відновлення. Підганяємо тривалість під фази зброї.
     if (this.hasAnim('attack')) this.play({ key: `${this.key}:attack`, duration: w.windupMs * 2, repeat: 0 });
   }
@@ -369,6 +371,7 @@ export class Player extends ManifestSprite {
     this.rollBufferMs = 0;
     const now = this.scene.time.now;
     spend(this.stamina, ROLL.staminaCost, now);
+    sfx.play('roll');
     const dir = this.controls.axisX();
     if (dir !== 0) this.face(dir as 1 | -1);
     this.enter('roll');
@@ -416,6 +419,7 @@ export class Player extends ManifestSprite {
       const before = this.hp;
       this.hp = Math.min(this.loadout.maxHp, this.hp + this.loadout.flaskHeal);
       this.fx.playFx('heal', this.x, this.y - 16, { depth: this.depth + 1 });
+      sfx.play('heal');
       this.fx.floatText(this.x, this.y - 34, `+${this.hp - before}`, '#7dff9a');
     }
     if (this.stateMs >= FLASK.drinkMs) this.enter('move');
@@ -459,6 +463,7 @@ export class Player extends ManifestSprite {
     this.fx.hitstop(HIT_FEEL.playerHurtHitstopMs);
     this.fx.shake(HIT_FEEL.shakeMs * 1.5, HIT_FEEL.heavyShakeIntensity);
     this.fx.playFx('splatter', this.x, this.y - 16, { flipX: fromSide > 0, scale: 0.8 });
+    sfx.play('hurt');
 
     if (this.hp <= 0) {
       this.die();
@@ -475,6 +480,7 @@ export class Player extends ManifestSprite {
   }
 
   private die(): void {
+    sfx.play('death');
     this.enter('dead');
     this.setAlpha(1);
     this.body.setVelocityY(-80);

@@ -3,6 +3,7 @@
  * галерея трофеїв босів і двері «Вихід» (відчиняються, коли всі боси переможені і борг = 0).
  * У хабі не б'ються: HUD показує баланс, борг, колекцію босів і шкалу гаранту. Фляги тут поповнюються.
  */
+import Phaser from 'phaser';
 import { CAVE_TILESET } from '../config/tilesets';
 import { BOSSES, BOSS_ORDER } from '../config/bosses';
 import { CURSES } from '../config/curses';
@@ -12,6 +13,8 @@ import { TEXTS, pick } from '../config/texts';
 import { parseRoom, type Legend } from '../core/level/grid';
 import { buyUpgrade, buyWeapon, canExit, equipWeapon, loadoutOf, payDebt, startRun, upgradePrice } from '../core/state/GameState';
 import { gameState, persist } from '../core/state/store';
+import { sfx } from '../core/audio/Sfx';
+import { ManifestSprite } from '../entities/ManifestSprite';
 import { Trigger } from '../entities/props';
 import hub from '../levels/hub.json';
 import type { MenuItem } from '../ui/MenuList';
@@ -39,9 +42,16 @@ const HUB_LEGEND: Legend = {
   '3': { spawn: 'trophy:2' },
   '4': { spawn: 'trophy:3' },
   '5': { spawn: 'trophy:4' },
+  '6': { spawn: 'trophy:5' },
+  '7': { spawn: 'trophy:6' },
+  C: { spawn: 'cat' },
 };
 
 export class HubScene extends GameplayScene {
+  private cat: ManifestSprite | null = null;
+  private catBubble!: Phaser.GameObjects.Text;
+  private catLine = '';
+
   constructor() {
     super(SCENES.hub);
   }
@@ -51,11 +61,15 @@ export class HubScene extends GameplayScene {
     const ts = CAVE_TILESET.tileSize;
     const room = parseRoom(hub.rows, HUB_LEGEND);
     this.buildWorld(room.grid, hub.seed, {});
+    this.cat = null;
 
+    // від автомата / з програної бонуски — з'являємось біля середнього автомата
+    const slots = room.spawns.filter((s) => s.type === 'slot');
+    const nearSlot = (arrival.kind === 'slot' || arrival.kind === 'bossLost') && slots.length ? slots[Math.floor(slots.length / 2)]! : null;
     for (const s of room.spawns) {
       const x = (s.x + 0.5) * ts;
       const y = (s.y + 1) * ts;
-      if (s.type === 'player') this.createPlayer(x, y, loadoutOf(save));
+      if (s.type === 'player') this.createPlayer(nearSlot ? (nearSlot.x + 1.5) * ts : x, y, loadoutOf(save));
       else this.spawnObject(s.type, x, y);
     }
     this.decorate();
@@ -66,6 +80,7 @@ export class HubScene extends GameplayScene {
 
   update(_t: number, delta: number): void {
     this.gameplayUpdate(delta);
+    this.updateCat();
   }
 
   protected hudExtras(): Partial<HudState> {
@@ -115,6 +130,26 @@ export class HubScene extends GameplayScene {
         this.interactables.push(new Trigger(x, y - 8, 34, () => 'E — коваль (прокачка і зброя)', () => this.smith()));
         break;
       }
+      case 'cat': {
+        // Кіт-швейцар: не ворог, а «довідка» біля виходу — скільки боргу і босів лишилось
+        const cat = new ManifestSprite(this, x, y - 4, 'cat');
+        cat.setDepth(3);
+        cat.playAnim('idle');
+        this.physics.add.collider(cat, this.level.solid);
+        this.cat = cat;
+        this.catBubble = txt(this, x, y - 30, '', 8, COLORS.text, { align: 'center', backgroundColor: '#000000aa', padding: { x: 3, y: 2 } })
+          .setOrigin(0.5, 1)
+          .setDepth(20)
+          .setAlpha(0);
+        this.interactables.push(
+          new Trigger(x, y - 8, 26, () => 'E — погладити кота', () => {
+            this.catLine = pick(CAT_LINES);
+            sfx.play('click');
+            this.fx.playFx('sparkle', cat.x, cat.y - 18, { scale: 0.6 });
+          }),
+        );
+        break;
+      }
       case 'exit': {
         const open = canExit(save, BOSS_ORDER);
         this.add.sprite(x, y + 1, 'props', open ? 'door/door/open/0' : 'door/door/closed/0').setOrigin(0.5, 1).setDepth(2);
@@ -129,12 +164,32 @@ export class HubScene extends GameplayScene {
           const won = save.bosses.includes(id);
           const door = boss.trophyDoor;
           const frame = won ? (this.textures.get('props').has(`door/${door}/open/0`) ? `door/${door}/open/0` : `door/${door}/open/03`) : `door/${door}/closed/0`;
-          this.add.sprite(x, y + 1, 'props', frame).setOrigin(0.5, 1).setDepth(2).setScale(0.6).setAlpha(won ? 1 : 0.6);
+          const t = this.add.sprite(x, y + 1, 'props', frame).setOrigin(0.5, 1).setDepth(2).setScale(0.6).setAlpha(won ? 1 : 0.6);
+          if (boss.trophyTint) t.setTint(boss.trophyTint);
           this.interactables.push(
             new Trigger(x, y - 8, 14, () => (won ? `${boss.name} — переможений` : boss.final ? '??? — фінальний бос. Спершу всі інші' : '??? — вибий бонуску на слоті'), () => {}),
           );
         }
     }
+  }
+
+  /** Кіт говорить, коли гравець поруч: борг, боси, а після погладжування — іронічна фраза. */
+  private updateCat(): void {
+    const cat = this.cat;
+    if (!cat) return;
+    const p = this.player;
+    const near = Math.abs(p.x - cat.x) < 90 && Math.abs(p.y - cat.y) < 40;
+    cat.setFacing(p.x > cat.x ? 1 : -1);
+    const s = gameState();
+    const left = BOSS_ORDER.filter((id) => !s.bosses.includes(id)).length;
+    const status = canExit(s, BOSS_ORDER)
+      ? 'Борг закрито, боси переможені.\nВихід відчинено. Мур.'
+      : `Борг: ${s.debt} фішок\nБосів переможено: ${BOSS_ORDER.length - left} з ${BOSS_ORDER.length}`;
+    this.catBubble.setText(this.catLine ? `${status}\n«${this.catLine}»` : status);
+    this.catBubble.setPosition(cat.x, cat.y - 34);
+    const target = near ? 1 : 0;
+    this.catBubble.setAlpha(Phaser.Math.Linear(this.catBubble.alpha, target, 0.15));
+    if (!near) this.catLine = '';
   }
 
   private label(x: number, y: number, text: string, color: string): void {
@@ -160,6 +215,9 @@ export class HubScene extends GameplayScene {
       this.time.delayedCall(1700, () => this.hud.banner(bag, COLORS.text, 1800));
       if (a.bagBurned) this.time.delayedCall(3700, () => this.hud.banner(`Старий мішок (${a.bagBurned}) згорів`, COLORS.red, 1500));
       this.time.delayedCall(a.bagBurned ? 5400 : 3700, () => this.hud.banner(`Відсотки: борг +${a.interest ?? 0}`, COLORS.red, 1400));
+    } else if (a.kind === 'bossLost') {
+      this.hud.banner('Бонуска згоріла', COLORS.red, 1500);
+      this.time.delayedCall(1800, () => this.hud.banner(pick(TEXTS.noWin), COLORS.gold, 1400));
     } else if (s.stats.runs === 0 && s.stats.spins === 0) {
       this.hud.banner('Борг сам себе не поверне', COLORS.gold, 2000);
     }
@@ -299,6 +357,15 @@ export class HubScene extends GameplayScene {
     });
   }
 }
+
+/** Що каже кіт, якщо його погладити. */
+const CAT_LINES = [
+  'Я тут не працюю. Я тут живу.',
+  'Казино завжди у виграші. Я — теж: мене годують.',
+  'Ще один спін? Я б не радив. Але я кіт.',
+  'Котам кредит не дають. І правильно.',
+  'Вихід — он там. Ніхто не користується.',
+];
 
 /** ?seed=123 у адресі — фіксований seed підземелля (демонстрація відтворюваності). */
 function urlSeed(): number | null {

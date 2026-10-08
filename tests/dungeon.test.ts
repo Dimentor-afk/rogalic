@@ -151,14 +151,14 @@ describe('generateDungeon', () => {
   it('вороги: на глибині 1 немає ворогів, що з’являються глибше', () => {
     for (let seed = 1; seed < 40; seed++) {
       const lvl = generateDungeon({ seed, depth: 1, templates: TEMPLATES });
-      for (const s of lvl.spawns.filter((s) => s.kind === 'enemy')) expect(['golem', 'demon', 'imp', 'goblinVeteran', 'golemElite', 'spider']).not.toContain(s.enemyId);
+      for (const s of lvl.spawns.filter((s) => s.kind === 'enemy')) expect(['goblinSlinger', 'skeletonVeteran', 'bloodling', 'spiderVenom', 'spider']).not.toContain(s.enemyId);
     }
   });
 
   it('мішок смерті з’являється лише на своїй глибині; прокляття «гурт» подвоює ворогів', () => {
-    const withBag = generateDungeon({ seed: 9, depth: 2, templates: TEMPLATES, bag: { depth: 2, chips: 50 } });
-    expect(withBag.spawns.find((s) => s.kind === 'bag')?.chips).toBe(50);
-    const otherDepth = generateDungeon({ seed: 9, depth: 3, templates: TEMPLATES, bag: { depth: 2, chips: 50 } });
+    const withBag = generateDungeon({ seed: 9, depth: 2, templates: TEMPLATES, bag: { depth: 2, chips: 500 } });
+    expect(withBag.spawns.find((s) => s.kind === 'bag')?.chips).toBe(500);
+    const otherDepth = generateDungeon({ seed: 9, depth: 3, templates: TEMPLATES, bag: { depth: 2, chips: 500 } });
     expect(otherDepth.spawns.some((s) => s.kind === 'bag')).toBe(false);
     const normal = generateDungeon({ seed: 9, depth: 3, templates: TEMPLATES });
     const horde = generateDungeon({ seed: 9, depth: 3, templates: TEMPLATES, curse: CURSES.horde });

@@ -36,8 +36,8 @@ export const LAYOUT = {
 export const POPULATE = {
   /** Імовірність, що слот ворога заповнений: base + perDepth·(глибина−1). */
   enemySlotChance: { base: 0.55, perDepth: 0.08, max: 0.95 },
-  barrelChips: [2, 6] as [number, number],
-  chestChips: [25, 45] as [number, number],
+  barrelChips: [20, 60] as [number, number],
+  chestChips: [250, 450] as [number, number],
   /** Шанс знайти в скрині флягу «Енергетик». */
   chestFlaskChance: 0.5,
 };

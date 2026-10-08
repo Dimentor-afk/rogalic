@@ -8,7 +8,7 @@ import { BLOCK, HIT_FEEL } from '../../config/combat';
 import { ENEMIES } from '../../config/enemies';
 import { FX } from '../../config/assets';
 import type { WeaponDef } from '../../config/weapons';
-import { Enemy, type EnemyWorld } from '../../entities/enemies/Enemy';
+import { Enemy, type EnemyWorld, type PlayerHit } from '../../entities/enemies/Enemy';
 import { Player, type PlayerHooks } from '../../entities/Player';
 import { Projectile } from '../../entities/Projectile';
 import type { Fx } from '../fx/Fx';
@@ -17,12 +17,36 @@ import { hasLineOfSight } from '../level/los';
 import type { LevelView } from '../level/LevelView';
 import type { DefenseOutcome } from './defense';
 import { rectsOverlap, sectorHitsRect, type Rect } from './geometry';
+import { sfx } from '../audio/Sfx';
 
 /** Події для сцени (HUD, мішок смерті, статистика). */
 export interface CombatEvents {
   onRunChipsChanged?(chips: number): void;
   onPlayerDeath?(player: Player): void;
   onEnemyKilled?(enemy: Enemy): void;
+}
+
+/** Ціль, яку б'ють як ворога, але яка не є Enemy (бос). */
+export interface Hittable {
+  readonly alive: boolean;
+  lastSwingHit: number;
+  hitRect(): Rect;
+  takeHit(hit: PlayerHit): boolean;
+}
+
+/** Небезпечна зона (ударна хвиля, калюжа, стовп): б'є гравця при дотику. */
+export interface Hazard {
+  rect(): Rect;
+  damage: number;
+  blockable: boolean;
+  /** До цього часу зона активна. */
+  until: number;
+  /** Не частіше, ніж раз на стільки мс. */
+  rehitMs: number;
+  nextHitAt: number;
+  /** Звідки «прилетіло» (для блоку і відкидання). */
+  fromX(): number;
+  onExpire?(): void;
 }
 
 /** Ціль, яку можна вдарити, крім ворогів (бочки, двері). */
@@ -37,12 +61,16 @@ export class CombatSystem implements EnemyWorld {
   readonly enemies: Phaser.Physics.Arcade.Group;
   readonly projectiles: Projectile[] = [];
   readonly breakables: Breakable[] = [];
+  readonly targets: Hittable[] = [];
+  readonly hazards: Hazard[] = [];
   /** Фішки, зібрані за забіг (ще не зараховані на баланс). */
   private chips = 0;
   /** Дебаг: малювати зони ударів. */
   debug = false;
   /** Множник швидкості ворогів (прокляття «на кофеїні»). */
   enemySpeedMultiplier = 1;
+  /** Чи дають вбиті вороги фішки (на арені боса міньйони — без нагороди). */
+  rewardChips = true;
   private debugG: Phaser.GameObjects.Graphics;
   private lastBreakableSwing = new WeakMap<Breakable, number>();
 
@@ -92,9 +120,14 @@ export class CombatSystem implements EnemyWorld {
   }
 
   hitPlayer(enemy: Enemy, rect: Rect, damage: number, blockable: boolean): DefenseOutcome | null {
+    return this.hitPlayerFrom(enemy, enemy.body.center.x, rect, damage, blockable);
+  }
+
+  /** Зона удару будь-кого (ворог, бос) по гравцю. null — не дістала. */
+  hitPlayerFrom(attacker: unknown, fromX: number, rect: Rect, damage: number, blockable: boolean, knockback = 1): DefenseOutcome | null {
     if (this.debug) this.debugG.lineStyle(1, 0xff3344, 1).strokeRect(rect.x, rect.y, rect.w, rect.h);
     if (!this.player.alive || !rectsOverlap(rect, this.player.hitRect())) return null;
-    return this.player.receiveHit({ damage, fromX: enemy.body.center.x, blockable, attacker: enemy });
+    return this.player.receiveHit({ damage, fromX, blockable, attacker, knockback });
   }
 
   spawnEnemyProjectile(enemy: Enemy, x: number, y: number, vx: number, vy: number): void {
@@ -147,7 +180,7 @@ export class CombatSystem implements EnemyWorld {
 
   onEnemyKilled(enemy: Enemy): void {
     const [min, max] = enemy.def.chips;
-    const reward = Phaser.Math.Between(min, max);
+    const reward = this.rewardChips ? Phaser.Math.Between(min, max) : 0;
     if (reward > 0) this.addChips(reward, enemy.x, enemy.y - enemy.displayHeight / 2);
     this.events.onEnemyKilled?.(enemy);
   }
@@ -163,6 +196,7 @@ export class CombatSystem implements EnemyWorld {
     if (n <= 0) return;
     this.setChips(this.chips + n);
     this.fx.playFx('coins', x, y, { scale: 0.45 });
+    sfx.play('coin');
     this.fx.floatText(x, y - 6, `${prefix}${n}`, '#ffd25a');
   }
 
@@ -186,6 +220,20 @@ export class CombatSystem implements EnemyWorld {
         y: Phaser.Math.Clamp(origin.y, r.y, r.y + r.h),
       });
     });
+    for (const t of this.targets) {
+      if (!t.alive || t.lastSwingHit === swingId) continue;
+      if (!sectorHitsRect(origin, p.facing, w.range, w.arcDeg, t.hitRect())) continue;
+      t.lastSwingHit = swingId;
+      const r = t.hitRect();
+      t.takeHit({
+        damage: w.damage,
+        knockback: w.knockback,
+        dir: p.facing,
+        heavy: w.heavy,
+        x: Phaser.Math.Clamp(origin.x + p.facing * w.range * 0.6, r.x, r.x + r.w),
+        y: Phaser.Math.Clamp(origin.y, r.y, r.y + r.h),
+      });
+    }
     for (const b of this.breakables) {
       if (!b.alive || this.lastBreakableSwing.get(b) === swingId) continue;
       if (!sectorHitsRect(origin, p.facing, w.range, w.arcDeg, b.hitRect())) continue;
@@ -222,11 +270,16 @@ export class CombatSystem implements EnemyWorld {
       fx.hitstop(HIT_FEEL.parryHitstopMs);
       fx.shake(HIT_FEEL.shakeMs, HIT_FEEL.heavyShakeIntensity);
       fx.floatText(p.x, p.y - 36, 'ПАРІРУВАВ!', '#9fd0ff');
+      sfx.play('parry');
+      // оглушуємо будь-кого, хто вміє оглушуватись (ворог, бос)
+      const stunnable = attacker as { stun?: (ms: number) => void } | null;
       if (attacker instanceof Enemy) attacker.stun(BLOCK.parryStunMs);
+      else stunnable?.stun?.(BLOCK.parryStunMs);
     } else if (outcome === 'blocked') {
       fx.burst(cx, cy, 0xd8e6ff, 8, 90, 260);
       fx.hitstop(HIT_FEEL.hitstopMs);
       fx.floatText(p.x, p.y - 36, 'блок', '#c8d8ff');
+      sfx.play('block');
     } else if (outcome === 'guardBreak') {
       fx.floatText(p.x, p.y - 36, 'нерви здали', '#ff9a6a');
     } else if (outcome === 'dodged' && p.isRolling) {
@@ -241,7 +294,33 @@ export class CombatSystem implements EnemyWorld {
     this.debugG.clear();
   }
 
+  addHazard(h: Omit<Hazard, 'nextHitAt'>): Hazard {
+    const hz = { ...h, nextHitAt: 0 };
+    this.hazards.push(hz);
+    return hz;
+  }
+
+  private updateHazards(): void {
+    const now = this.now();
+    const p = this.player;
+    for (let i = this.hazards.length - 1; i >= 0; i--) {
+      const h = this.hazards[i]!;
+      if (now >= h.until) {
+        h.onExpire?.();
+        this.hazards.splice(i, 1);
+        continue;
+      }
+      const r = h.rect();
+      if (this.debug) this.debugG.lineStyle(1, 0xff8800, 1).strokeRect(r.x, r.y, r.w, r.h);
+      if (p.alive && now >= h.nextHitAt && rectsOverlap(r, p.hitRect())) {
+        h.nextHitAt = now + h.rehitMs;
+        p.receiveHit({ damage: h.damage, fromX: h.fromX(), blockable: h.blockable });
+      }
+    }
+  }
+
   update(dtMs: number): void {
+    this.updateHazards();
     this.enemies.getChildren().forEach((obj) => (obj as Enemy).update(dtMs));
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       const pr = this.projectiles[i]!;
@@ -268,6 +347,12 @@ export class CombatSystem implements EnemyWorld {
         pr.hitSet.add(e);
         const dir: 1 | -1 = pr.opts.vx >= 0 ? 1 : -1;
         e.takeHit({ damage: pr.opts.damage, knockback: pr.opts.knockback ?? 60, dir, x: pr.x, y: pr.y });
+        if (!pr.opts.pierce) return true;
+      }
+      for (const t of this.targets) {
+        if (!t.alive || pr.hitSet.has(t) || !rectsOverlap(r, t.hitRect())) continue;
+        pr.hitSet.add(t);
+        t.takeHit({ damage: pr.opts.damage, knockback: pr.opts.knockback ?? 60, dir: pr.opts.vx >= 0 ? 1 : -1, x: pr.x, y: pr.y });
         if (!pr.opts.pierce) return true;
       }
       for (const b of this.breakables) {
@@ -302,6 +387,19 @@ export class CombatSystem implements EnemyWorld {
     g.arc(x, y, range, base - half, base + half, false);
     g.closePath();
     g.strokePath();
+  }
+
+  /** Прибрати всі ворожі снаряди і небезпечні зони (бос переможений). */
+  clearThreats(): void {
+    for (let i = this.projectiles.length - 1; i >= 0; i--) {
+      const pr = this.projectiles[i]!;
+      if (pr.opts.owner !== 'enemy') continue;
+      this.fx.playFx('smoke', pr.x, pr.y, { scale: 0.5 });
+      pr.destroy();
+      this.projectiles.splice(i, 1);
+    }
+    for (const h of this.hazards) h.onExpire?.();
+    this.hazards.length = 0;
   }
 
   destroy(): void {

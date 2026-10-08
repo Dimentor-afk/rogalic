@@ -30,6 +30,23 @@ export interface HudState {
   map?: { rooms: MinimapRoom[] };
   /** Хаб: замість бойового HUD — баланс, борг, колекція босів, шкала гаранту. */
   hub?: HubInfo;
+  /** Арена: смуга HP боса і таймер бою. */
+  boss?: BossInfo;
+}
+
+export interface BossInfo {
+  name: string;
+  hp: number;
+  maxHp: number;
+  /** Час бою і цільовий час (для множника «швидко»), мс. */
+  timeMs: number;
+  targetMs: number;
+}
+
+/** 75000 → "1:15". */
+export function formatTime(ms: number): string {
+  const sec = Math.max(0, Math.floor(ms / 1000));
+  return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
 }
 
 export interface HubInfo {
@@ -66,6 +83,10 @@ export class HudScene extends Phaser.Scene {
   private hubCurse!: Phaser.GameObjects.Text;
   private hubG!: Phaser.GameObjects.Graphics;
   private bossIcons: Phaser.GameObjects.Text[] = [];
+  private bossG!: Phaser.GameObjects.Graphics;
+  private bossName!: Phaser.GameObjects.Text;
+  /** «Тінь» смуги HP: повільно доганяє реальне значення — видно, скільки зняв останній удар. */
+  private bossShown = 1;
 
   constructor() {
     super(SCENES.hud);
@@ -92,6 +113,9 @@ export class HudScene extends Phaser.Scene {
     this.chipsText = txt(this, this.scale.width - 6, 6, '', 8, COLORS.gold).setOrigin(1, 0);
     this.depthText = txt(this, this.scale.width - 6, 16, '', 8, COLORS.dim).setOrigin(1, 0);
     this.hintText = txt(this, this.scale.width / 2, this.scale.height - 14, '', 8, COLORS.text).setOrigin(0.5, 0);
+    this.bossG = this.add.graphics();
+    this.bossName = txt(this, this.scale.width / 2, this.scale.height - 34, '', 8, COLORS.text, { stroke: '#000000', strokeThickness: 2 }).setOrigin(0.5, 0);
+    this.bossShown = 1;
     this.bannerText = txt(this, this.scale.width / 2, this.scale.height * 0.36, '', 16, COLORS.gold, { stroke: '#000000', strokeThickness: 3, align: 'center' })
       .setOrigin(0.5)
       .setAlpha(0);
@@ -126,11 +150,34 @@ export class HudScene extends Phaser.Scene {
       // лічильник «доганяє» реальне значення — приємно дивитися, як ростуть фішки
       this.shownChips += (s.chips - this.shownChips) * 0.2;
       if (Math.abs(s.chips - this.shownChips) < 0.5) this.shownChips = s.chips;
-      this.chipsText.setText(`ФІШКИ ЗАБІГУ: ${Math.round(this.shownChips)}`);
+      this.chipsText.setText(`ФІШКИ ЗАБІГУ: ${Math.round(this.shownChips)}`).setColor(COLORS.gold);
     } else this.chipsText.setText('');
     this.depthText.setText(s.depth !== undefined ? `ГЛИБИНА ${s.depth}` : '');
     this.hintText.setText(s.hint ?? '');
     this.drawMap(s.map?.rooms);
+    this.drawBoss(s.boss);
+  }
+
+  /** Смуга HP боса внизу екрана (поверх скелі підлоги, щоб не закривати бій) + таймер угорі справа. */
+  private drawBoss(b: BossInfo | undefined): void {
+    const g = this.bossG;
+    g.clear();
+    if (!b) {
+      this.bossName.setText('');
+      return;
+    }
+    const ratio = Math.max(0, b.hp / b.maxHp);
+    this.bossShown = Math.max(ratio, this.bossShown - 0.004);
+    const w = 260;
+    const x = Math.round((this.scale.width - w) / 2);
+    const y = this.scale.height - 22;
+    g.fillStyle(0x000000, 0.75).fillRect(x - 2, y - 2, w + 4, 9);
+    g.fillStyle(0xd8c070, 1).fillRect(x, y, Math.round(w * this.bossShown), 5);
+    g.fillStyle(0xc0303a, 1).fillRect(x, y, Math.round(w * ratio), 5);
+    this.bossName.setText(b.name);
+    const over = b.timeMs > b.targetMs;
+    this.chipsText.setText(`ЧАС ${formatTime(b.timeMs)}`).setColor(over ? COLORS.dim : COLORS.gold);
+    this.depthText.setText(`ціль ${formatTime(b.targetMs)}`);
   }
 
   /** Мінікарта: відвідані кімнати — заповнені, сусідні з ними — контуром, поточна — біла рамка. */

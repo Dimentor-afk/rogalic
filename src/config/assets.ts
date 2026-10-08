@@ -113,6 +113,22 @@ function buildManifest(): SpriteManifest {
     );
   }
 
+  // ---------- боси ----------
+  const boss = (base: string, anims: Record<string, [string, number, boolean?]>, body: BodyDef): SpriteDef => ({
+    atlas: 'bosses',
+    body,
+    anims: Object.fromEntries(Object.entries(anims).map(([k, [dir, fps, loop]]) => [k, { prefix: `boss/${base}/${dir}/`, fps, loop }])),
+  });
+  m['boss_goblin_king'] = boss('goblin_king', { walk: ['walk', 8, true], death: ['death', 6] }, { w: 30, h: 62, bottomPad: 2, offsetX: 4 });
+  m['boss_slime_king'] = boss('slime_king', { walk: ['walk', 6, true], death: ['death', 6] }, { w: 110, h: 64, bottomPad: 6 });
+  m['boss_skeleton_king'] = boss('skeleton_king', { walk: ['walk', 8, true], death: ['death', 6] }, { w: 80, h: 70, bottomPad: 24, offsetX: -3 });
+  m['boss_dungeon_master'] = boss('dungeon_master', { walk: ['walk', 7, true], death: ['death', 8] }, { w: 26, h: 66, bottomPad: 2, offsetX: -1 });
+  m['boss_archdemon'] = boss(
+    'archdemon',
+    { idle: ['idle', 8, true], walk: ['idle', 10, true], attack: ['attack', 30], hurt: ['hurt', 12], death: ['death', 10] },
+    { w: 24, h: 54, bottomPad: 48, offsetX: -1 },
+  );
+
   return m;
 }
 
@@ -122,6 +138,9 @@ export const SPRITES: SpriteManifest = buildManifest();
  * Одноразові ефекти (іскри удару, дим, монети…): ключ → кадри атласу.
  * Анімація реєструється як "fx:<ключ>".
  */
+/** FX, яких немає в паках: малюються кодом-заглушкою (src/core/assets/placeholders.ts), ключ FX → текстура. */
+export const PLACEHOLDER_FX: Record<string, string> = { casinoChip: 'ph/chip', boneShard: 'ph/bone' };
+
 export const FX: Record<string, { atlas: string; prefix: string; fps: number; facesLeft?: boolean; loop?: boolean }> = {
   impact: { atlas: 'fx', prefix: 'fx/impact/', fps: 24 },
   impactCrit: { atlas: 'fx', prefix: 'fx/impact_crit/', fps: 20 },
@@ -137,6 +156,26 @@ export const FX: Record<string, { atlas: string; prefix: string; fps: number; fa
   scepterBolt: { atlas: 'player', prefix: 'fx/scepter_projectile/', fps: 14 },
   scepterBlast: { atlas: 'player', prefix: 'fx/scepter_blast/', fps: 16 },
   fireball: { atlas: 'enemies', prefix: 'flydemon/projectile/', fps: 1, facesLeft: true },
+  // снаряди і вибухи босів
+  goblinBolt: { atlas: 'bosses', prefix: 'bossfx/goblin_king/projectile/', fps: 12 },
+  goblinBlast: { atlas: 'bosses', prefix: 'bossfx/goblin_king/blast/', fps: 16 },
+  masterBoltGreen: { atlas: 'bosses', prefix: 'bossfx/dungeon_master0/projectile/', fps: 12 },
+  masterBoltBlue: { atlas: 'bosses', prefix: 'bossfx/dungeon_master1/projectile/', fps: 12 },
+  masterBoltRed: { atlas: 'bosses', prefix: 'bossfx/dungeon_master2/projectile/', fps: 12 },
+  masterBlast: { atlas: 'bosses', prefix: 'bossfx/dungeon_master0/blast/', fps: 16 },
+  // магічні ефекти (Foozle, CC0): шипи з-під землі, каміння, портал, вогняна куля
+  earthSpike: { atlas: 'fx', prefix: 'fx/earth_spike/rise/', fps: 14 },
+  earthSpikeDeath: { atlas: 'fx', prefix: 'fx/earth_spike/fall/', fps: 12 },
+  rockFall: { atlas: 'fx', prefix: 'fx/rocks/fly/', fps: 10, loop: true },
+  rockBreak: { atlas: 'fx', prefix: 'fx/rocks/break/', fps: 14 },
+  portal: { atlas: 'fx', prefix: 'fx/portal/swirl/', fps: 14, loop: true },
+  portalBurst: { atlas: 'fx', prefix: 'fx/portal/burst/', fps: 16 },
+  demonFire: { atlas: 'fx', prefix: 'fx/fire_ball/', fps: 14, loop: true },
+  // перешкоди на арені
+  slimePuddle: { atlas: 'bosses', prefix: 'boss/slime_king/obstacle/', fps: 8, loop: true },
+  slimePuddleDeath: { atlas: 'bosses', prefix: 'boss/slime_king/obstacle_death/', fps: 10 },
+  bonePillar: { atlas: 'bosses', prefix: 'boss/skeleton_king/obstacle/', fps: 8, loop: true },
+  bonePillarDeath: { atlas: 'bosses', prefix: 'boss/skeleton_king/obstacle_death/', fps: 10 },
   // зациклені анімації пропів
   doorClosed: { atlas: 'props', prefix: 'door/door/closed/', fps: 6, loop: true },
   deepDoor: { atlas: 'props', prefix: 'door/dungeon_master_door/closed/', fps: 6, loop: true },

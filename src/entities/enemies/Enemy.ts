@@ -16,6 +16,7 @@ import type { Fx } from '../../core/fx/Fx';
 import type { Player } from '../Player';
 import { ManifestSprite } from '../ManifestSprite';
 import { buildComponents } from './components';
+import { sfx } from '../../core/audio/Sfx';
 
 export type EnemyState = 'idle' | 'chase' | 'windup' | 'active' | 'recovery' | 'hurt' | 'stunned' | 'flee' | 'dead';
 
@@ -226,6 +227,7 @@ export class Enemy extends ManifestSprite {
     const dmg = Math.round(hit.damage * (crit ? BLOCK.critMultiplier : 1));
     this.hp -= dmg;
     this.aggro = true;
+    sfx.play('hit');
     if (crit) {
       this.critReady = false;
       this.clearTint();

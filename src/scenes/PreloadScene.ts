@@ -4,7 +4,7 @@
  */
 import Phaser from 'phaser';
 import { registerAnimations } from '../core/assets/animations';
-import { createDungeonPlaceholders } from '../core/assets/placeholders';
+import { createDungeonPlaceholders, createProjectilePlaceholders } from '../core/assets/placeholders';
 import { ASSET_INDEX_KEY, type AssetIndex } from './BootScene';
 import { SCENES } from './keys';
 
@@ -37,6 +37,7 @@ export class PreloadScene extends Phaser.Scene {
   create(): void {
     this.registry.set(ASSET_PROBLEMS_KEY, registerAnimations(this));
     createDungeonPlaceholders(this);
+    createProjectilePlaceholders(this);
     this.scene.start(SCENES.menu);
   }
 }

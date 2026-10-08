@@ -6,6 +6,7 @@ import Phaser from 'phaser';
 import type { Breakable, CombatSystem } from '../core/combat/CombatSystem';
 import type { Rect } from '../core/combat/geometry';
 import type { Fx } from '../core/fx/Fx';
+import { sfx } from '../core/audio/Sfx';
 
 export interface Interactable {
   readonly alive: boolean;
@@ -41,6 +42,7 @@ export class Barrel implements Breakable {
     if (!this.alive) return;
     this.alive = false;
     this.sprite.setFrame('barrel/3').setAlpha(0.8);
+    sfx.play('hit');
     this.fx.playFx('smoke', this.sprite.x, this.sprite.y - 12, { scale: 0.8 });
     this.fx.burst(this.sprite.x, this.sprite.y - 14, 0x8a5530, 10, 120, 400);
     this.combat.addChips(this.chips, this.sprite.x, this.sprite.y - 20);
@@ -89,6 +91,7 @@ export class Chest implements Interactable, Breakable {
     if (!this.alive) return;
     this.alive = false;
     this.sprite.setTexture('ph/chest_open');
+    sfx.play('bonus');
     this.fx.playFx('sparkle', this.sprite.x, this.sprite.y - 14);
     this.combat.addChips(this.chips, this.sprite.x, this.sprite.y - 22);
     if (this.flask) {
@@ -136,6 +139,7 @@ export class Door implements Interactable, Breakable {
     if (!this.alive) return;
     this.alive = false;
     this.sprite.stop().setFrame('door/door/open/0');
+    sfx.play('door');
     (this.zone.body as Phaser.Physics.Arcade.StaticBody).enable = false;
     this.fx.playFx('smoke', this.sprite.x, this.sprite.y - 10);
   }
