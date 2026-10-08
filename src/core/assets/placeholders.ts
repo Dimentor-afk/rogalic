@@ -24,6 +24,11 @@ export function px(ctx: CanvasRenderingContext2D, color: string, x: number, y: n
   ctx.fillRect(x, y, w, h);
 }
 
+/** Малюнок з рядків: '#' — піксель кольору color, будь-що інше — прозоро. */
+function bitmap(ctx: CanvasRenderingContext2D, color: string, rows: string[]): void {
+  rows.forEach((row, y) => [...row].forEach((ch, x) => ch === '#' && px(ctx, color, x, y, 1, 1)));
+}
+
 /** Створює всі заглушки, потрібні підземеллю/хабу. Викликається в Preload. */
 export function createDungeonPlaceholders(scene: Phaser.Scene): void {
   // скриня: закрита і відкрита (24×18)
@@ -262,4 +267,18 @@ export function createSlotPlaceholders(scene: Phaser.Scene, symbols: SymbolLook[
     px(c, '#ffd25a', 1, 1, 78, 6);
     px(c, '#fff3b0', 4, 3, 30, 1);
   });
+  // «увімкнена» кнопка (автоспін іде, турбо, вибраний варіант): неоново-червона, як табло автомата
+  ensureTexture(scene, 'slotui/button_on', 64, 20, (c) => {
+    px(c, '#2a0010', 0, 0, 64, 20);
+    px(c, '#a8323f', 1, 1, 62, 18);
+    px(c, '#ff5a8a', 1, 1, 62, 4);
+    px(c, '#ffb0c8', 3, 2, 20, 1);
+  });
+  // іконки кнопок: кругова стрілка (автоспін), блискавка (турбо), «∞» — у шрифті Tiny5 цього символу немає.
+  // ∞ біла — фарбується tint-ом під колір підпису.
+  const icon = (key: string, color: string, rows: string[]) =>
+    ensureTexture(scene, key, rows[0]!.length, rows.length, (c) => bitmap(c, color, rows));
+  icon('slotui/ico_auto', '#ffd25a', ['..#.###..', '.##....#.', '###.....#', '........#', '#.......#', '#.......#', '.#.....#.', '..#####..']);
+  icon('slotui/ico_turbo', '#ffd25a', ['....###', '...###.', '..###..', '.######', '...###.', '..###..', '.###...', '.##....', '.#.....']);
+  icon('slotui/inf', '#ffffff', ['.##...##.', '#..#.#..#', '#...#...#', '#..#.#..#', '.##...##.']);
 }

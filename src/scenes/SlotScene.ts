@@ -2,6 +2,7 @@
  * ЕКРАН СЛОТА. Гравець підходить до автомата в хабі — відкривається цей екран.
  * Результат спіна рахується логікою (src/core/slot) ДО анімації; тут лише показ:
  * барабани, лінії, виграш, звук (навіть на мінімальних сумах), near-miss, гарант, «Купити бонус».
+ * Автоспін і турбо теж лише керують показом: ставка, RNG і виплати ті самі, що й при ручному спіні.
  */
 import Phaser from 'phaser';
 import { CAVE_PARALLAX } from '../config/game';
@@ -15,7 +16,11 @@ import { SlotRng, isScatter, spin, type Grid, type SpinResult } from '../core/sl
 import { availableBosses, buyBonusCost, chargeBuyBonus, chargeSpin, settleSpin } from '../core/slot/session';
 import { gameState, persist } from '../core/state/store';
 import { Fx } from '../core/fx/Fx';
+import { AutoPicker } from '../ui/slot/AutoPicker';
+import { autoSpinsToRun, autoStopNote, autoStopReason, type AutoStop } from '../ui/slot/autospin';
 import { ReelView } from '../ui/slot/ReelView';
+import { SlotButton } from '../ui/slot/SlotButton';
+import { countUpMs, slotTempo, type SlotTempo } from '../ui/slot/tempo';
 import { COLORS, txt } from '../ui/text';
 import type { BossFightStart } from './BossArenaScene';
 import type { HubArrival } from './DungeonScene';
@@ -23,6 +28,22 @@ import { SCENES } from './keys';
 
 /** Символи для «стрічки» прокрутки (без множників). */
 const FILLER = SYMBOLS.filter((s) => s.kind !== 'multiplier' && s.kind !== 'scatter').map((s) => s.id);
+
+/** Нижній рядок підказок: звичайний, під час автоспіну і у вікні вибору автоспіну. */
+const HELP = {
+  main: 'Space крутити  A/D ставка  B купити бонус  T автоспін  U турбо  M звук  Esc до хабу',
+  auto: 'Space / T / Esc — зупинити автоспін    U турбо    M звук',
+  picker: 'T або A/D — кількість    S — стоп на заносі    Space — старт    Esc — назад',
+};
+
+const STOP_COLOR: Record<AutoStop, string> = {
+  bonus: COLORS.gold,
+  bigWin: COLORS.gold,
+  curse: COLORS.red,
+  noFunds: COLORS.red,
+  done: COLORS.dim,
+  manual: COLORS.dim,
+};
 
 /** Повернення до автомата з повідомленням (після фріспінів). */
 export interface SlotReturn {
@@ -40,7 +61,17 @@ export class SlotScene extends Phaser.Scene {
   private reels!: ReelView;
   private rng!: SlotRng;
   private busy = false;
+  /** Автоспін: скільки лишилось (разом із поточним; 0 — вимкнено, Infinity — без ліміту), скільки зроблено. */
   private autoLeft = 0;
+  private autoTotal = 0;
+  private autoDone = 0;
+  private autoTimer?: Phaser.Time.TimerEvent;
+  /** Чому автоспін зупинився востаннє (показуємо на лівій панелі). */
+  private autoStop: AutoStop | null = null;
+  private autoNote = '';
+  private padPrev = { a: false, x: false, y: false };
+  /** Геймпад: A затиснули в спокої — крутимо спін за спіном (як і було до автоспіну). */
+  private padHoldSpins = false;
   private fx!: Fx;
   private balanceText!: Phaser.GameObjects.Text;
   private betText!: Phaser.GameObjects.Text;
@@ -50,7 +81,11 @@ export class SlotScene extends Phaser.Scene {
   private guaranteeText!: Phaser.GameObjects.Text;
   private buyText!: Phaser.GameObjects.Text;
   private autoText!: Phaser.GameObjects.Text;
+  private helpText!: Phaser.GameObjects.Text;
   private buyBtn!: Phaser.GameObjects.Image;
+  private autoBtn!: SlotButton;
+  private turboBtn!: SlotButton;
+  private picker!: AutoPicker;
 
   constructor() {
     super(SCENES.slot);
@@ -61,6 +96,12 @@ export class SlotScene extends Phaser.Scene {
     this.rng = new SlotRng(s.slotSeed);
     this.busy = false;
     this.autoLeft = 0;
+    this.autoDone = 0;
+    this.autoTimer = undefined;
+    this.autoStop = null;
+    this.autoNote = '';
+    this.padPrev = { a: false, x: false, y: false };
+    this.padHoldSpins = false;
     if (!SLOT.bets.includes(s.bet)) s.bet = SLOT.bets[0]!;
     createSlotPlaceholders(this, allSlotSymbolLooks());
     this.fx = new Fx(this);
@@ -84,11 +125,12 @@ export class SlotScene extends Phaser.Scene {
     this.balanceText = txt(this, lx, 70, '', 8, COLORS.gold);
     txt(this, lx, 88, 'СТАВКА', 8, COLORS.dim);
     this.betText = txt(this, lx, 98, '', 8, COLORS.text);
-    this.button(lx, 112, '< менше', () => this.changeBet(-1), 50);
-    this.button(lx + 54, 112, 'більше >', () => this.changeBet(1), 50);
+    this.button(lx, 116, '< менше', () => this.changeBet(-1), 50);
+    this.button(lx + 54, 116, 'більше >', () => this.changeBet(1), 50);
     txt(this, lx, 136, 'ВИГРАШ', 8, COLORS.dim);
     this.winText = txt(this, lx, 146, '0', 8, COLORS.text);
-    this.autoText = txt(this, lx, 166, '', 8, COLORS.dim);
+    txt(this, lx, 162, 'АВТОСПІН', 8, COLORS.dim);
+    this.autoText = txt(this, lx, 172, '', 8, COLORS.dim);
 
     // права панель: гарант + купити бонус
     const rx = width - 104;
@@ -102,21 +144,37 @@ export class SlotScene extends Phaser.Scene {
     this.tweens.add({ targets: [this.buyBtn], scale: { from: 1, to: 1.08 }, yoyo: true, repeat: -1, duration: 420, ease: 'Sine.easeInOut' });
     this.tweens.add({ targets: [this.buyBtn], alpha: { from: 1, to: 0.75 }, yoyo: true, repeat: -1, duration: 210 });
 
-    // кнопка спіна
-    const spinBtn = this.add.image(width / 2, 196, 'slotui/button').setScale(1.6, 1.3).setInteractive({ useHandCursor: true });
-    spinBtn.on('pointerdown', () => this.doSpin());
-    txt(this, width / 2, 196, 'КРУТИТИ', 8, COLORS.white).setOrigin(0.5);
+    // ряд під барабанами: [АВТО] [КРУТИТИ] [ТУРБО] — бічні кнопки по краях барабанів
+    const rowY = 196;
+    const spinBtn = this.add.image(width / 2, rowY, 'slotui/button').setScale(1.6, 1.3).setInteractive({ useHandCursor: true });
+    spinBtn.on('pointerdown', () => this.primary());
+    txt(this, width / 2, rowY, 'КРУТИТИ', 8, COLORS.white).setOrigin(0.5);
+    this.autoBtn = new SlotButton(this, this.reels.x + 26, rowY, 52, 20, 'АВТО', () => this.onAutoButton(), 'slotui/ico_auto');
+    this.turboBtn = new SlotButton(this, this.reels.x + this.reels.width - 26, rowY, 52, 20, 'ТУРБО', () => this.toggleTurbo(), 'slotui/ico_turbo');
     this.msgText = txt(this, width / 2, 216, '', 8, COLORS.gold, { align: 'center' }).setOrigin(0.5, 0);
-    txt(this, width / 2, height - 12, 'Space крутити  A/D ставка  B купити бонус  T автоспін  M звук  Esc до хабу', 8, COLORS.dim).setOrigin(0.5, 0);
+    this.helpText = txt(this, width / 2, height - 12, '', 8, COLORS.dim).setOrigin(0.5, 0);
+
+    // вікно вибору автоспіну — поверх барабанів
+    this.picker = new AutoPicker(this, width / 2, this.reels.y + this.reels.height / 2, {
+      onStart: (count, stopOnBigWin) => this.startAuto(count, stopOnBigWin),
+      onChange: (count, stopOnBigWin) => {
+        Object.assign(gameState().settings, { autoSpins: count, autoStopBigWin: stopOnBigWin });
+        persist();
+        sfx.play('click');
+      },
+      onClose: () => this.closePicker(),
+    });
 
     const kb = this.input.keyboard!;
-    for (const k of ['SPACE', 'E', 'J', 'ENTER']) kb.on(`keydown-${k}`, () => this.doSpin());
-    for (const k of ['LEFT', 'A']) kb.on(`keydown-${k}`, () => this.changeBet(-1));
-    for (const k of ['RIGHT', 'D']) kb.on(`keydown-${k}`, () => this.changeBet(1));
+    for (const k of ['SPACE', 'E', 'J', 'ENTER']) kb.on(`keydown-${k}`, () => this.primary());
+    for (const k of ['LEFT', 'A']) kb.on(`keydown-${k}`, () => (this.picker.isOpen ? this.picker.cycle(-1) : this.changeBet(-1)));
+    for (const k of ['RIGHT', 'D']) kb.on(`keydown-${k}`, () => (this.picker.isOpen ? this.picker.cycle(1) : this.changeBet(1)));
+    for (const k of ['S', 'DOWN']) kb.on(`keydown-${k}`, () => this.picker.isOpen && this.picker.toggleBigWin());
     kb.on('keydown-B', () => this.buyBonus());
-    kb.on('keydown-T', () => this.toggleAuto());
+    kb.on('keydown-T', () => this.onAutoKey());
+    kb.on('keydown-U', () => this.toggleTurbo());
     kb.on('keydown-M', () => this.say(sfx.toggleMute() ? 'Звук вимкнено' : 'Звук увімкнено'));
-    kb.on('keydown-ESC', () => this.leave());
+    kb.on('keydown-ESC', () => this.back());
 
     if (data.message) this.say(data.message, data.color ?? COLORS.gold);
     else if (s.debt === 0) this.say(pick(TEXTS.debtPaid), COLORS.green);
@@ -126,8 +184,27 @@ export class SlotScene extends Phaser.Scene {
 
   update(_t: number, delta: number): void {
     this.fx.update(delta);
+    this.pollGamepad();
+  }
+
+  /** Геймпад: A — крутити (під час автоспіну — стоп), X — автоспін з останньою кількістю або стоп, Y — турбо. */
+  private pollGamepad(): void {
     const pad = this.input.gamepad?.getPad(0);
-    if (pad && !this.busy && pad.A) this.doSpin();
+    if (!pad) return;
+    const now = { a: pad.A, x: pad.X, y: pad.Y };
+    const idle = this.autoLeft === 0 && !this.picker.isOpen;
+    if (now.a && !this.padPrev.a) {
+      this.padHoldSpins = idle;
+      if (!idle) this.primary();
+    }
+    if (now.a && this.padHoldSpins && idle && !this.busy) void this.doSpin();
+    if (now.x && !this.padPrev.x && !this.picker.isOpen) {
+      const st = gameState().settings;
+      if (this.autoLeft > 0) this.finishAuto('manual');
+      else if (!this.busy) this.startAuto(st.autoSpins, st.autoStopBigWin);
+    }
+    if (now.y && !this.padPrev.y) this.toggleTurbo();
+    this.padPrev = now;
   }
 
   private button(x: number, y: number, label: string, fn: () => void, w = 64): void {
@@ -148,7 +225,19 @@ export class SlotScene extends Phaser.Scene {
     this.guaranteeText.setText(s.guarantee >= 100 ? 'наступний — БОНУСКА!' : `${Math.floor(s.guarantee)}%  (кожен скатер +${SLOT.guarantee.perScatter}%)`);
     const cost = buyBonusCost(s.bet);
     this.buyText.setText(`КУПИТИ БОНУС\n${cost}`).setColor(s.balance >= cost ? '#2a1000' : '#7a5020');
-    this.autoText.setText(this.autoLeft > 0 ? `автоспін: ${this.autoLeft}` : '');
+
+    // автоспін: на кнопці — скільки лишилось, на лівій панелі — прогрес або причина зупинки
+    const auto = this.autoLeft > 0;
+    const endless = this.autoLeft === Infinity;
+    this.autoBtn.setLit(auto).setLabel(auto && !endless ? `АВТО ${this.autoLeft}` : 'АВТО', auto && endless);
+    if (auto) {
+      const n = this.autoDone + 1;
+      this.autoText.setText(this.autoTotal === Infinity ? `спін ${n}, без ліміту` : `спін ${n} із ${this.autoTotal}`).setColor(COLORS.text);
+    } else {
+      this.autoText.setText(this.autoStop ? this.autoNote : 'вимкнено').setColor(this.autoStop ? STOP_COLOR[this.autoStop] : COLORS.dim);
+    }
+    this.turboBtn.setLit(s.settings.slotTurbo);
+    this.helpText.setText(this.picker.isOpen ? HELP.picker : auto ? HELP.auto : HELP.main);
   }
 
   private say(text: string, color: string = COLORS.gold): void {
@@ -158,7 +247,8 @@ export class SlotScene extends Phaser.Scene {
   }
 
   private changeBet(d: number): void {
-    if (this.busy) return;
+    // під час автоспіну ставка зафіксована
+    if (this.busy || this.autoLeft > 0) return;
     const s = gameState();
     const i = Math.max(0, Math.min(SLOT.bets.length - 1, SLOT.bets.indexOf(s.bet) + d));
     s.bet = SLOT.bets[i]!;
@@ -166,22 +256,88 @@ export class SlotScene extends Phaser.Scene {
     this.refresh();
   }
 
-  private toggleAuto(): void {
-    this.autoLeft = this.autoLeft > 0 ? 0 : 10;
+  /** Space / E / Enter / кнопка КРУТИТИ: у вікні вибору — старт, під час автоспіну — стоп, інакше — спін. */
+  private primary(): void {
+    if (this.picker.isOpen) this.picker.confirm();
+    else if (this.autoLeft > 0) this.finishAuto('manual');
+    else void this.doSpin();
+  }
+
+  /** Esc: закрити вибір → зупинити автоспін → піти до хабу. */
+  private back(): void {
+    if (this.picker.isOpen) this.closePicker();
+    else if (this.autoLeft > 0) this.finishAuto('manual');
+    else this.leave();
+  }
+
+  /** T: відкрити вибір; у виборі — наступна кількість; під час автоспіну — стоп. */
+  private onAutoKey(): void {
+    if (this.autoLeft > 0) this.finishAuto('manual');
+    else if (this.picker.isOpen) this.picker.cycle(1);
+    else this.openPicker();
+  }
+
+  /** Кнопка АВТО (коли вікно відкрите, клік ловить його підкладка і закриває вікно). */
+  private onAutoButton(): void {
+    if (this.autoLeft > 0) this.finishAuto('manual');
+    else this.openPicker();
+  }
+
+  private openPicker(): void {
+    if (this.busy) return;
+    const s = gameState();
+    this.picker.open(s.settings.autoSpins, s.settings.autoStopBigWin, s.bet);
+    sfx.play('click');
     this.refresh();
-    if (this.autoLeft > 0 && !this.busy) this.doSpin();
+  }
+
+  private closePicker(): void {
+    this.picker.close();
+    this.refresh();
+  }
+
+  private startAuto(count: number, stopOnBigWin: boolean): void {
+    const s = gameState();
+    Object.assign(s.settings, { autoSpins: count, autoStopBigWin: stopOnBigWin });
+    persist();
+    this.picker.close();
+    this.autoLeft = this.autoTotal = autoSpinsToRun(count);
+    this.autoDone = 0;
+    this.autoStop = null;
+    this.refresh();
+    void this.doSpin();
+  }
+
+  /** Зупинити автоспін. Спін, що вже крутиться, докручується (його результат пораховано заздалегідь). */
+  private finishAuto(reason: AutoStop, win = 0): void {
+    this.autoTimer?.remove();
+    this.autoTimer = undefined;
+    this.autoLeft = 0;
+    this.autoStop = reason;
+    this.autoNote = autoStopNote(reason, this.autoDone, win, gameState().bet);
+    if (reason === 'manual') sfx.play('click');
+    this.refresh();
+  }
+
+  private toggleTurbo(): void {
+    const st = gameState().settings;
+    st.slotTurbo = !st.slotTurbo;
+    persist();
+    sfx.play('click');
+    this.refresh();
   }
 
   private async doSpin(): Promise<void> {
-    if (this.busy) return;
+    if (this.busy || this.picker.isOpen) return;
     const s = gameState();
     if (s.balance < s.bet) {
-      this.autoLeft = 0;
+      if (this.autoLeft > 0) this.finishAuto('noFunds');
       this.say('Не вистачає фішок. Підземелля чекає', COLORS.red);
       this.cameras.main.shake(100, 0.004);
       return;
     }
     this.busy = true;
+    const t = slotTempo(s.settings.slotTurbo);
     // 1) ставку списуємо, результат рахуємо одразу (до анімації) і зберігаємо стан RNG
     chargeSpin(s, s.bet);
     const r = spin({ bet: s.bet, availableBosses: availableBosses(s), guaranteeFull: s.guarantee >= SLOT.guarantee.max, rng: this.rng });
@@ -192,36 +348,55 @@ export class SlotScene extends Phaser.Scene {
     this.say('');
     this.refreshBalanceDuringSpin(s.balance - r.win);
 
-    // 2) анімація
-    await this.reels.spinTo(r.grid, { fillerIds: FILLER, nearMiss: true });
+    // 2) анімація (темп звичайний або турбо — на результат не впливає)
+    await this.reels.spinTo(r.grid, { fillerIds: FILLER, nearMiss: true, baseMs: t.reelMs, staggerMs: t.staggerMs, nearMissMs: t.nearMissMs });
 
     // 3) показ результату
-    this.present(r, outcome.curse);
+    this.present(r, outcome.curse, t);
+    if (this.autoLeft > 0) this.continueAuto(r, outcome.curse !== null, t);
     this.refresh();
-    this.busy = false;
     if (r.bonusBoss) {
-      this.autoLeft = 0;
-      this.time.delayedCall(1600, () => this.startBonus(r.bonusBoss!, false));
+      // busy лишається true: до переходу в бонуску ні спіна, ні виходу
+      this.time.delayedCall(t.bonusDelayMs, () => this.startBonus(r.bonusBoss!, false));
       return;
     }
-    if (this.autoLeft > 0) {
-      this.autoLeft--;
-      this.refresh();
-      if (this.autoLeft > 0) this.time.delayedCall(r.win > 0 ? 900 : 350, () => this.doSpin());
+    this.busy = false;
+  }
+
+  /** Після спіна автоспіну: зупинитись (бонуска, прокляття, занос, гроші, ліміт) або запланувати наступний. */
+  private continueAuto(r: SpinResult, curse: boolean, t: SlotTempo): void {
+    const s = gameState();
+    this.autoLeft--;
+    this.autoDone++;
+    const reason = autoStopReason({
+      win: r.win,
+      bet: s.bet,
+      balance: s.balance,
+      bonus: r.bonusBoss !== null,
+      curse,
+      left: this.autoLeft,
+      stopOnBigWin: s.settings.autoStopBigWin,
+    });
+    if (reason) {
+      this.finishAuto(reason, r.win);
+      if (reason === 'noFunds') this.say('Автоспін зупинено: не вистачає фішок на ставку', COLORS.red);
+      return;
     }
+    const pause = r.win >= s.bet * 10 ? t.autoPauseBigMs : r.win > 0 ? t.autoPauseWinMs : t.autoPauseMs;
+    this.autoTimer = this.time.delayedCall(pause, () => void this.doSpin());
   }
 
   private refreshBalanceDuringSpin(balance: number): void {
     this.balanceText.setText(`${balance}`);
   }
 
-  private present(r: SpinResult, curse: string | null): void {
+  private present(r: SpinResult, curse: string | null, t: SlotTempo): void {
     const s = gameState();
     if (r.lineWins.length) this.reels.highlight(r.lineWins);
     if (r.win > 0) {
       const big = r.win >= s.bet * 10;
       sfx.play(big ? 'winBig' : 'winSmall');
-      this.countUp(r.win);
+      this.countUp(r.win, countUpMs(t, r.win));
       // виграш менший за ставку — все одно «ВИГРАШ!» (так задумано)
       const label = r.win < s.bet ? `${pick(TEXTS.smallWin)} (+${r.win}, ставка ${s.bet})` : big ? `ВЕЛИКИЙ ВИГРАШ! +${r.win}` : `${pick(TEXTS.smallWin)} +${r.win}`;
       this.say(label, big ? COLORS.gold : COLORS.text);
@@ -241,20 +416,24 @@ export class SlotScene extends Phaser.Scene {
     }
     if (curse) {
       sfx.play('curse');
-      this.time.delayedCall(r.bonusBoss ? 0 : 400, () => this.say(`ПРОКЛЯТТЯ на наступний спуск: ${CURSES[curse]!.name}`, COLORS.red));
+      this.time.delayedCall(r.bonusBoss ? 0 : t.curseMsgMs, () => this.say(`ПРОКЛЯТТЯ на наступний спуск: ${CURSES[curse]!.name}`, COLORS.red));
       this.cameras.main.flash(250, 120, 60, 200);
     } else if (r.win === 0 && !r.bonusBoss && s.debt === 0 && Math.random() < 0.3) {
       this.say(pick(TEXTS.debtPaid), COLORS.green);
     }
   }
 
-  private countUp(target: number): void {
+  private countUp(target: number, duration: number): void {
     const o = { v: 0 };
-    this.tweens.add({ targets: o, v: target, duration: Math.min(1200, 200 + target * 4), onUpdate: () => this.winText.setText(`${Math.round(o.v)}`) });
+    this.tweens.add({ targets: o, v: target, duration, onUpdate: () => this.winText.setText(`${Math.round(o.v)}`) });
   }
 
   private buyBonus(): void {
-    if (this.busy) return;
+    if (this.busy || this.picker.isOpen) return;
+    if (this.autoLeft > 0) {
+      this.say('Автоспін бонус не купує — спершу зупини його', COLORS.dim);
+      return;
+    }
     const s = gameState();
     const boss = availableBosses(s);
     if (!chargeBuyBonus(s, s.bet)) {
@@ -282,7 +461,6 @@ export class SlotScene extends Phaser.Scene {
 
   private leave(): void {
     if (this.busy) return;
-    this.autoLeft = 0;
     persist();
     this.cameras.main.fadeOut(250, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start(SCENES.hub, { kind: 'slot' } satisfies HubArrival));

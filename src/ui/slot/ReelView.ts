@@ -23,6 +23,8 @@ export interface SpinAnimOptions {
   fillerIds: string[];
   /** Чи робити near-miss (для фріспінів — ні). */
   nearMiss?: boolean;
+  /** Скільки довше крутиться кожен барабан після near-miss, мс (турбо — коротше). */
+  nearMissMs?: number;
   onReelStop?: (col: number) => void;
 }
 
@@ -88,6 +90,7 @@ export class ReelView {
     this.grid = grid;
     const base = o.baseMs ?? 700;
     const stagger = o.staggerMs ?? 180;
+    const nearMissMs = o.nearMissMs ?? SLOT.nearMiss.extraMs;
     // near-miss: результат відомий наперед — рахуємо, після якого барабана вже видно 2 скатери
     let extraFrom = SLOT.cols;
     if (o.nearMiss) {
@@ -102,7 +105,7 @@ export class ReelView {
     }
     sfx.play('spin');
     const promises = this.columns.map((col, c) => {
-      const extra = c >= extraFrom ? (c - extraFrom + 1) * SLOT.nearMiss.extraMs : 0;
+      const extra = c >= extraFrom ? (c - extraFrom + 1) * nearMissMs : 0;
       const duration = base + c * stagger + extra;
       const stripLen = 3 + Math.round(duration / 45);
       col.removeAll(true);
