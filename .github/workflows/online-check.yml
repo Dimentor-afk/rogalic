@@ -1,0 +1,42 @@
+# Перевірка, що публічне посилання на гру (docs/play через raw.githack.com) справді відкривається і гра запускається.
+# Браузер на серверах GitHub відкриває версію саме цього коміту і поточну версію гілки.
+name: Онлайн-версія
+
+on:
+  push:
+    paths:
+      - 'docs/play/**'
+      - 'tools/smoke-online.mjs'
+      - '.github/workflows/online-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Браузер для перевірки
+        run: |
+          npm i --no-save playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Версія цього коміту (rawcdn.githack.com)
+        run: node tools/smoke-online.mjs "https://rawcdn.githack.com/${{ github.repository }}/${{ github.sha }}/docs/play/index.html" commit.png
+      - name: Поточна версія гілки (посилання з README)
+        run: |
+          # dev-адреса githack кешує файли кілька хвилин — даємо їй оновитися
+          for i in 1 2 3 4 5; do
+            node tools/smoke-online.mjs "https://raw.githack.com/${{ github.repository }}/${{ github.ref_name }}/docs/play/index.html" branch.png && exit 0
+            sleep 60
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: online-screenshots
+          path: '*.png'
