@@ -15,6 +15,7 @@ import { sfx } from '../core/audio/Sfx';
 import { SlotRng, isScatter, spin, type Grid, type SpinResult } from '../core/slot/slot';
 import { availableBosses, buyBonusCost, chargeBuyBonus, chargeSpin, settleSpin } from '../core/slot/session';
 import { gameState, persist } from '../core/state/store';
+import { grantTestChips } from '../core/state/GameState';
 import { Fx } from '../core/fx/Fx';
 import { AutoPicker } from '../ui/slot/AutoPicker';
 import { autoSpinsToRun, autoStopNote, autoStopReason, type AutoStop } from '../ui/slot/autospin';
@@ -171,6 +172,7 @@ export class SlotScene extends Phaser.Scene {
     for (const k of ['RIGHT', 'D']) kb.on(`keydown-${k}`, () => (this.picker.isOpen ? this.picker.cycle(1) : this.changeBet(1)));
     for (const k of ['S', 'DOWN']) kb.on(`keydown-${k}`, () => this.picker.isOpen && this.picker.toggleBigWin());
     kb.on('keydown-B', () => this.buyBonus());
+    for (const k of ['ZERO', 'NUMPAD_ZERO']) kb.on(`keydown-${k}`, () => this.addTestChips());
     kb.on('keydown-T', () => this.onAutoKey());
     kb.on('keydown-U', () => this.toggleTurbo());
     kb.on('keydown-M', () => this.say(sfx.toggleMute() ? 'Звук вимкнено' : 'Звук увімкнено'));
@@ -211,6 +213,15 @@ export class SlotScene extends Phaser.Scene {
     const b = this.add.image(x, y, 'slotui/button').setOrigin(0, 0.5).setDisplaySize(w, 16).setInteractive({ useHandCursor: true });
     b.on('pointerdown', fn);
     txt(this, x + w / 2, y, label, 8, COLORS.text).setOrigin(0.5);
+  }
+
+  /** Тестові фішки (клавіша 0). Під час спіну баланс на екрані оновиться після його завершення. */
+  private addTestChips(): void {
+    const n = grantTestChips(gameState());
+    persist();
+    sfx.play('coin');
+    if (!this.busy) this.refresh();
+    this.say(`ТЕСТ: +${n} фішок`, COLORS.gold);
   }
 
   private refresh(): void {

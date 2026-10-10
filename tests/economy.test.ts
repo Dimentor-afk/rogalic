@@ -5,6 +5,7 @@ import {
   canExit,
   defaultSettings,
   equipWeapon,
+  grantTestChips,
   finishRun,
   interestFor,
   loadGame,
@@ -17,7 +18,7 @@ import {
   upgradePrice,
   type KeyValueStorage,
 } from '../src/core/state/GameState';
-import { ECONOMY, UPGRADES } from '../src/config/economy';
+import { ECONOMY, TEST_CHIPS, UPGRADES } from '../src/config/economy';
 import { SLOT } from '../src/config/slot';
 import { chips } from '../src/config/texts';
 
@@ -213,5 +214,15 @@ describe('слово «фішка» за числом', () => {
     expect([1, 21, 101, 1231].map(w)).toEqual(['фішка', 'фішка', 'фішка', 'фішка']);
     expect([2, 3, 4, 22, 1234].map(w)).toEqual(['фішки', 'фішки', 'фішки', 'фішки', 'фішки']);
     expect([0, 5, 11, 12, 14, 20, 25, 111, 114, 25000].map(w)).toEqual(Array(10).fill('фішок'));
+  });
+});
+
+describe('тестові фішки', () => {
+  it('додають TEST_CHIPS до балансу і не чіпають борг', () => {
+    const s = newGame();
+    const debt = s.debt;
+    expect(grantTestChips(s)).toBe(TEST_CHIPS);
+    expect(s.balance).toBe(ECONOMY.startBalance + TEST_CHIPS);
+    expect(s.debt).toBe(debt);
   });
 });

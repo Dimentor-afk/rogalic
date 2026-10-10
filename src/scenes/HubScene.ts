@@ -11,7 +11,7 @@ import { UPGRADES, WEAPON_PRICES, type UpgradeId } from '../config/economy';
 import { WEAPONS, type WeaponId } from '../config/weapons';
 import { TEXTS, chips, pick } from '../config/texts';
 import { parseRoom, type Legend } from '../core/level/grid';
-import { buyUpgrade, buyWeapon, canExit, equipWeapon, loadoutOf, payDebt, startRun, upgradePrice } from '../core/state/GameState';
+import { buyUpgrade, buyWeapon, canExit, equipWeapon, grantTestChips, loadoutOf, payDebt, startRun, upgradePrice } from '../core/state/GameState';
 import { gameState, persist } from '../core/state/store';
 import { sfx } from '../core/audio/Sfx';
 import { ManifestSprite } from '../entities/ManifestSprite';
@@ -80,6 +80,7 @@ export class HubScene extends GameplayScene {
     }
     this.decorate();
     this.input.keyboard!.on('keydown-ESC', () => this.pauseMenu());
+    for (const k of ['ZERO', 'NUMPAD_ZERO']) this.input.keyboard!.on(`keydown-${k}`, () => this.addTestChips());
     this.cameras.main.fadeIn(500, 0, 0, 0);
     this.time.delayedCall(300, () => this.greet(arrival));
   }
@@ -374,13 +375,23 @@ export class HubScene extends GameplayScene {
     this.fadeTo(SCENES.ending, {}, 1200);
   }
 
+  /** Тестові фішки на баланс (клавіша 0 або пункт меню паузи). */
+  private addTestChips(): void {
+    const n = grantTestChips(gameState());
+    persist();
+    sfx.play('coin');
+    this.hubBanner(`ТЕСТ: +${chips(n)}`, COLORS.gold, 1200);
+  }
+
   private pauseMenu(): void {
     // під час молитви чи переходу між сценами меню не відкриваємо — інакше два переходи накладаються
     if (this.transitioning || this.player.inputLocked) return;
     openMenu(this, {
       title: 'ПАУЗА',
+      subtitle: () => `Баланс: ${chips(gameState().balance)}`,
       items: () => [
         { label: 'Продовжити', action: () => 'close' as const },
+        { label: 'Тест: +10 000 фішок (клавіша 0)', action: () => this.addTestChips() },
         {
           label: 'Головне меню',
           // час сцени хабу стоїть, поки відкрите меню, — перехід спрацює одразу після закриття

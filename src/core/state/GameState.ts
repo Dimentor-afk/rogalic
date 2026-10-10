@@ -5,7 +5,7 @@
  * прокляття на наступний спуск, стан RNG слота, статистику і налаштування гравця.
  * Сцени не змінюють поля напряму — лише через функції нижче (їх легко тестувати).
  */
-import { ECONOMY, UPGRADES, UPGRADE_EFFECT, WEAPON_PRICES, type UpgradeId } from '../../config/economy';
+import { ECONOMY, TEST_CHIPS, UPGRADES, UPGRADE_EFFECT, WEAPON_PRICES, type UpgradeId } from '../../config/economy';
 import { FLASK, PLAYER_COMBAT } from '../../config/combat';
 import { SLOT } from '../../config/slot';
 import type { WeaponId } from '../../config/weapons';
@@ -165,6 +165,12 @@ export function loadGame(storage: KeyValueStorage): SaveData {
   } catch {
     return newGame();
   }
+}
+
+/** Начислити тестові фішки (для перевірки гри). Повертає, скільки додано. */
+export function grantTestChips(s: SaveData): number {
+  s.balance += TEST_CHIPS;
+  return TEST_CHIPS;
 }
 
 // ---------------- прокачка ----------------

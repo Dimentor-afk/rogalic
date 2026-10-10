@@ -15,6 +15,9 @@ export const ECONOMY = {
 };
 
 /** Зменшення шкоди від рівня броні 0..4 (вигляд лат за рівнем — ARMOR_LOOK у config/assets.ts). */
+/** Тестові фішки: клавіша 0 у хабі й слоті або пункт меню паузи хабу — щоб швидко перевірити прокачку, бонуски й боси. */
+export const TEST_CHIPS = 10_000;
+
 export const ARMOR_DAMAGE_REDUCTION: readonly number[] = [0, 0.1, 0.2, 0.3, 0.4];
 
 export type UpgradeId = 'armor' | 'flask' | 'stamina' | 'hp';
